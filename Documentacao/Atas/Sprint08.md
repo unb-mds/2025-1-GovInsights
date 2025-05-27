@@ -20,7 +20,7 @@
 1. Conclusões da Sprint 7  
 2. Objetivos e escopo da Sprint 8  
 3. Acompanhamento do progresso e integração final  
-4. Revisão e organização da entrega da Release 1
+4. Revisão da entrega da Release 1
 
 ---
 
@@ -51,7 +51,7 @@
 ### 👨‍💻 BackEnd
 - **Guilherme, Marjorie e Gabriel:**  
   - Finalizar endpoints restantes.  
-  - Integrar a autenticação/login com o frontend.  
+  - Integrar a autenticação com o frontend.  
   - Realizar testes finais nas rotas e validar as chamadas da API.
 
 ### 👩‍🎨 FrontEnd
