@@ -3,7 +3,8 @@ import plotly.graph_objects as go
 import pandas as pd
 import random
 import pathlib
-
+import requests
+import plotly.graph_objects as go
 from alertas import alertas_page
 from configuracoes import configuracoes_page
 from relatorios import relatorios_page
@@ -59,11 +60,23 @@ with st.sidebar:
 def get_total_receitas(): return 50800, 28.4
 def get_total_despesas(): return 23600, -12.6
 def get_alertas_ativos(): return 3, 3.1
-def get_series_temporais():
-    meses = pd.date_range("2023-01-01", periods=12, freq="M")
-    receitas = [random.randint(80, 240) for _ in range(12)]
-    despesas = [random.randint(60, 180) for _ in range(12)]
-    return pd.DataFrame({"Meses": meses, "Receitas": receitas, "Despesas": despesas})
+
+
+def get_dados_ipea(codigo_serie):
+    url = f"http://www.ipeadata.gov.br/api/odata4/ValoresSerie(SERCODIGO='{codigo_serie}')"
+    response = requests.get(url)
+    dados = response.json()["value"]
+    df = pd.DataFrame(dados)
+    df = df.rename(columns={"VALDATA": "Data", "VALVALOR": "Valor"})
+    return df
+
+@st.cache_data
+def carregar_metadados():
+    url = "http://www.ipeadata.gov.br/api/odata4/Metadados"
+    response = requests.get(url)
+    dados = response.json()["value"]
+    return pd.DataFrame(dados)
+
 def get_valor_indicador(): return 23648
 def get_gauge_value(): return 65
 
@@ -116,31 +129,46 @@ def main_page():
 
     # Gráfico e Indicadores
     col4, col5 = st.columns([3, 2])
-    df = get_series_temporais()
 
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=df["Meses"], y=df["Receitas"], name="Receitas", line=dict(color="#A020F0")))
-    fig.add_trace(go.Scatter(x=df["Meses"], y=df["Despesas"], name="Despesas", line=dict(color="#00CFFF")))
-    fig.update_layout(margin=dict(l=0, r=0, t=0, b=0), plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)", font=dict(color="white"))
-    col4.plotly_chart(fig, use_container_width=True)
+
+
+    metadados = carregar_metadados()
 
     with col5:
-        st.markdown(f"""
-        <div class='painel'>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque urna mi, varius nec tincidunt sed.</p>
-        <h2 class='valor-indicador'>{get_valor_indicador():,}</h2>
-        </div>
-        """, unsafe_allow_html=True)
+        termo_busca = st.text_input("🔍 Busque uma série por nome, tema ou palavra-chave", placeholder="Ex: setor público consolidado")
 
-        gauge_value = get_gauge_value()
-        gauge_fig = go.Figure(go.Indicator(
-            mode="gauge+number", value=gauge_value, title={'text': ""},
-            gauge={'axis': {'range': [0, 100]}, 'bar': {'color': "#555555"},
-                   'steps': [{'range': [0, 50], 'color': "#e0e0e0"}, {'range': [50, 100], 'color': "#b0b0b0"}],
-                   'threshold': {'line': {'color': "white", 'width': 4}, 'thickness': 0.75, 'value': gauge_value}}
-        ))
-        gauge_fig.update_layout(margin=dict(l=20, r=20, t=30, b=20), height=250, width=250, paper_bgcolor="rgba(0,0,0,0)", font=dict(color="#333333"))
-        st.plotly_chart(gauge_fig, use_container_width=True)
+    # Filtra as séries que contêm o termo digitado
+    filtro = metadados[metadados["SERNOME"].str.lower().str.contains(termo_busca.lower())] if termo_busca else pd.DataFrame()
+
+ 
+    if not filtro.empty:
+        nome_serie = filtro.iloc[0]["SERNOME"]
+        codigo_serie = filtro.iloc[0]["SERCODIGO"]
+        st.success(f"Série selecionada: **{nome_serie}**")
+        
+
+        df = get_dados_ipea(codigo_serie)
+
+
+        df["Data"] = pd.to_datetime(df["Data"], utc=True, errors="coerce")
+        df = df.dropna(subset=["Data", "Valor"])
+        df = df.sort_values("Data")
+
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=df["Data"], y=df["Valor"], name=nome_serie, line=dict(color="#00CFFF")))
+        fig.update_layout(
+            title=nome_serie,
+            margin=dict(l=0, r=0, t=40, b=0),
+            plot_bgcolor="rgba(0,0,0,0)",
+            paper_bgcolor="rgba(0,0,0,0)",
+            font=dict(color="white")
+        )
+        col4.plotly_chart(fig, use_container_width=True)
+
+    else:
+        st.info("Digite uma palavra-chave para encontrar uma série e visualizar o gráfico.")
+
+
 
 
 

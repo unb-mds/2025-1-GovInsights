@@ -628,3 +628,39 @@ button.css-1emrehy.edgvbvh3 {
 .seta-baixo {
     margin-left: 8px;
 }
+
+.search-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    background-color: #0f2537;
+    border-radius: 12px;
+    border: 1px solid #1f3b53;
+    height: 100%;
+}
+
+.search-input {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    width: 100%;
+    font-size: 16px;
+}
+
+.search-input::placeholder {
+    color: #ccc;
+}
+
+div[data-baseweb="input"] {
+    background-color: #1a1a1a !important;
+    border-radius: 8px;
+}
+input[type="text"] {
+    background-color: #1a1a1a !important;
+    color: white !important;
+}
+input::placeholder {
+    color: #bbbbbb !important;
+}
