@@ -4,6 +4,7 @@ import pandas as pd
 import random
 import pathlib
 
+# Importações de suas páginas
 from alertas import alertas_page
 from configuracoes import configuracoes_page
 from relatorios import relatorios_page
@@ -20,8 +21,14 @@ st.set_page_config(
 )
 
 # Estilo CSS
-with open("./src/interface/views/styles/style.css", encoding="utf-8") as f:
-    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+# MODIFICAÇÃO: Adicionado tratamento de erro para FileNotFoundError
+# Garante que o app não quebre se o arquivo de estilo não for encontrado.
+try:
+    with open("./src/interface/views/styles/style.css", encoding="utf-8") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+except FileNotFoundError:
+    st.warning("O arquivo de estilo style.css não foi encontrado. Verifique o caminho.")
+
 
 # Estado da sessão para controlar a página atual
 if 'current_page' not in st.session_state:
@@ -35,34 +42,40 @@ def change_page(page_name):
 with st.sidebar:
     st.title("IPEA")
     
-    if not st.user.is_logged_in:
-        st.button("Log in with Google", on_click=st.login)
-    else:
-        st.text_input("🔍 Search for...")
-        st.markdown("### Navegação")
-        
-        # Botões de navegação
-        
-        if st.button("Dashboard"):
-            change_page("Dashboard")
-        if st.button("Relatórios"):
-            change_page("Relatórios")
-        if st.button("Alertas"):
-            change_page("Alertas")
-        if st.button("Análises inteligentes"):
-            change_page("Análises inteligentes")
-        if st.button("Dados"):
-            change_page("Dados")
-        
-        st.markdown("---")
-        if st.button("User"):
-            change_page("User")
-        if st.button("Configurações"):
-            change_page("Configurações")
-        if st.button("Logout"):
-            st.logout()
+    # MODIFICAÇÃO: Removida a lógica de login/logout baseada em st.user
+    # st.user.is_logged_in, st.login() e st.logout() são funcionalidades do Streamlit Community Cloud
+    # e não funcionam em execuções locais. Para fins de desenvolvimento local,
+    # o aplicativo agora se comportará como se o usuário estivesse sempre "logado".
+    # Se você quiser implementar um sistema de login local, precisará criar
+    # sua própria lógica com inputs e st.session_state.
+    
+    st.text_input("🔍 Search for...") # Mantido, mas fora do bloco de login/logout
+    st.markdown("### Navegação")
+    
+    # Botões de navegação (mantidos, agora sempre visíveis)
+    if st.button("Dashboard"):
+        change_page("Dashboard")
+    if st.button("Relatórios"):
+        change_page("Relatórios")
+    if st.button("Alertas"):
+        change_page("Alertas")
+    if st.button("Análises inteligentes"):
+        change_page("Análises inteligentes")
+    if st.button("Dados"):
+        change_page("Dados")
+    
+    st.markdown("---")
+    if st.button("User"):
+        change_page("User")
+    if st.button("Configurações"):
+        change_page("Configurações")
+    
+    # Botão de Logout removido, pois não há um sistema de login ativo localmente
+    # if st.button("Logout"):
+    #     st.logout()
 
-# Funções simuladas
+
+# Funções simuladas (mantidas do seu código original)
 def get_total_receitas(): return 50800, 28.4
 def get_total_despesas(): return 23600, -12.6
 def get_alertas_ativos(): return 3, 3.1
@@ -74,7 +87,7 @@ def get_series_temporais():
 def get_valor_indicador(): return 23648
 def get_gauge_value(): return 65
 
-# Página principal
+# Página principal (mantida do seu código original)
 def main_page():
     # Cabeçalho
     st.markdown("""
@@ -150,28 +163,22 @@ def main_page():
         st.plotly_chart(gauge_fig, use_container_width=True)
 
 
-
-# Outras páginas 
-
-
 # Renderização condicional da página
-
-if st.user.is_logged_in:
-    if st.session_state.current_page == "Dashboard":
-        main_page()
-        
-    elif st.session_state.current_page == "Relatórios":
-        relatorios_page()
-    elif st.session_state.current_page == "Alertas":
-        alertas_page()
-    elif st.session_state.current_page == "Análises inteligentes":
-        analises_page()
-    elif st.session_state.current_page == "Dados":
-        dados_page()
-    elif st.session_state.current_page == "User":
-        user_page()
-    elif st.session_state.current_page == "Configurações":
-        configuracoes_page()
-
-else:
-    st.title("Logue para usar aplicação.")
+# MODIFICAÇÃO: Removida a verificação de login.
+# A aplicação agora sempre vai renderizar o Dashboard ou a página selecionada,
+# permitindo o desenvolvimento local sem a necessidade de autenticação do Streamlit Cloud.
+if st.session_state.current_page == "Dashboard":
+    main_page()
+    
+elif st.session_state.current_page == "Relatórios":
+    relatorios_page()
+elif st.session_state.current_page == "Alertas":
+    alertas_page()
+elif st.session_state.current_page == "Análises inteligentes":
+    analises_page()
+elif st.session_state.current_page == "Dados":
+    dados_page()
+elif st.session_state.current_page == "User":
+    user_page()
+elif st.session_state.current_page == "Configurações":
+    configuracoes_page()
