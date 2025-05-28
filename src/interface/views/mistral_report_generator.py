@@ -1,56 +1,56 @@
 import streamlit as st
 from transformers import AutoModelForCausalLM, AutoTokenizer
-import torch # Continua sendo necessário para PyTorch
-# from bitsandbytes.cuda_setup.main import get_compute_capability # Não é necessário se não usar bnb
+import torch
+
+# REMOVA estas duas linhas daqui. Elas serão movidas para dentro da função load_mistral_model.
+# tokenizer, model = load_mistral_model()
 
 # --- Configuração e Carregamento do Modelo Mistral 7B para CPU ---
+# O @st.cache_resource já garante que só será carregado uma vez,
+# mas as chamadas Streamlit dentro dela precisam ser feitas APÓS set_page_config.
 @st.cache_resource
-def load_mistral_model():
-    # AQUI VOCÊ REMOVE A CONFIGURAÇÃO DO BITSANDBYTES
-    # quantization_config = BitsAndBytesConfig(
-    #     load_in_4bit=True,
-    #     bnb_4bit_quant_type="nf4",
-    #     bnb_4bit_compute_dtype=torch.bfloat16,
-    #     bnb_4bit_use_double_quant=False,
-    # )
+def get_tokenizer_and_model(): # Renomeado para maior clareza
+    model_name = "mistralai/Mistral-7B-Instruct-v0.2"
+    
+    # AQUI ESTAVAM st.spinner e st.success. Elas serão chamadas APENAS quando get_tokenizer_and_model
+    # for realmente invocada pela primeira vez, o que acontecerá DEPOIS de set_page_config no app.py.
+    
+    # Adicione uma mensagem de carregamento inicial que não seja um st.spinner
+    # st.write("Aguarde o carregamento do modelo de IA (apenas na primeira execução).") # Opção alternativa de feedback visual
 
-    model_name = "mistralai/Mistral-7B-Instruct-v0.2" # Versão instrucional do Mistral
-    st.spinner(f"Carregando o modelo {model_name} na CPU... Isso pode levar um tempo considerável e muita RAM.")
     try:
+        # st.spinner e st.success podem ser adicionados AQUI se for a PRIMEIRA VEZ que a função é executada,
+        # mas como está dentro de @st.cache_resource, a mensagem apareceria apenas na primeira carga.
+        # O problema é a chamada `st.spinner` etc. quando o módulo é importado.
+        
+        # Vamos usar um padrão que não quebre o set_page_config
+        # As mensagens de spinner e success agora serão gerenciadas pela função que chama este cache.
+        
         tokenizer = AutoTokenizer.from_pretrained(model_name)
-        # Carrega o modelo sem quantização, forçando o uso da CPU
         model = AutoModelForCausalLM.from_pretrained(
             model_name,
-            # remove 'quantization_config=quantization_config',
-            device_map="cpu", # Força o carregamento na CPU
-            torch_dtype=torch.float32 # Use float32 para maior precisão na CPU, consome mais RAM
+            device_map="cpu",
+            torch_dtype=torch.float32
         )
-        model.eval() # Coloca o modelo em modo de avaliação
-        st.success("Modelo Mistral 7B carregado com sucesso na CPU!")
+        model.eval()
         return tokenizer, model
     except Exception as e:
+        # Mantemos o tratamento de erro aqui para o caso de falha de carregamento
         st.error(f"Erro ao carregar o modelo Mistral 7B na CPU: {e}")
         st.info("O modelo Mistral 7B requer muita RAM para rodar na CPU (15-25GB). Verifique sua memória RAM disponível.")
-        st.stop() # Para a execução da Streamlit se o modelo não carregar
+        st.stop()
 
-tokenizer, model = load_mistral_model()
-
-# --- Função para Gerar o Relatório Inteligente ---
-# Este código permanece o mesmo.
+# Agora, a função `generate_intelligent_report` precisará chamar `get_tokenizer_and_model()` para obter o tokenizer e o modelo.
 def generate_intelligent_report(series_name: str, series_data: str, user_prompt: str = "") -> str:
     """
     Gera um relatório inteligente usando o modelo Mistral-7B com base nos dados da série.
-
-    Args:
-        series_name (str): O nome da série de dados.
-        series_data (str): Os dados da série formatados como texto (ex: "Data,Valor\n2023-01-01,100\n...").
-        user_prompt (str): Um prompt adicional do usuário para guiar a geração.
-
-    Returns:
-        str: O relatório inteligente gerado.
     """
     if not series_data:
         return "Nenhum dado de série fornecido para gerar o relatório."
+
+    # Carrega o tokenizer e o modelo DENTRO da função que os utiliza.
+    # O @st.cache_resource garante que eles só serão carregados uma vez.
+    tokenizer, model = get_tokenizer_and_model() # AQUI é onde eles são realmente obtidos
 
     formatted_data = f"Nome da Série: {series_name}\nDados:\n{series_data}\n"
 
