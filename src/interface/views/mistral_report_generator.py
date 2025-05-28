@@ -1,39 +1,42 @@
 import streamlit as st
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
-import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch # Continua sendo necessário para PyTorch
+# from bitsandbytes.cuda_setup.main import get_compute_capability # Não é necessário se não usar bnb
 
-# --- Configuração e Carregamento do Modelo Mistral 7B ---
-# Usamos st.cache_resource para garantir que o modelo seja carregado apenas uma vez
-# durante o ciclo de vida da aplicação Streamlit, economizando recursos.
+# --- Configuração e Carregamento do Modelo Mistral 7B para CPU ---
 @st.cache_resource
 def load_mistral_model():
-    # Configuração para quantização em 4-bit (altamente recomendado para Mistral 7B)
-    quantization_config = BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.bfloat16,
-        bnb_4bit_use_double_quant=False,
-    )
+    # AQUI VOCÊ REMOVE A CONFIGURAÇÃO DO BITSANDBYTES
+    # quantization_config = BitsAndBytesConfig(
+    #     load_in_4bit=True,
+    #     bnb_4bit_quant_type="nf4",
+    #     bnb_4bit_compute_dtype=torch.bfloat16,
+    #     bnb_4bit_use_double_quant=False,
+    # )
+
     model_name = "mistralai/Mistral-7B-Instruct-v0.2" # Versão instrucional do Mistral
-    st.spinner(f"Carregando o modelo {model_name}... Isso pode levar alguns minutos na primeira vez.")
+    st.spinner(f"Carregando o modelo {model_name} na CPU... Isso pode levar um tempo considerável e muita RAM.")
     try:
         tokenizer = AutoTokenizer.from_pretrained(model_name)
+        # Carrega o modelo sem quantização, forçando o uso da CPU
         model = AutoModelForCausalLM.from_pretrained(
             model_name,
-            quantization_config=quantization_config,
-            device_map="auto" # Tenta carregar na GPU se disponível, senão na CPU
+            # remove 'quantization_config=quantization_config',
+            device_map="cpu", # Força o carregamento na CPU
+            torch_dtype=torch.float32 # Use float32 para maior precisão na CPU, consome mais RAM
         )
         model.eval() # Coloca o modelo em modo de avaliação
-        st.success("Modelo Mistral 7B carregado com sucesso!")
+        st.success("Modelo Mistral 7B carregado com sucesso na CPU!")
         return tokenizer, model
     except Exception as e:
-        st.error(f"Erro ao carregar o modelo Mistral 7B: {e}")
-        st.info("Verifique se você tem memória suficiente (especialmente GPU) ou tente rodar em um ambiente com mais recursos.")
+        st.error(f"Erro ao carregar o modelo Mistral 7B na CPU: {e}")
+        st.info("O modelo Mistral 7B requer muita RAM para rodar na CPU (15-25GB). Verifique sua memória RAM disponível.")
         st.stop() # Para a execução da Streamlit se o modelo não carregar
 
 tokenizer, model = load_mistral_model()
 
 # --- Função para Gerar o Relatório Inteligente ---
+# Este código permanece o mesmo.
 def generate_intelligent_report(series_name: str, series_data: str, user_prompt: str = "") -> str:
     """
     Gera um relatório inteligente usando o modelo Mistral-7B com base nos dados da série.
@@ -49,13 +52,8 @@ def generate_intelligent_report(series_name: str, series_data: str, user_prompt:
     if not series_data:
         return "Nenhum dado de série fornecido para gerar o relatório."
 
-    # Formatação dos dados para o prompt
-    # É importante que o LLM entenda a estrutura dos dados.
-    # Se seus dados de série forem mais complexos, ajuste esta formatação.
     formatted_data = f"Nome da Série: {series_name}\nDados:\n{series_data}\n"
 
-    # Construindo o prompt para o Mistral-7B Instruct (formato ChatML)
-    # A instrução é crucial para obter um bom relatório.
     messages = [
         {"role": "user", "content": f"""Com base nos seguintes dados de série histórica, gere um relatório inteligente, detalhado e conciso. Inclua:
         1. Uma breve descrição do que os dados representam.
@@ -70,22 +68,19 @@ def generate_intelligent_report(series_name: str, series_data: str, user_prompt:
         """}
     ]
 
-    # Tokenizar os prompts
     encodings = tokenizer.apply_chat_template(messages, return_tensors="pt", add_generation_prompt=True).to(model.device)
 
-    # Gerar a resposta do modelo
-    with st.spinner("Mistral 7B está gerando o relatório..."):
+    with st.spinner("Mistral 7B está gerando o relatório... Isso pode demorar bastante na CPU."):
         generated_ids = model.generate(
             encodings,
-            max_new_tokens=700,  # Aumente para relatórios mais longos
-            do_sample=True,      # Para mais criatividade e variação
-            temperature=0.7,     # Controla a aleatoriedade (0.0 a 1.0)
-            top_k=50,            # Limita a amostragem aos top-k tokens
-            top_p=0.95,          # Amostragem por probabilidade cumulativa
-            pad_token_id=tokenizer.eos_token_id # Garante que o modelo pare corretamente
+            max_new_tokens=700,
+            do_sample=True,
+            temperature=0.7,
+            top_k=50,
+            top_p=0.95,
+            pad_token_id=tokenizer.eos_token_id
         )
 
-    # Decodificar a resposta, removendo o prompt original
     generated_text = tokenizer.decode(generated_ids[0][encodings.shape[1]:], skip_special_tokens=True)
 
     return generated_text
