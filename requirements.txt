@@ -3,3 +3,4 @@ plotly==6.0.1
 Requests==2.32.3
 streamlit==1.44.1
 ipeadatapy==0.1.9
+supabase==2.15.2
