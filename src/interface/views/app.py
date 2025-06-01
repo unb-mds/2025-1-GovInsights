@@ -3,11 +3,19 @@ import plotly.graph_objects as go
 import pandas as pd
 import random
 import pathlib
+import sys
 
-# Importações de suas páginas
+current_dir = pathlib.Path(__file__).parent.resolve()
+services_path = current_dir.parents[2] / "services"
+if str(services_path) not in sys.path:
+    sys.path.insert(0, str(services_path))
+
+from services import search 
+
+# Importações de páginas
 from alertas import alertas_page
 from configuracoes import configuracoes_page
-from relatorios import relatorios_page
+# from relatorios import relatorios_page
 from analises import analises_page
 from dados import dados_page
 from user import user_page
@@ -170,8 +178,8 @@ def main_page():
 if st.session_state.current_page == "Dashboard":
     main_page()
     
-elif st.session_state.current_page == "Relatórios":
-    relatorios_page()
+# elif st.session_state.current_page == "Relatórios":
+#     relatorios_page()
 elif st.session_state.current_page == "Alertas":
     alertas_page()
 elif st.session_state.current_page == "Análises inteligentes":
