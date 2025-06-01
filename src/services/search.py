@@ -2,6 +2,9 @@ import pandas as pd
 import ipeadatapy as ipea
 import plotly.express as px
 
+metadata_economicos = ipea.metadata()
+metadata_economicos = metadata_economicos[metadata_economicos['MEASURE'].str.contains("\\$")]  # Filtra apenas indicadores com medidas monetárias
+
 def search(source_list: list, theme_list: list, frequency: list) -> pd.DataFrame:
     """
     Retorna os metadados de indicadores do IPEA filtrados por fonte e tema.
@@ -54,8 +57,7 @@ def get_by_source(source_list: list) -> pd.DataFrame:
         DataFrame com os metadados de todos os indicadores encontrados nas fontes especificadas.
     """
     # Busca todos os metadados disponíveis
-    metadata_filtrado = ipea.metadata()
-    metadata_filtrado =  metadata_filtrado[metadata_filtrado['MEASURE'].str.contains("\\$")] # Filtra apenas indicadores com medidas monetárias
+    metadata_filtrado = metadata_economicos.copy()
     # Remove séries inativas
     metadata_filtrado = metadata_filtrado[~metadata_filtrado['NAME'].str.contains('INATIVA', case=False, na=False)]
     
@@ -89,8 +91,7 @@ def get_by_theme(theme_list: list) -> pd.DataFrame:
         Se o tema informado não for encontrado na base de dados.
     """
     # Busca todos os temas disponíveis
-    metadata_filtrado = ipea.metadata()
-    metadata_filtrado =  metadata_filtrado[metadata_filtrado['MEASURE'].str.contains("\\$")] # Filtra apenas indicadores com medidas monetárias
+    metadata_filtrado = metadata_economicos.copy()
     
     if not theme_list:
         return metadata_filtrado # Se nenhum tema for informado, retorna todos os metadados
@@ -112,33 +113,10 @@ def get_by_frequency(frequency: str) -> pd.DataFrame:
     pd.DataFrame
         DataFrame com os metadados de todos os indicadores encontrados na frequência especificada.
     """
-    metadata_filtrado = ipea.metadata()
-    metadata_filtrado = metadata_filtrado[metadata_filtrado['MEASURE'].str.contains("\\$")] # Filtra apenas indicadores com medidas monetárias
+    metadata_filtrado = metadata_economicos.copy()
     
     if not frequency:
         return metadata_filtrado  # Se nenhuma frequência for informada, retorna todos os metadados
     
     metadata_filtrado = metadata_filtrado[metadata_filtrado['FREQUENCY'] == frequency]  # Filtra por frequência especificada
     return metadata_filtrado.reset_index(drop=True)  # Reseta o índice do DataFrame filtrado
-
-def descrever_serie(serie: str) -> pd.DataFrame:
-    """
-    Retorna os metadados de uma série estatística específica.
-
-    Parâmetros:
-    -----------
-    serie : str
-        Código da série estatística.
-
-    Retorno:
-    --------
-    pd.DataFrame
-        DataFrame com os metadados da série estatística.
-    """
-    metadata = ipea.metadata()
-    serie_metadata = metadata[metadata['CODE'] == serie]
-    
-    if serie_metadata.empty:
-        raise ValueError(f"Série '{serie}' não encontrada.")
-    
-    return serie_metadata.reset_index(drop=True)  # Reseta o índice do DataFrame filtrado
