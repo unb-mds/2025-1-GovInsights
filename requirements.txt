@@ -4,3 +4,4 @@ Requests==2.32.3
 streamlit==1.44.1
 ipeadatapy==0.1.9
 supabase==2.15.2
+together==1.5.8
