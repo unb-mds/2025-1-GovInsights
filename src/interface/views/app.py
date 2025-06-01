@@ -5,12 +5,7 @@ import random
 import pathlib
 import sys
 
-current_dir = pathlib.Path(__file__).parent.resolve()
-services_path = current_dir.parents[2] / "services"
-if str(services_path) not in sys.path:
-    sys.path.insert(0, str(services_path))
 
-from services import search 
 
 # Importações de páginas
 from alertas import alertas_page
@@ -95,7 +90,7 @@ def get_series_temporais():
 def get_valor_indicador(): return 23648
 def get_gauge_value(): return 65
 
-# Página principal (mantida do seu código original)
+# Página principal
 def main_page():
     # Cabeçalho
     st.markdown("""

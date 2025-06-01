@@ -1,0 +1,106 @@
+body, .stApp {
+    background-color: #0F1020; /*cor do fundo*/
+    font-family: 'Segoe UI', sans-serif;
+    color: #ffffff; /*tetxo do tipulo*/
+    opacity: 0.9; 
+}
+
+
+body, .stApp {
+    background-color: #0F1020;
+    font-family: 'Segoe UI', sans-serif;
+    color: #ffffff;
+    /* opacity: 0.9; */
+}
+
+/*  SIDEBAR  */
+section[data-testid="stSidebar"] {
+    background-color: #0C3248;
+    padding: 1.5rem 1rem;
+    border-right: 1px solid #0C3248;
+    opacity: 0.5; 
+    color: #ffffff !important;
+}
+
+
+
+/* Título da sidebar */
+section[data-testid="stSidebar"] h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff; /* cor do texto do sidebar */
+    margin-bottom: 2rem;
+    margin-top: -40px;
+    text-align: center; 
+}
+
+label, .stSelectbox label, .stCheckbox label {
+    color: white !important;
+    font-weight: 500;
+}
+
+/* pills filtros */
+button[kind="pills"]{
+    background-color: #0f1020;
+    color: #ffffff;
+}
+button[kind="pillsActivate"] {
+    background-color: #2BB17A !important;
+    color: #0F1020 !important;
+    border-radius: 20px !important;
+    border: 1px solid #2BB17A !important;
+    padding: 5px 10px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+button[kind="pills"]:hover {
+    background-color: #2BB17A !important;
+    color: #FFFFFF !important;
+}
+
+/* Botões da sidebar */
+button[kind="secondary"], .stButton > button {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.3rem 0;
+    background-color: #0F1020; /*cor dos botões*/
+    border: none;
+    border-radius: 10px;
+    color: #ffffff; /*escrita dos bottões*/
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+
+/*hover botões*/
+button[kind="secondary"]:hover, .stButton > button:hover {
+    background-color: #2BB17A;
+    color: #0F1020;
+}
+
+
+ /* Remove header invisível que deixa espaço */
+ header {
+    visibility: hidden;
+    height: 0px !important;
+    position: absolute;
+    top: 50px;
+} 
+
+h1.titulo {
+    font-size: 2.2rem;
+    padding: 1.2rem 2rem 0.5rem;
+    background-color: transparent;
+    border-bottom: 1px solid #ffffff;
+}
+
+.titulo-ipea {
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0;
+    text-align: left;
+}
+
