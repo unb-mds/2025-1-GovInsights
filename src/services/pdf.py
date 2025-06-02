@@ -4,7 +4,7 @@ import pandas as pd
 from xhtml2pdf import pisa
 import markdown
 
-def gerar_PDF(codSerie: str, dfSerie: pd.DataFrame, iaText: str):
+def gerar_pdf(codSerie: str, dfSerie: pd.DataFrame, iaText: str):
     """
     :arg codSerie: código da série do IPEA
     :arg dfSerie: dataframe da série do IPEA
