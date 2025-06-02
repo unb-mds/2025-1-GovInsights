@@ -50,6 +50,33 @@ if 'resultado_pesquisa' not in st.session_state:
 def change_page(page_name):
     st.session_state.current_page = page_name
 
+HEAD
+st.markdown("""
+    <style>
+        section[data-testid="stSidebar"] * {
+            color: #ffffff !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+
+# Estiliza o texto da sidebar
+st.markdown("""
+    <style>
+    /* Título do expander */
+    section[data-testid="stSidebar"] details summary {
+        color: white !important;
+        font-weight: 600;
+    }
+
+    /* Labels dos checkboxes */
+    section[data-testid="stSidebar"] label {
+        color: white !important;
+        font-weight: 500;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # Popover para pesquisa de séries estatísticas
 st.cache_data(ttl="2h")
 with st.sidebar:
