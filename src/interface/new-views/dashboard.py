@@ -12,6 +12,7 @@ from services.graph import plotar_grafico_periodo, calcular_percentual_aumento_p
 current_dir = Path(__file__).parent
 img_path = current_dir / "assets" / "img" / "Icon.png"
 
+
 # Configuração da página
 st.set_page_config(
     page_title="GovInsights",
@@ -45,6 +46,22 @@ if 'resultado_pesquisa' not in st.session_state:
 def change_page(page_name):
     st.session_state.current_page = page_name
 
+# Estiliza o texto da sidebar
+st.markdown("""
+    <style>
+    /* Título do expander */
+    section[data-testid="stSidebar"] details summary {
+        color: white !important;
+        font-weight: 600;
+    }
+
+    /* Labels dos checkboxes */
+    section[data-testid="stSidebar"] label {
+        color: white !important;
+        font-weight: 500;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # Popover para pesquisa de séries estatísticas
 st.cache_data(ttl="2h")

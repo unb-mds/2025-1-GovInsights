@@ -15,11 +15,19 @@ body, .stApp {
 
 /*  SIDEBAR  */
 section[data-testid="stSidebar"] {
-    background-color: #0C3248;
-    padding: 1.5rem 1rem;
-    border-right: 1px solid #0C3248;
-    opacity: 0.5; 
-    color: #ffffff !important;
+    background: rgba(10, 65, 97, 0.171); /* Levemente azul  translúcido */
+    backdrop-filter: blur(25px); /* Efeito de vidro */
+    -webkit-backdrop-filter: blur(12px); /* Safari support */
+    border-right: 1px solid rgba(255, 255, 255, 0.3); /* borda de divisão sutil */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* sombra leve */
+    border-radius: 0 20px 20px 0; /* arredondamento da borda direita */
+    transition: all 0.3s ease;
+}
+
+
+section[data-testid="stSidebar"] .block-container {
+    padding: 2rem 1rem;
+    color: white; /* ou ajuste conforme seu tema */
 }
 
 
@@ -99,7 +107,7 @@ h1.titulo {
 .titulo-ipea {
     color: #fff;
     font-size: 1.8rem;
-    font-weight: 700;
+    font-weight: 500;
     margin-bottom: 0;
     text-align: left;
 }
