@@ -2,7 +2,7 @@ from together import Together
 import pandas as pd
 import re
 
-def generateRelatory(codSerie: str, dataframe: pd.DataFrame):
+def gerar_relatorio(codSerie: str, dataframe: pd.DataFrame):
     """
     :arg codSerie: string contendo o código da série do IPEA
     :arg dataframe: dataframe contendo todos os dados da série do IPEA
