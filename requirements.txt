@@ -4,3 +4,6 @@ Requests==2.32.3
 streamlit==1.44.1
 ipeadatapy==0.1.9
 supabase==2.15.2
+matplotlib==3.10.3
+xhtml2pdf==0.2.17
+markdown==3.8
