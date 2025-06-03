@@ -112,3 +112,115 @@ h1.titulo {
     text-align: left;
 }
 
+/* Estilização do sidebar (expander e labels) */
+section[data-testid="stSidebar"] details summary {
+    color: white !important;
+    font-weight: 600;
+}
+
+section[data-testid="stSidebar"] label {
+    color: white !important;
+    font-weight: 500;
+}
+
+/* Cabeçalho da página */
+.header-ipea h3.titulo-ipea {
+    font-family: 'Inter Black', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    color: white;
+    margin: 0;
+}
+
+/* Estilo do header customizado da série */
+.custom-header {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    row-gap: 1px;
+    column-gap: 10px;
+    flex-wrap: wrap;
+    max-width: 1000px;
+}
+
+.custom-header h1 {
+    font-family: 'Inter Black', sans-serif;
+    font-size: 24px; 
+    font-weight: 900;
+    margin: 0 0 12px 0;
+    line-height: 22px;
+    word-break: break-word;
+    max-width: 1000px;
+    text-align: justify;
+}
+
+.indicator {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    margin: -16px 0 0 0;
+    /* A cor será definida dinamicamente via Streamlit */
+}
+
+.subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #ffffff;
+    display: block;
+    line-height: 18px;
+    margin: -8px 0 0 0;
+    max-width: 1000px;
+    text-align: justify;
+}
+
+.custom-divider {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 18px 0 0 0;
+}
+
+/* Painel lateral com explicação/resumo (à direita) */
+.painel {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 12px;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+}
+
+.painel h2.valor-indicador {
+    font-size: 32px;
+    font-weight: 700;
+    color: #2BB17A;
+}
+
+div[data-testid="stSidebar"] label,
+div[data-testid="stSidebar"] span {
+    color: white !important;
+    font-weight: 500 !important;
+}
+
+section[data-testid="stSidebar"] div[data-testid="stCheckbox"] > div > label > div:nth-child(2) {
+    color: white !important;
+    font-weight: 500 !important;
+}
+
+.custom-header-ipea {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #0F1020;
+    padding: 1rem 2rem;
+    z-index: 999;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.custom-header-ipea h3 {
+    margin: 0;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: left;
+}
