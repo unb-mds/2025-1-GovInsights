@@ -1,1 +1,32 @@
+bug/update-gitignore
+# Byte-compiled / optimized / DLL files
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.venv/
+env/
+.env/
+
+# Log files
+*.log
+
+# Editor files
+*.swp
+*.swo
+*.idea/
+*.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# macOS files
+.DS_Store
+
+#IntelliJ IDEA
+.idea/
+=======
+__pycache__/
+
