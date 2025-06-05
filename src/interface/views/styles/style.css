@@ -628,3 +628,47 @@ button.css-1emrehy.edgvbvh3 {
 .seta-baixo {
     margin-left: 8px;
 }
+
+/* style.css */
+div[data-baseweb="select"] {
+    background-color: #0f172a !important;
+    border-radius: 8px;
+    padding: 5px;
+    color: #f1f5f9 !important;
+    border: 1px solid #334155;
+}
+
+div[data-baseweb="select"]:hover {
+    border: 1px solid #38bdf8;
+}
+
+div[data-baseweb="select"] > div {
+    color: #f1f5f9 !important;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Placeholder */
+div[data-baseweb="select"] input {
+    color: #94a3b8 !important;
+}
+
+/* Dropdown menu */
+ul[role="listbox"] {
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+}
+
+/* Alert button */
+button[kind="secondary"] {
+    background-color: #0f172a !important;
+    color: white !important;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    padding: 0.5rem 1rem;
+}
+
+button[kind="secondary"]:hover {
+    background-color: #1e293b !important;
+    border-color: #38bdf8;
+}
