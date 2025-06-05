@@ -8,6 +8,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 from services.search import search
 from services.graph import plotar_grafico_periodo, calcular_percentual_aumento_por_periodo
+from alertas import alertas_page
 
 current_dir = Path(__file__).parent
 img_path = current_dir / "assets" / "img" / "Icon.png"
@@ -49,33 +50,6 @@ if 'resultado_pesquisa' not in st.session_state:
 # Função para mudar de página
 def change_page(page_name):
     st.session_state.current_page = page_name
-
-
-st.markdown("""
-    <style>
-        section[data-testid="stSidebar"] * {
-            color: #ffffff !important;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
-
-# Estiliza o texto da sidebar
-st.markdown("""
-    <style>
-    /* Título do expander */
-    section[data-testid="stSidebar"] details summary {
-        color: white !important;
-        font-weight: 600;
-    }
-
-    /* Labels dos checkboxes */
-    section[data-testid="stSidebar"] label {
-        color: white !important;
-        font-weight: 500;
-    }
-    </style>
-""", unsafe_allow_html=True)
 
 # Popover para pesquisa de séries estatísticas
 st.cache_data(ttl="2h")
@@ -147,7 +121,7 @@ def main_page():
     
     st.markdown("## ")
 
-    col3, col4 = st.columns([3, 2])
+    col3, col4 = st.columns([1, 1])
     with col3:
         if serie_selecionada:
             info_serie = ipea.describe(serie_selecionada)
@@ -164,14 +138,14 @@ def main_page():
             st.html(
                 f"""
                 <div style="display: flex; flex-direction: row; align-items: baseline; row-gap: 1px; column-gap: 10px; flex-wrap: wrap; max-width: 1000px;">
-                    <h1 style="font-size: 24px; font-weight: 900; margin: 0 0 12px 0; line-height: 22px; word-break: break-word; max-width: 1000px; text-align: justify;">
+                    <h1 style="font-size: 24px; font-weight: 900; margin: 0 0 12px 0; line-height: 22px; word-break: break-word; max-width: 1000px; text-align: justify; letter-spacing: 0.8px;">
                         {info_serie.iloc[0,0]}
                     </h1>
-                    <span style="font-size: 24px; color: {color_indicator}; font-weight: 900; margin: -16px 0 0 0;">
+                    <span style="font-size: 24px; color: {color_indicator}; font-weight: 900; margin: -16px 0 0 0; letter-spacing: 0.5px;">
                         {text_indicator}
                     </span>
                 </div>
-                <div style="font-size: 16px; color: #cfcfcf; display: block; line-height: 18px; margin: -8px 0 0 0; max-width: 1000px; text-align: justify;">
+                <div style="font-size: 16px; color: #cfcfcf; display: block; line-height: 18px; margin: -8px 0 0 0; max-width: 1000px; text-align: justify; letter-spacing: 0.4px;">
                     <b>{info_serie.iloc[1,0]}</b> · {info_serie.iloc[2,0]} · {info_serie.iloc[4,0]} · {info_serie.iloc[8,0]}
                 </div>
                 <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 18px 0 0 0;"/>
@@ -192,9 +166,15 @@ def main_page():
                 st.markdown('''#### Lógica ainda não implementada para séries com periodicidade diferente de diária.''')
 
         else:
-            st.markdown('''#### Nenhuma série estatística selecionada
-                        Por favor, utilize a pesquisa acima para encontrar uma série estatística.
-                        ''')
+            st.markdown("""
+                <div class="painel" style="border: 1px solid #2BB17A; background-color: #101120; padding: 16px; border-radius: 8px;">
+                    <h4 style="color: white; margin-bottom: 8px;">Selecione uma série para gerar o relatório</h4>
+                    <h4 style="color: white; margin-bottom: 8px;">Nenhuma série estatística selecionada</h4>
+                    <p style="color: #b0b0b0; font-size: 14px;">
+                        Por favor, utilize os filtros da barra lateral para encontrar uma série estatística.
+                    </p>
+                </div>
+            """, unsafe_allow_html=True)
     with col4:
         if serie_selecionada:
             texto_LLM = """
@@ -205,10 +185,13 @@ def main_page():
                 """
             st.markdown(texto_LLM, unsafe_allow_html=True)
         else:
-            st.markdown('''#### Selecione uma série para gerar o relatório''')
+            st.markdown('''#### ''') #MUDANÇA AQUI!
     if serie_selecionada:
         if st.button("Exportar Relatório"):
             change_page("exportacao")
 
 if st.session_state.current_page == "Dashboard":
     main_page()
+
+elif st.session_state.current_page == "Alertas":
+    alertas_page()
