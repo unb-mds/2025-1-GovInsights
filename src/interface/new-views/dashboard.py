@@ -50,7 +50,7 @@ if 'resultado_pesquisa' not in st.session_state:
 def change_page(page_name):
     st.session_state.current_page = page_name
 
-HEAD
+
 st.markdown("""
     <style>
         section[data-testid="stSidebar"] * {
