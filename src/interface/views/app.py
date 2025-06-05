@@ -3,11 +3,14 @@ import plotly.graph_objects as go
 import pandas as pd
 import random
 import pathlib
+import sys
 
-# Importações de suas páginas
+
+
+# Importações de páginas
 from alertas import alertas_page
 from configuracoes import configuracoes_page
-from relatorios import relatorios_page
+# from relatorios import relatorios_page
 from analises import analises_page
 from dados import dados_page
 from user import user_page
@@ -87,7 +90,7 @@ def get_series_temporais():
 def get_valor_indicador(): return 23648
 def get_gauge_value(): return 65
 
-# Página principal (mantida do seu código original)
+# Página principal
 def main_page():
     # Cabeçalho
     st.markdown("""
@@ -170,8 +173,8 @@ def main_page():
 if st.session_state.current_page == "Dashboard":
     main_page()
     
-elif st.session_state.current_page == "Relatórios":
-    relatorios_page()
+# elif st.session_state.current_page == "Relatórios":
+#     relatorios_page()
 elif st.session_state.current_page == "Alertas":
     alertas_page()
 elif st.session_state.current_page == "Análises inteligentes":
