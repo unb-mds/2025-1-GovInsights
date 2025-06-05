@@ -9,6 +9,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 from services.search import search
 from services.graph import plotar_grafico_periodo, calcular_percentual_aumento_por_periodo
 from alertas import alertas_page
+from app import landing_page
 
 current_dir = Path(__file__).parent
 img_path = current_dir / "assets" / "img" / "Icon.png"
@@ -104,8 +105,17 @@ with st.sidebar:
         format_func=lambda x: st.session_state['resultado_pesquisa'].loc[st.session_state['resultado_pesquisa']['CODE'] == x, 'NAME'].values[0],
         index=None
     )
+    # Botões de navegação
     if st.button("Alertas"):
         change_page("Alertas")
+    
+    if st.button("Início"):
+        change_page("Inicio")
+
+
+    if st.button("Dashboard"):
+        change_page("Dashboard")
+
 
 def main_page():
     # cabeçalho
@@ -195,3 +205,13 @@ if st.session_state.current_page == "Dashboard":
 
 elif st.session_state.current_page == "Alertas":
     alertas_page()
+
+
+
+elif st.session_state.current_page == "Alertas":
+    alertas_page()
+
+elif st.session_state.current_page == "Inicio":
+    landing_page()
+
+    

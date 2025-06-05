@@ -91,6 +91,19 @@ def plotar_grafico_periodo(codigo_serie, periodo):
     fig_pontos.update_layout(
         xaxis_title="Data",
         yaxis_title="Valor " + medida,
-        height=600
+        height=600,
+        plot_bgcolor="#072333",        # Cor de fundo do gráfico
+        paper_bgcolor="#072333",       # Cor de fundo do contêiner
+        font=dict(color="white"),      # Cor dos textos
+        xaxis=dict(
+            showgrid=False,
+            tickfont=dict(color="white"),
+            title_font=dict(color="white")
+        ),
+        yaxis=dict(
+            showgrid=False,
+            tickfont=dict(color="white"),
+            title_font=dict(color="white")
+        )
     )
     return fig_pontos

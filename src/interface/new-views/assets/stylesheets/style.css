@@ -224,3 +224,78 @@ section[data-testid="stSidebar"] div[data-testid="stCheckbox"] > div > label > d
     font-weight: 600;
     text-align: left;
 }
+
+
+/* Hero Section */
+.hero-text {
+    max-width: 90%;
+}
+
+.hero-text h1 {
+    font-size: 3em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.hero-text h3 {
+    color: #00dfa2;
+    margin-bottom: 20px;
+}
+
+.hero-text p {
+    color: #e0e0e0;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+}
+
+.btn {
+    background-color: #00DFA2;
+    color: #0B0D19;
+    padding: 12px 24px;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn:hover {
+    background-color: #00b488;
+    color: white;
+}
+
+
+/* Adiciona padding à esquerda para acomodar a sidebar */
+.main-content {
+    margin-left: 18rem; /* Aproximadamente a largura da sidebar */
+    transition: margin-left 0.3s ease;
+    padding: 2rem;
+}
+
+/* Navbar fixa */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 18rem; /* Também considera a sidebar */
+    width: calc(100% - 18rem);
+    background-color: #ffffff;
+    z-index: 999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-links a {
+    margin-left: 1rem;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
