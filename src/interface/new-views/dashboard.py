@@ -3,6 +3,7 @@ import streamlit as st
 import ipeadatapy as ipea
 import plotly.graph_objects as go
 from pathlib import Path
+import time
 import sys
 import os
 
@@ -17,10 +18,11 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 
 # importação de funções do backEnd
+from services import *
 from services.search import search
 from services.graph import plotar_grafico_periodo, calcular_percentual_aumento_por_periodo
-# from services.ia import gerar_relatorio
-# from services.pdf import gerar_pdf
+from services.ia import gerar_relatorio
+from services.pdf import gerar_pdf
 
 
 # Configuração da página
@@ -61,7 +63,14 @@ if 'resultado_pesquisa' not in st.session_state:
 def change_page(page_name):
     st.session_state.current_page = page_name
 
-# Popover para pesquisa de séries estatísticas
+def obter_dados_serie(codigo_serie):
+    """
+    Obtém a série estatística do IPEA para o código informado e os últimos 'Último anos' Último anos.
+    """
+    current_year = time.localtime().tm_year
+    return ipea.timeseries(codigo_serie, yearGreaterThan=current_year - 6)
+
+# sidebar de navegação
 st.cache_data(ttl="2h")
 with st.sidebar:
     st.title("Filtros")
@@ -117,19 +126,24 @@ with st.sidebar:
     if st.button("Alertas"):
         change_page("Alertas")
 
+    if st.button("Home"):
+        change_page("Dashboard")
+
+
 def main_page():
     # cabeçalho
-    col1, col2 = st.columns([1, 4])
+    col1, col2 = st.columns([1, 14])
     with col1:
         st.image(str(img_path), width=80)
     with col2:
         st.markdown("""
-        <div>
-            <h3>Gov Insights - Relatórios inteligentes IPEA</h3>
+        <div style="display: flex; align-items: left; height: 100%; justify-content: flex-start;">
+            <h3 style="margin-left: 10px;">
+                Gov Insights <br>
+                <p>Relatórios inteligentes IPEA</p>
+            </h3>
         </div>
         """, unsafe_allow_html=True)
-    
-    st.markdown("## ")
 
     col3, col4 = st.columns([4, 2])
     with col3:
@@ -186,19 +200,36 @@ def main_page():
                 </div>
             """, unsafe_allow_html=True)
     with col4:
+        response = None
         if serie_selecionada:
-            texto_LLM = """
-                <div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque urna mi, varius nec tincidunt sed.</p>
-                <h2></h2>
-                </div>
-                """
-            st.markdown(texto_LLM, unsafe_allow_html=True)
+            try:
+                dfSerie = obter_dados_serie(serie_selecionada)
+                if dfSerie.empty:
+                    st.error("Nenhum dado encontrado para a série informada")
+                else:
+                    st.subheader("Dados da série")
+                    with st.spinner("Gerando análise..."):
+                        response = gerar_relatorio(serie_selecionada, dfSerie)
+
+                    with open(gerar_pdf(codSerie=serie_selecionada, dfSerie=dfSerie, iaText=response), "rb") as file:
+                        pdf_bytes = file.read()
+
+                with st.container(height=600):
+                    st.markdown(response)
+
+            except Exception as e:
+                st.error(f"Erro ao buscar série para analise{e}")
+
         else:
             st.markdown('''#### ''') #MUDANÇA AQUI!
-    if serie_selecionada:
-        if st.button("Exportar Relatório"):
-            change_page("exportacao")
+    if response:
+        st.download_button(
+                        label="Exportar Relatório",
+                        data=pdf_bytes,
+                        file_name="relatorio.pdf",
+                        mime="application/pdf"
+                    )
+
 
 if st.session_state.current_page == "Dashboard":
     main_page()

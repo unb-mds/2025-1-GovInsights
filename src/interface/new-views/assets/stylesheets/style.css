@@ -224,3 +224,44 @@ section[data-testid="stSidebar"] div[data-testid="stCheckbox"] > div > label > d
     font-weight: 600;
     text-align: left;
 }
+
+/* Navbar Container */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #2C3E50; /* Cor de fundo escura */
+    border-bottom: 2px solid #3498DB; /* Linha abaixo do navbar */
+    color: white;
+}
+
+/* Logo Alignment */
+.nav-left {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.logo-img {
+    height: 40px; /* Ajuste o tamanho da logo */
+    margin-right: 10px; /* Espaço entre a logo e o nome */
+}
+
+/* Nome do Logo */
+h3 {
+    font-size: 24px; 
+    font-weight: bold;
+    margin-left: 10px;
+    color: #ffffff;  
+    text-align: left;
+}
+
+.st-emotion-cache-t1wise {
+    width: 100%;
+    padding: 1rem;
+    max-width: initial;
+    min-width: auto;
+    box-sizing: border-box;
+}
+

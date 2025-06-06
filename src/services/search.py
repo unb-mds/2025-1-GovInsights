@@ -1,6 +1,7 @@
 import pandas as pd
 import ipeadatapy as ipea
 import plotly.express as px
+import time
 
 metadata_economicos = ipea.metadata()
 metadata_economicos = metadata_economicos[metadata_economicos['MEASURE'].str.contains("\\$")]  # Filtra apenas indicadores com medidas monetárias
@@ -120,3 +121,5 @@ def get_by_frequency(frequency: str) -> pd.DataFrame:
     
     metadata_filtrado = metadata_filtrado[metadata_filtrado['FREQUENCY'] == frequency]  # Filtra por frequência especificada
     return metadata_filtrado.reset_index(drop=True)  # Reseta o índice do DataFrame filtrado
+
+
