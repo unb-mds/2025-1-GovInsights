@@ -104,8 +104,16 @@ with st.sidebar:
         format_func=lambda x: st.session_state['resultado_pesquisa'].loc[st.session_state['resultado_pesquisa']['CODE'] == x, 'NAME'].values[0],
         index=None
     )
+
+    # Botões de navegação
     if st.button("Alertas"):
         change_page("Alertas")
+    
+
+
+    if st.button("Dashboard"):
+        change_page("Dashboard")
+
 
 def main_page():
     # cabeçalho
@@ -193,5 +201,7 @@ def main_page():
 if st.session_state.current_page == "Dashboard":
     main_page()
 
+
 elif st.session_state.current_page == "Alertas":
     alertas_page()
+
