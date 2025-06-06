@@ -64,7 +64,7 @@ button[kind="secondary"], .stButton > button {
     width: 100%;
     padding: 0.8rem;
     margin: 0.3rem 0;
-    background-color: #013870; /*NOVA COR AQUI!!*/
+    background-color: #2BB17A; /*NOVA COR AQUI!!*/
     border: none;
     border-radius: 10px;
     color: #ffffff;
@@ -73,7 +73,7 @@ button[kind="secondary"], .stButton > button {
 }
 
 button[kind="secondary"]:hover, .stButton > button:hover {
-    background-color: #2BB17A;
+    background-color: #289366;
     color: #0F1020;
 }
 
