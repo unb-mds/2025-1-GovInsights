@@ -1,17 +1,27 @@
+# importação de dependências
 import streamlit as st 
 import ipeadatapy as ipea
 import plotly.graph_objects as go
 from pathlib import Path
-
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
-from services.search import search
-from services.graph import plotar_grafico_periodo, calcular_percentual_aumento_por_periodo
+
+
+# Importação de tela de alerta
 from alertas import alertas_page
 
+# correção de diretorios 
 current_dir = Path(__file__).parent
 img_path = current_dir / "assets" / "img" / "Icon.png"
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+
+
+# importação de funções do backEnd
+from services.search import search
+from services.graph import plotar_grafico_periodo, calcular_percentual_aumento_por_periodo
+# from services.ia import gerar_relatorio
+# from services.pdf import gerar_pdf
+
 
 # Configuração da página
 st.set_page_config(
@@ -121,7 +131,7 @@ def main_page():
     
     st.markdown("## ")
 
-    col3, col4 = st.columns([1, 1])
+    col3, col4 = st.columns([4, 2])
     with col3:
         if serie_selecionada:
             info_serie = ipea.describe(serie_selecionada)
