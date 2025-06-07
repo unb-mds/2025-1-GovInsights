@@ -2,7 +2,6 @@ import ipeadatapy as ipea
 import time
 import pandas as pd
 import plotly.graph_objects as go
-import streamlit as st
 
 class timeSeries:
     """
@@ -15,10 +14,11 @@ class timeSeries:
     - graficos: Dicionário com os gráficos de cada período.
     """
     
-    def __init__(self, codigo_serie):
+    def __init__(self, codigo_serie: str, frequencia: str):
         self.codigo_serie = codigo_serie
+        self.frequencia = frequencia
         self.dados_serie = self.__obter_dados_serie(codigo_serie)
-        self.__filtrar_dados_periodo_diario()
+        self.__filtrar_dados_periodo()
         self.percentuais = self.__calcular_percentual_aumento_por_periodo()
         self.graficos = self.__plotar_graficos_periodos()
         self.descricao = self.__describe()
@@ -30,27 +30,52 @@ class timeSeries:
         print(f"graph.py: Obtendo dados da série: {codigo_serie}")
         try:
             current_year = time.localtime().tm_year
-            dados_serie = ipea.timeseries(codigo_serie, yearGreaterThan=current_year - 6)
+            dados_serie = ipea.timeseries(codigo_serie, yearGreaterThan=current_year - 21)
             return dados_serie
         except Exception as e:
             raise ValueError(f"Erro ao obter dados da série: {codigo_serie}") from e
     
-    def __filtrar_dados_periodo_diario(self):
+    def __filtrar_dados_periodo(self):
         """
         Filtra o DataFrame para retornar dados dos períodos:
         semana, mês, 6 meses, ano, 3 anos e 5 anos e armazena em um dicionário.
         """
         print("graph.py: Processando dados da série por período...")
-        self.dados_serie["RAW DATE"] = pd.to_datetime(self.dados_serie["RAW DATE"])
+        self.dados_serie["RAW DATE"] = pd.to_datetime(self.dados_serie["RAW DATE"], utc=True)
         ultima_data = self.dados_serie["RAW DATE"].max()
-        self.dados_periodos = {
-            "Última semana": self.dados_serie[self.dados_serie["RAW DATE"] >= (ultima_data - pd.Timedelta(days=7))],
-            "Último mês": self.dados_serie[self.dados_serie["RAW DATE"] >= (ultima_data - pd.DateOffset(months=1))],
-            "Últimos 6 meses": self.dados_serie[self.dados_serie["RAW DATE"] >= (ultima_data - pd.DateOffset(months=6))],
-            "Último ano": self.dados_serie[self.dados_serie["RAW DATE"] >= (ultima_data - pd.DateOffset(years=1))],
-            "Últimos 3 anos": self.dados_serie[self.dados_serie["RAW DATE"] >= (ultima_data - pd.DateOffset(years=3))],
-            "Últimos 5 anos": self.dados_serie
-    }
+        if self.frequencia == "Diária":
+            self.dados_periodos = {
+                "Última semana": self.dados_serie[self.dados_serie["RAW DATE"] >= (ultima_data - pd.Timedelta(days=7))],
+                "Último mês": self.dados_serie[self.dados_serie["RAW DATE"] >= (ultima_data - pd.DateOffset(months=1))],
+                "Últimos 6 meses": self.dados_serie[self.dados_serie["RAW DATE"] >= (ultima_data - pd.DateOffset(months=6))],
+                "Último ano": self.dados_serie[self.dados_serie["RAW DATE"] >= (ultima_data - pd.DateOffset(years=1))],
+                "Últimos 3 anos": self.dados_serie[self.dados_serie["RAW DATE"] >= (ultima_data - pd.DateOffset(years=3))],
+                "Últimos 5 anos": self.dados_serie[self.dados_serie["RAW DATE"] >= (ultima_data - pd.DateOffset(years=5))]
+            }
+        elif self.frequencia == "Mensal":
+            self.dados_periodos = {
+                "Últimos 6 meses": self.dados_serie[self.dados_serie["RAW DATE"] > (ultima_data - pd.DateOffset(months=6))],
+                "Último ano": self.dados_serie[self.dados_serie["RAW DATE"] > (ultima_data - pd.DateOffset(years=1))],
+                "Últimos 2 anos": self.dados_serie[self.dados_serie["RAW DATE"] > (ultima_data - pd.DateOffset(years=2))],
+                "Últimos 3 anos": self.dados_serie[self.dados_serie["RAW DATE"] > (ultima_data - pd.DateOffset(years=3))],
+                "Últimos 5 anos": self.dados_serie[self.dados_serie["RAW DATE"] > (ultima_data - pd.DateOffset(years=5))],
+                "Últimos 10 anos": self.dados_serie[self.dados_serie["RAW DATE"] > (ultima_data - pd.DateOffset(years=10))]
+            }
+        elif self.frequencia == "Trimestral":
+            self.dados_periodos = {
+                "Últimos 6 meses": self.dados_serie[self.dados_serie["RAW DATE"] > (ultima_data - pd.DateOffset(months=6))],
+                "Último ano": self.dados_serie[self.dados_serie["RAW DATE"] > (ultima_data - pd.DateOffset(years=1))],
+                "Últimos 2 anos": self.dados_serie[self.dados_serie["RAW DATE"] > (ultima_data - pd.DateOffset(years=2))],
+                "Últimos 3 anos": self.dados_serie[self.dados_serie["RAW DATE"] > (ultima_data - pd.DateOffset(years=3))],
+                "Últimos 5 anos": self.dados_serie[self.dados_serie["RAW DATE"] > (ultima_data - pd.DateOffset(years=5))],
+                "Últimos 10 anos": self.dados_serie[self.dados_serie["RAW DATE"] > (ultima_data - pd.DateOffset(years=10))]
+            }
+        elif self.frequencia == "Anual":
+            self.dados_periodos = {
+                "Últimos 5 anos": self.dados_serie[self.dados_serie["RAW DATE"] > (ultima_data - pd.DateOffset(years=5))],
+                "Últimos 10 anos": self.dados_serie[self.dados_serie["RAW DATE"] > (ultima_data - pd.DateOffset(years=10))],
+                "Últimos 20 anos": self.dados_serie[self.dados_serie["RAW DATE"] > (ultima_data - pd.DateOffset(years=20))]
+            }
         
     def __calcular_percentual_aumento_por_periodo(self):
         """

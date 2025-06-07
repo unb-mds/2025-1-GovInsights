@@ -45,24 +45,19 @@ if 'frequencia' not in st.session_state:
     st.session_state['frequencia'] = None
 if 'resultado_pesquisa' not in st.session_state:
     st.session_state['resultado_pesquisa'] = []
-if 'periodo_analise' not in st.session_state:
-    if 'frequencia' in st.session_state and st.session_state['frequencia'] == "Diária":
-        st.session_state['periodo_analise'] = 'Última semana'
+
 
 # Função para mudar de página
 def change_page(page_name):
     st.session_state.current_page = page_name
 
-# Popover para pesquisa de séries estatísticas
-st.cache_data(ttl="2h")
+# Sidebar para pesquisa de séries estatísticas
 with st.sidebar:
     st.title("Filtros")
-    with st.expander(label="Filtros de pesquisa", expanded=False):
-        filtrar_por_frequencia = st.checkbox(label="Filtrar por periodicidade")
-        frequencia = st.pills(
+    with st.expander(label="Filtros de pesquisa", expanded=True):
+        st.pills(
             label="Selecione a frequência da série",
-            options=["Diária", "Mensal", "Trimestral", "Anual", "Decenal"],
-            disabled=not filtrar_por_frequencia,
+            options=["Diária", "Mensal", "Trimestral", "Anual"],
             key="frequencia",
             label_visibility="collapsed",
             default=None
@@ -90,10 +85,14 @@ with st.sidebar:
             label_visibility="collapsed",
         )
 
+
     # Atualiza o resultado da pesquisa sempre que filtros mudam
     orgaos_selecionados = st.session_state['orgaos'] if filtrar_por_orgao else []
     temas_selecionados = st.session_state['temas'] if filtrar_por_tema else []
-    frequencia_selecionada = st.session_state['frequencia'] if filtrar_por_frequencia else []
+    frequencia_selecionada = st.session_state['frequencia']
+    if not frequencia_selecionada:
+        st.warning("Selecione a frequência da série para continuar.")
+        st.stop()
     st.session_state['resultado_pesquisa'] = search(orgaos_selecionados, temas_selecionados, frequencia_selecionada)
     
     st.markdown("#### Selecione ou pesquise uma série estatística")
@@ -109,11 +108,25 @@ with st.sidebar:
     if st.button("Alertas"):
         change_page("Alertas")
 
-def obter_obj_serie(serie_selecionada):
+def obter_obj_serie(serie_selecionada: str, frequencia: str):
                 if 'serie_obj' not in st.session_state or st.session_state.get('last_serie_selecionada') != serie_selecionada:
-                    st.session_state['serie_obj'] = timeSeries(serie_selecionada)
+                    st.session_state['serie_obj'] = timeSeries(serie_selecionada, st.session_state['frequencia'])
                     st.session_state['last_serie_selecionada'] = serie_selecionada
                 return st.session_state['serie_obj']
+
+def criar_pills_periodo_analise(frequencia):
+    freq_options = {
+        "Diária": ['Última semana', 'Último mês', 'Últimos 6 meses', 'Último ano', 'Últimos 3 anos', 'Últimos 5 anos'],
+        "Mensal": ['Últimos 6 meses', 'Último ano', 'Últimos 2 anos', 'Últimos 3 anos', 'Últimos 5 anos', 'Últimos 10 anos'],
+        "Trimestral": ['Últimos 6 meses', 'Último ano', 'Últimos 2 anos', 'Últimos 3 anos', 'Últimos 5 anos', 'Últimos 10 anos'],
+        "Anual": ['Últimos 5 anos', 'Últimos 10 anos', 'Últimos 20 anos']
+    }
+    st.pills(
+        label="Período de análise",
+        options=freq_options.get(frequencia),
+        key="periodo_analise",
+        default=freq_options.get(frequencia)[0],
+    )
 
 def main_page():
     # cabeçalho
@@ -132,8 +145,9 @@ def main_page():
     col3, col4 = st.columns([1, 1])
     with col3:
         if serie_selecionada: 
-            serie = obter_obj_serie(serie_selecionada)
+            serie = obter_obj_serie(serie_selecionada, st.session_state['frequencia'])
             info_serie = serie.descricao
+            criar_pills_periodo_analise(st.session_state['frequencia'])
             color_indicator = "#2BB17A" if serie.percentuais[st.session_state['periodo_analise']] >= 0 else "#f0423c"
             text_indicator = ("↑ " if serie.percentuais[st.session_state['periodo_analise']] >= 0 else "↓ ") + str(serie.percentuais[st.session_state['periodo_analise']]) + "%"
             st.html(
@@ -147,30 +161,19 @@ def main_page():
                     </span>
                 </div>
                 <div style="font-size: 16px; color: #cfcfcf; display: block; line-height: 18px; margin: -8px 0 0 0; max-width: 1000px; text-align: justify; letter-spacing: 0.4px;">
-                    <b>{info_serie.iloc[1,0]}</b> · {info_serie.iloc[2,0]} · {info_serie.iloc[4,0]} · {info_serie.iloc[8,0]}
+                    <b>{info_serie.iloc[1,0]}</b> · {ipea.themes(theme_id=serie.descricao.iloc[3,0]).iloc[0,1]} · {info_serie.iloc[4,0]} · {info_serie.iloc[8,0]}
                 </div>
                 <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 18px 0 0 0;"/>
                 """
             )
-            if info_serie.iloc[8,0] == "Diária":
-                st.pills(
-                    label="Período de análise",
-                    options=['Última semana', 'Último mês', 'Últimos 6 meses', 'Último ano', 'Últimos 3 anos', 'Últimos 5 anos'],
-                    key="periodo_analise",
-                    default='Última semana',
-                )
-                st.plotly_chart(
-                    serie.graficos[st.session_state['periodo_analise']],
-                    use_container_width=True,
-                )
-            else:
-                st.markdown('''#### Lógica ainda não implementada para séries com periodicidade diferente de diária.''')
-
+            st.plotly_chart(
+                serie.graficos[st.session_state['periodo_analise']],
+                use_container_width=True,
+            )
         else:
             st.markdown("""
-                <div class="painel" style="border: 1px solid #2BB17A; background-color: #101120; padding: 16px; border-radius: 8px;">
-                    <h4 style="color: white; margin-bottom: 8px;">Selecione uma série para gerar o relatório</h4>
-                    <h4 style="color: white; margin-bottom: 8px;">Nenhuma série estatística selecionada</h4>
+                <div class="painel" style="border: 1px solid #2BB17A; background-color: #101120; padding: 16px; border-radius: 8px; line-height: 15px">
+                    <h4 style="color: white; margin-bottom: 8px;">Nenhuma série estatística selecionada.</h4>
                     <p style="color: #b0b0b0; font-size: 14px;">
                         Por favor, utilize os filtros da barra lateral para encontrar uma série estatística.
                     </p>
