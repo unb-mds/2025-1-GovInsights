@@ -41,6 +41,7 @@ section[data-testid="stSidebar"] div[data-testid="stCheckbox"] > div > label > d
 button[kind="pills"] {
     background-color: #0f1020;
     color: #ffffff;
+
 }
 
 button[kind="pillsActivate"] {
@@ -61,16 +62,19 @@ button[kind="pills"]:hover {
 
 /* Botões */
 button[kind="secondary"], .stButton > button {
-    width: 100%;
-    padding: 0.8rem;
-    margin: 0.3rem 0;
-    background-color: #2BB17A; /*NOVA COR AQUI!!*/
+    width: 250px; /* largura fixa */
+    padding: 1.2rem 2rem; /* altura e largura interna maiores */
+    margin: 0.5rem auto; /* espaçamento e centralização */
+    background-color: #2BB17A;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     color: #ffffff;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 1.2rem; /* TAMANHO DO TEXTO */
     transition: 0.3s;
+    display: block;
 }
+
 
 button[kind="secondary"]:hover, .stButton > button:hover {
     background-color: #289366;
@@ -217,6 +221,7 @@ h1.titulo {
     padding: 12px 24px;
     font-weight: bold;
     border-radius: 8px;
+    width: 250px; 
     text-decoration: none;
     display: inline-block;
 }

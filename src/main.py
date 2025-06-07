@@ -48,6 +48,10 @@ with col2:
 
 st.markdown("<hr style='border: 1px solid #00DFA2;'>", unsafe_allow_html=True)
 
+
+
+
+
 # Hero Section
 col_text, col_img = st.columns([3, 2])
 with col_text:
@@ -76,6 +80,9 @@ with col_img:
         st.image(str(ilustra_path), use_container_width=True)
     else:
         st.warning(f"Imagem de ilustração não encontrada: {ilustra_path}")
+
+
+
 
 
 
@@ -112,3 +119,38 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
+
+
+# Seção: Sobre o Projeto
+st.markdown("<br><br>", unsafe_allow_html=True)
+
+col_img, col_text = st.columns([1, 2])
+
+with col_img:
+    if base_img_path.exists():
+        st.image(str(base_img_path), use_container_width=True)
+    else:
+        st.warning(f"Imagem de ilustração do projeto não encontrada: {base_img_path}")
+
+with col_text:
+    st.markdown("""
+    <div style='margin-top: 100px; line-height: 1.6;'>
+        <h1 style='color: white; font-size: 140px;'>Sobre o projeto</h1>
+        <p style='color: #00DFA2;font-size: 40px'>Democratizar o acesso à análise econômica e de dados públicos.</p>
+        <p style='color: #00DFA2; max-width: 900px; font-size: 40px'>
+            Unimos inteligência artificial e design acessível para que qualquer pessoa possa entender e utilizar informações financeiras de forma prática e eficiente.
+        </p>
+        <a href='#' style='background-color: #0F3D3E; padding: 10px 20px; color: white; border-radius: 5px;
+    </div>
+    <br>
+    <br>
+    <br>           
+    """, unsafe_allow_html=True)
+    with st.container():
+        with st.container():
+            col1, _ = st.columns([1, 5])
+            with col1:
+                with st.container():
+                    if st.button("Como contribuir", key="btn_contribuir", help="Clique para saber como contribuir"):
+                        st.session_state.page = "contribuir"  #depois ajeito ####################################################
+    
