@@ -14,6 +14,8 @@ current_dir = Path(__file__).parent
 logo_path = current_dir / "interface" / "new-views" / "assets" / "img" / "Icon.png"
 ilustra_path = current_dir / "interface" / "new-views" / "assets" / "img" / "home_ilustracao.png"
 main_style_path = current_dir / "interface" / "new-views" / "assets" /"stylesheets" / "mainStyle.css"
+base_img_path = current_dir / "interface" / "new-views" / "assets" / "img" / "sobre_ilustracao.png"
+
 
 
 # Estilo principal
@@ -74,3 +76,39 @@ with col_img:
         st.image(str(ilustra_path), use_container_width=True)
     else:
         st.warning(f"Imagem de ilustração não encontrada: {ilustra_path}")
+
+
+
+# Seção: Como Funciona
+st.markdown("""
+<div style='margin-top: -50px;'>
+    <h2 style='text-align: center; color: white;'>COMO FUNCIONA</h2>
+    <p style='text-align: center; color: #00DFA2;'>Como a plataforma transforma dados em decisões</p>
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+
+<div class="container">
+    <div class="card">
+        <h3>📡</h3>
+        <h3> Coleta de Dados</h3>
+        <p>Integração direta com a API do IPEA garante atualização constante.</p>
+    </div>
+    <div class="card">
+        <h3>📊</h3>
+        <h3>Visualização Intuitiva</h3>
+        <p>Dashboards interativos com filtros por setor e período.</p>
+    </div>
+    <div class="card">
+        <h3>🧠</h3>
+        <h3> Análise com IA</h3>
+        <p>Modelos NLP (Mistral-7B) geram resumos e relatórios automaticamente.</p>
+    </div>
+    <div class="card">
+        <h3>🚨</h3>
+        <h3> Alertas Inteligentes</h3>
+        <p>Notificações automáticas sobre mudanças e tendências relevantes.</p>
+    </div>
+</div>
+""", unsafe_allow_html=True)
