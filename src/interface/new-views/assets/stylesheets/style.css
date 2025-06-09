@@ -195,6 +195,7 @@ section[data-testid="stSidebar"] label {
     color: #2BB17A;
 }
 
+
 div[data-testid="stSidebar"] label,
 div[data-testid="stSidebar"] span {
     color: white !important;
@@ -265,3 +266,6 @@ h3 {
     box-sizing: border-box;
 }
 
+div[data-testid="stMarkdownContainer"] {
+    text-align: justify;
+}
