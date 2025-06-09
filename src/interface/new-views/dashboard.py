@@ -3,7 +3,6 @@ import streamlit as st
 import ipeadatapy as ipea
 import plotly.graph_objects as go
 from pathlib import Path
-import time
 import sys
 import os
 
@@ -20,7 +19,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 # importação de funções do backEnd
 from services import *
 from services.search import search
-from services.graph import plotar_grafico_periodo, calcular_percentual_aumento_por_periodo
+from services.graph import timeSeries, obter_dados_serie
 from services.ia import gerar_relatorio
 from services.pdf import gerar_pdf
 
@@ -33,8 +32,8 @@ st.set_page_config(
 )
 
 current_dir = Path(__file__).parent
-
 css_path = current_dir / "assets" / "stylesheets" / "style.css"
+
 if css_path.exists():
     with open(css_path) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
@@ -42,7 +41,6 @@ else:
     st.warning("Arquivo CSS não encontrado em: " + str(css_path))
 
 current_dir = Path(__file__).parent
-img_path = current_dir / "assets" / "img" / "Icon.png"
 
 
 # Estado da sessão para controlar a página atual
@@ -58,17 +56,14 @@ if 'frequencia' not in st.session_state:
     st.session_state['frequencia'] = None
 if 'resultado_pesquisa' not in st.session_state:
     st.session_state['resultado_pesquisa'] = []
+if 'periodo_analise' not in st.session_state:
+    if 'frequencia' in st.session_state and st.session_state['frequencia'] == "Diária":
+        st.session_state['periodo_analise'] = 'Última semana'
 
 # Função para mudar de página
 def change_page(page_name):
     st.session_state.current_page = page_name
 
-def obter_dados_serie(codigo_serie):
-    """
-    Obtém a série estatística do IPEA para o código informado e os últimos 'Último anos' Último anos.
-    """
-    current_year = time.localtime().tm_year
-    return ipea.timeseries(codigo_serie, yearGreaterThan=current_year - 6)
 
 # sidebar de navegação
 st.cache_data(ttl="2h")
@@ -78,7 +73,7 @@ with st.sidebar:
         filtrar_por_frequencia = st.checkbox(label="Filtrar por periodicidade")
         frequencia = st.pills(
             label="Selecione a frequência da série",
-            options=["Diária", "Mensal", "Trimestral", "Anual", "Decenal"],
+            options=["Diária", "Mensal", "Trimestral", "Anual"],
             disabled=not filtrar_por_frequencia,
             key="frequencia",
             label_visibility="collapsed",
@@ -129,6 +124,11 @@ with st.sidebar:
     if st.button("Home"):
         change_page("Dashboard")
 
+def obter_obj_serie(serie_selecionada):
+    if 'serie_obj' not in st.session_state or st.session_state.get('last_serie_selecionada') != serie_selecionada:
+        st.session_state['serie_obj'] = timeSeries(serie_selecionada)
+        st.session_state['last_serie_selecionada'] = serie_selecionada
+    return st.session_state['serie_obj']
 
 def main_page():
     # cabeçalho
@@ -147,18 +147,11 @@ def main_page():
 
     col3, col4 = st.columns([4, 2])
     with col3:
-        if serie_selecionada:
-            info_serie = ipea.describe(serie_selecionada)
-            percentage = calcular_percentual_aumento_por_periodo(serie_selecionada)
-            periodos = ['Última semana', 'Último mês', 'Últimos 6 meses', 'Último ano', 'Últimos 3 anos', 'Últimos 5 anos']
-            periodo_selecionado = st.session_state.get('periodo_analise', periodos[0])
-            try:
-                idx = periodos.index(periodo_selecionado)
-            except ValueError:
-                idx = 0
-
-            color_indicator = "#2BB17A" if percentage[idx] >= 0 else "#f0423c"
-            text_indicator = ("↑ " if percentage[idx] >= 0 else "↓ ") + str(percentage[idx]) + "%"
+        if serie_selecionada: 
+            serie = obter_obj_serie(serie_selecionada)
+            info_serie = serie.descricao
+            color_indicator = "#2BB17A" if serie.percentuais[st.session_state['periodo_analise']] >= 0 else "#f0423c"
+            text_indicator = ("↑ " if serie.percentuais[st.session_state['periodo_analise']] >= 0 else "↓ ") + str(serie.percentuais[st.session_state['periodo_analise']]) + "%"
             st.html(
                 f"""
                 <div style="display: flex; flex-direction: row; align-items: baseline; row-gap: 1px; column-gap: 10px; flex-wrap: wrap; max-width: 1000px;">
@@ -176,14 +169,14 @@ def main_page():
                 """
             )
             if info_serie.iloc[8,0] == "Diária":
-                periodo_selecionado = st.pills(
+                st.pills(
                     label="Período de análise",
                     options=['Última semana', 'Último mês', 'Últimos 6 meses', 'Último ano', 'Últimos 3 anos', 'Últimos 5 anos'],
                     key="periodo_analise",
-                    default=periodos[0],
+                    default='Última semana',
                 )
                 st.plotly_chart(
-                    plotar_grafico_periodo(serie_selecionada, periodo_selecionado),
+                    serie.graficos[st.session_state['periodo_analise']],
                     use_container_width=True,
                 )
             else:
