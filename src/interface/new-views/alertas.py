@@ -7,7 +7,7 @@ import os
 
 current_dir = Path(__file__).parent
 img_path = current_dir / "assets" / "img" / "Icon.png"
-css_path = current_dir / "assets" / "stylesheets" / "style.css"
+css_path = current_dir / "assets" / "stylesheets" / "style2.css"
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
