@@ -105,8 +105,16 @@ with st.sidebar:
         format_func=lambda x: st.session_state['resultado_pesquisa'].loc[st.session_state['resultado_pesquisa']['CODE'] == x, 'NAME'].values[0],
         index=None
     )
+
+    # Botões de navegação
     if st.button("Alertas"):
         change_page("Alertas")
+    
+
+
+    if st.button("Dashboard"):
+        change_page("Dashboard")
+
 
 def obter_obj_serie(serie_selecionada: str, frequencia: str):
                 if 'serie_obj' not in st.session_state or st.session_state.get('last_serie_selecionada') != serie_selecionada:
@@ -197,5 +205,7 @@ def main_page():
 if st.session_state.current_page == "Dashboard":
     main_page()
 
+
 elif st.session_state.current_page == "Alertas":
     alertas_page()
+
