@@ -5,7 +5,7 @@ from pathlib import Path
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
-from services.search import search
+from services.search import SearchService
 from services.graph import timeSeries
 from alertas import alertas_page
 
@@ -46,6 +46,9 @@ if 'frequencia' not in st.session_state:
 if 'resultado_pesquisa' not in st.session_state:
     st.session_state['resultado_pesquisa'] = []
 
+if 'pesquisa_service' not in st.session_state:
+    st.session_state['pesquisa_service'] = SearchService()
+pesquisa_service = st.session_state['pesquisa_service']
 
 # Função para mudar de página
 def change_page(page_name):
@@ -63,54 +66,64 @@ with st.sidebar:
             default=None
         )
         
-        filtrar_por_orgao = st.checkbox(label="Filtrar por órgão responsável")
+        def reset_orgaos():
+            st.session_state['orgaos'] = []
+
+        filtrar_por_orgao = st.checkbox(
+            label="Filtrar por órgão responsável",
+            on_change=reset_orgaos if st.session_state.get('filtrar_por_orgao', False) else None,
+            key="filtrar_por_orgao"
+        )
+
         orgaos = st.multiselect(
             label="Selecione os órgãos",
-            options=ipea.sources(),
-            disabled=not filtrar_por_orgao,
+            options=pesquisa_service.get_available_sources(st.session_state['frequencia'], st.session_state['temas']),
+            disabled=not st.session_state['filtrar_por_orgao'],
             placeholder="Ex.: Bacen, IBGE, IPEA, etc...",
             key="orgaos",
             label_visibility="collapsed",
         )
 
-        filtrar_por_tema = st.checkbox(label="Filtrar por tema")
-        df_temas = ipea.themes()
+        def reset_temas():
+            st.session_state['temas'] = []
+        filtrar_por_tema = st.checkbox(
+            label="Filtrar por tema",
+            on_change=reset_temas if st.session_state.get('filtrar_por_tema', False) else None,
+            key="filtrar_por_tema"
+        )
         temas = st.multiselect(
             label="Selecione os temas",
-            options=df_temas['ID'],
+            options=pesquisa_service.get_available_themes(st.session_state['frequencia'], st.session_state['orgaos']),  
             disabled=not filtrar_por_tema,
-            format_func=lambda x: df_temas.loc[df_temas['ID'] == x, 'NAME'].values[0],
             placeholder="Ex.: Comércio e Vendas, Finanças Públicas, etc...",
             key="temas",
+            format_func=lambda x: x['THEME NAME'],
             label_visibility="collapsed",
         )
-
-
-    # Atualiza o resultado da pesquisa sempre que filtros mudam
-    orgaos_selecionados = st.session_state['orgaos'] if filtrar_por_orgao else []
-    temas_selecionados = st.session_state['temas'] if filtrar_por_tema else []
+        
     frequencia_selecionada = st.session_state['frequencia']
+    serie_selecionada = st.session_state.get('serie_estatistica', None)
     if not frequencia_selecionada:
         st.warning("Selecione a frequência da série para continuar.")
         st.stop()
-    st.session_state['resultado_pesquisa'] = search(orgaos_selecionados, temas_selecionados, frequencia_selecionada)
-    
-    st.markdown("#### Selecione ou pesquise uma série estatística")
-    serie_selecionada = st.selectbox(
-        label="Selecionar série",
-        options=st.session_state['resultado_pesquisa'],
-        key="serie_estatistica",
-        label_visibility="collapsed",
-        placeholder="Selecione ou pesquise uma série estatística...",
-        format_func=lambda x: st.session_state['resultado_pesquisa'].loc[st.session_state['resultado_pesquisa']['CODE'] == x, 'NAME'].values[0],
-        index=None
-    )
+    if st.button("Pesquisar"):
+        st.session_state['resultado_pesquisa'] = pesquisa_service.search(st.session_state['frequencia'], st.session_state['orgaos'], st.session_state['temas'])
+        st.success(f"{len(st.session_state['resultado_pesquisa'])} séries estatísticas encontradas.")
+        st.markdown("#### Selecione ou pesquise uma série estatística")
+        serie_selecionada = st.selectbox(
+            label="Selecionar série",
+            options=st.session_state['resultado_pesquisa'],
+            key="serie_estatistica",
+            label_visibility="collapsed",
+            placeholder="Selecione ou pesquise uma série estatística...",
+            format_func=lambda x: x['NAME'],
+            index=None
+        )
 
     # Botões de navegação
     if st.button("Alertas"):
         change_page("Alertas")
     
-
 
     if st.button("Dashboard"):
         change_page("Dashboard")
@@ -153,7 +166,8 @@ def main_page():
     col3, col4 = st.columns([1, 1])
     with col3:
         if serie_selecionada: 
-            serie = obter_obj_serie(serie_selecionada, st.session_state['frequencia'])
+            serie_code = serie_selecionada['CODE']
+            serie = obter_obj_serie(serie_code, st.session_state['frequencia'])
             info_serie = serie.descricao
             criar_pills_periodo_analise(st.session_state['frequencia'])
             color_indicator = "#2BB17A" if serie.percentuais[st.session_state['periodo_analise']] >= 0 else "#f0423c"
