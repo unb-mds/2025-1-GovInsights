@@ -11,11 +11,11 @@ def get_base64_image(image_path):
 
 # Caminhos
 current_dir = Path(__file__).parent
-logo_path = current_dir / "interface" / "new-views" / "assets" / "img" / "Icon.png"
-ilustra_path = current_dir / "interface" / "new-views" / "assets" / "img" / "home_ilustracao.png"
-main_style_path = current_dir / "interface" / "new-views" / "assets" /"stylesheets" / "mainStyle.css"
-base_img_path = current_dir / "interface" / "new-views" / "assets" / "img" / "sobre_ilustracao.png"
-equipe_img_path = current_dir / "interface" / "new-views" / "assets" / "img" 
+logo_path = current_dir / "interface" / "views" / "assets" / "img" / "Icon.png"
+ilustra_path = current_dir / "interface" / "views" / "assets" / "img" / "home_ilustracao.png"
+main_style_path = current_dir / "interface" / "views" / "assets" /"stylesheets" / "mainStyle.css"
+base_img_path = current_dir / "interface" / "views" / "assets" / "img" / "sobre_ilustracao.png"
+equipe_img_path = current_dir / "interface" / "views" / "assets" / "img" 
 
 
 # Estilo principal

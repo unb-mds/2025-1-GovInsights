@@ -1,109 +1,115 @@
-import streamlit as st
-import pandas as pd
+import streamlit as st 
+import ipeadatapy as ipea
+import plotly.graph_objects as go
+from pathlib import Path
+import sys
 import os
 
-def carregar_css():
-    caminho_css = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '..', 'assets', 'stylealertas.css')
+current_dir = Path(__file__).parent
+img_path = current_dir / "assets" / "img" / "Icon.png"
+css_path = current_dir / "assets" / "stylesheets" / "style2.css"
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+
+# st.set_page_config(
+#     page_title="GovInsights",
+#     layout="wide",
+#     page_icon=str(img_path)  
+# )
+
+if css_path.exists():
+    with open(css_path) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+else:
+    st.warning("Arquivo CSS não encontrado em: " + str(css_path))
+
+from services.search import search
+# from services.graph import plotar_grafico_periodo, calcular_percentual_aumento_por_periodo
+
+if 'current_page' not in st.session_state:
+    st.session_state.current_page = "Dashboard"
+
+if 'orgaos' not in st.session_state:
+    st.session_state['orgaos'] = []
+if 'temas' not in st.session_state:
+    st.session_state['temas'] = []
+if 'frequencia' not in st.session_state:
+    st.session_state['frequencia'] = None
+if 'resultado_pesquisa' not in st.session_state:
+    st.session_state['resultado_pesquisa'] = []
+
+def change_page(page_name):
+    st.session_state.current_page = page_name
+
+def alertas_page():
+    st.title("Alertas")
+    email = st.text_input("Digite seu e-mail para receber alertas")
+
+    orgaos = st.multiselect(
+        label="Selecione os órgãos",
+        options=ipea.sources(),
+        placeholder="Ex.: Bacen, IBGE, IPEA, etc...",
+        key="orgaos_multiselect",
+        label_visibility="visible",
     )
-    if os.path.exists(caminho_css):
-        with open(caminho_css, "r", encoding="utf-8") as f:
-            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-    else:
-        st.error(f"Arquivo CSS não encontrado em: {caminho_css}")
 
-carregar_css()
+    df_temas = ipea.themes()
+    temas = st.multiselect(
+        label="Selecione os temas",
+        options=df_temas['ID'],
+        format_func=lambda x: df_temas.loc[df_temas['ID'] == x, 'NAME'].values[0],
+        placeholder="Ex.: Comércio e Vendas, Finanças Públicas, etc...",
+        key="temas_multiselect",
+        label_visibility="visible",
+    )
 
-fontes_fake = ["IBGE", "IPEA", "Bacen", "Receita Federal"]
-temas_fake = [
-    {"ID": 1, "NAME": "Comércio e Vendas"},
-    {"ID": 2, "NAME": "Finanças Públicas"},
-    {"ID": 3, "NAME": "Educação"},
-    {"ID": 4, "NAME": "Saúde"},
-]
-df_temas = pd.DataFrame(temas_fake)
+    frequencia = st.pills(
+        label="Selecione a frequência da série",
+        options=["Diária", "Mensal", "Trimestral", "Anual"],
+        key="frequencia_pills",
+        label_visibility="visible",
+        default=None
+    )
 
-séries_fake = pd.DataFrame([
-    {"CODE": "S001", "NAME": "Inflação Mensal", "FREQ": "Mensal", "ORG": "IBGE", "TEMA": 1},
-    {"CODE": "S002", "NAME": "Taxa de Juros", "FREQ": "Anual", "ORG": "Bacen", "TEMA": 2},
-    {"CODE": "S003", "NAME": "Gastos em Educação", "FREQ": "Trimestral", "ORG": "IPEA", "TEMA": 3},
-    {"CODE": "S004", "NAME": "Leitos por Estado", "FREQ": "Anual", "ORG": "Ministério da Saúde", "TEMA": 4},
-])
+    porcentagem = st.slider("Porcentagem de variação para alerta", min_value=0, max_value=100, value=10, step=1)
 
-def search(orgaos, temas, frequencias):
-    df = séries_fake.copy()
-    if orgaos:
-        df = df[df["ORG"].isin(orgaos)]
-    if temas:
-        df = df[df["TEMA"].isin(temas)]
-    if frequencias:
-        df = df[df["FREQ"].isin(frequencias)]
-    return df
+    orgaos_selecionados = orgaos
+    temas_selecionados = temas
+    frequencia_selecionada = st.session_state['frequencia_pills'] if frequencia else []
 
-st.title("Alertas")
+    st.session_state['resultado_pesquisa'] = search(orgaos_selecionados, temas_selecionados, frequencia_selecionada)
 
-email = st.text_input("Digite seu e-mail para receber alertas")
+    st.caption("Selecione ou pesquise uma série estatística")
 
-porcentagem = st.slider("Porcentagem de variação para alerta", min_value=0, max_value=100, value=10, step=1)
+    resultado_df = st.session_state['resultado_pesquisa']
+    serie_selecionada = st.selectbox(
+        label="Selecionar série",
+        options=resultado_df['CODE'] if not resultado_df.empty else [],
+        key="serie_estatistica_alertas",
+        label_visibility="collapsed",
+        placeholder="Selecione ou pesquise uma série estatística...",
+        format_func=lambda x: resultado_df.loc[resultado_df['CODE'] == x, 'NAME'].values[0] if not resultado_df.empty else '',
+        index=None
+    )
 
-st.markdown("## Filtros de pesquisa")
+    if st.button("Enviar alerta", key="enviar_alerta_button"):
+        if not email:
+            st.warning("Preencha o campo de e-mail.")
+        elif not serie_selecionada:
+            st.warning("Selecione uma série estatística.")
+        else:
+            nome_serie = resultado_df.loc[resultado_df["CODE"] == serie_selecionada, "NAME"].values[0]
+            st.success("Alerta configurado com sucesso!")
 
-filtrar_por_frequencia = st.checkbox("Filtrar por periodicidade")
-frequencia = st.multiselect(
-    "Selecione a frequência",
-    ["Diária", "Mensal", "Trimestral", "Anual", "Decenal"],
-    disabled=not filtrar_por_frequencia
-)
-
-filtrar_por_orgao = st.checkbox("Filtrar por órgão responsável")
-orgaos = st.multiselect(
-    "Selecione os órgãos",
-    fontes_fake,
-    disabled=not filtrar_por_orgao
-)
-
-filtrar_por_tema = st.checkbox("Filtrar por tema")
-temas = st.multiselect(
-    "Selecione os temas",
-    df_temas["ID"],
-    disabled=not filtrar_por_tema,
-    format_func=lambda x: df_temas.loc[df_temas["ID"] == x, "NAME"].values[0]
-)
-
-orgaos_selecionados = orgaos if filtrar_por_orgao else []
-temas_selecionados = temas if filtrar_por_tema else []
-frequencia_selecionada = frequencia if filtrar_por_frequencia else []
-
-resultado_pesquisa = search(orgaos_selecionados, temas_selecionados, frequencia_selecionada)
-
-st.markdown("## Selecione uma série estatística")
-serie_selecionada = st.selectbox(
-    "Série estatística",
-    options=resultado_pesquisa["CODE"] if not resultado_pesquisa.empty else [],
-    format_func=lambda x: resultado_pesquisa.loc[resultado_pesquisa["CODE"] == x, "NAME"].values[0] if not resultado_pesquisa.empty else "",
-    index=None,
-    placeholder="Pesquise ou selecione uma série..."
-)
-
-if st.button("Enviar alerta"):
-    if not email:
-        st.warning("Preencha o campo de e-mail.")
-    elif not serie_selecionada:
-        st.warning("Selecione uma série estatística.")
-    else:
-        nome_serie = resultado_pesquisa.loc[resultado_pesquisa["CODE"] == serie_selecionada, "NAME"].values[0]
-        st.success("Alerta configurado com sucesso!")
-
-        detalhes_alerta = f"""
-        <div class="custom-popup">
-            <h3>Detalhes do alerta</h3>
-            <p><strong>E-mail:</strong> {email}</p>
-            <p><strong>Porcentagem:</strong> {porcentagem}%</p>
-            <p><strong>Série Estatística:</strong> {nome_serie}</p>
-            <p><strong>Frequência:</strong> {', '.join(frequencia_selecionada) or 'Não selecionado'}</p>
-            <p><strong>Órgãos:</strong> {', '.join(orgaos_selecionados) or 'Não selecionado'}</p>
-            <p><strong>Temas:</strong> {', '.join([df_temas.loc[df_temas['ID'] == x, 'NAME'].values[0] for x in temas_selecionados]) or 'Não selecionado'}</p>
-        </div>
-        """
-
-        st.markdown(detalhes_alerta, unsafe_allow_html=True)
+            detalhes_alerta = f"""
+            <div class="custom-popup">
+                <h3>Detalhes do alerta</h3>
+                <p><strong>E-mail:</strong> {email}</p>
+                <p><strong>Porcentagem:</strong> {porcentagem}%</p>
+                <p><strong>Série Estatística:</strong> {nome_serie}</p>
+                <p><strong>Frequência:</strong> {', '.join(frequencia_selecionada) if frequencia_selecionada else 'Não selecionado'}</p>
+                <p><strong>Órgãos:</strong> {', '.join(orgaos_selecionados) if orgaos_selecionados else 'Não selecionado'}</p>
+                <p><strong>Temas:</strong> {', '.join([df_temas.loc[df_temas['ID'] == x, 'NAME'].values[0] for x in temas_selecionados]) if temas_selecionados else 'Não selecionado'}</p>
+            </div>
+            """
+            st.markdown(detalhes_alerta, unsafe_allow_html=True)
