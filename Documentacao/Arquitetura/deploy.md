@@ -1,4 +1,5 @@
-##🚀 Deploy do GovInsights no Streamlit Community Cloud##
+🚀 #Deploy do GovInsights no Streamlit Community Cloud
+
 Este README.md detalha o processo de deploy da aplicação GovInsights no Streamlit Community Cloud. Ele serve como um guia rápido para entender como o aplicativo está rodando em produção, como o DeepSeek é configurado e o que foi feito para o deploy inicial.
 
 #1. Visão Geral do Deploy#
