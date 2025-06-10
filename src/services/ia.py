@@ -33,10 +33,7 @@ def gerar_relatorio(codSerie: str, dataframe: pd.DataFrame):
 
                  {csv_text}"""
     try:
-        deepseek_api_key = os.environ.get("DEEPSEEK_API_KEY")  # Pega a chave da variável de ambiente
-        if not deepseek_api_key:
-            raise Exception("Erro: A chave de API do DeepSeek (DEEPSEEK_API_KEY) não foi configurada. Por favor, adicione-a nas 'Secrets' do Streamlit Cloud.")
-        client = Together(api_key=deepseek_api_key)  # AGORA USA A CHAVE DA VARIÁVEL DE AMBIENTE
+        client = Together(api_key='31c6c1ddf940cd1ac1ad20db676e21745a49f1975e5913ec4ecfac8969c431ab')  # Realiza a conexão com a API da Together.ai
         response = client.chat.completions.create(
             model="deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free",
             messages=[

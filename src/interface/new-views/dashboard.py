@@ -27,7 +27,7 @@ from services.pdf import gerar_pdf
 st.set_page_config(
     page_title="GovInsights",
     layout="wide",
-    page_icon=img_path
+    page_icon=str(img_path)
 )
 
 current_dir = Path(__file__).parent

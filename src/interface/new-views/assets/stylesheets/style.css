@@ -226,128 +226,46 @@ section[data-testid="stSidebar"] div[data-testid="stCheckbox"] > div > label > d
     text-align: left;
 }
 
-body, .stApp {
-    background-color: #0F1020;
-    font-family: 'Segoe UI', sans-serif !important;
-    color: #ffffff;
+/* Navbar Container */
+.navbar {
     display: flex;
-    justify-content: center;
-    margin: 0;
-    min-height: 100vh;
-}
-
-.stApp > div {
-    max-width: 600px;
-    width: 100%;
-    margin: 0 auto;
+    justify-content: space-between;
+    align-items: center;
     padding: 20px;
-}
-
-input::placeholder,
-textarea::placeholder {
-    color: #bbb !important;
-    opacity: 1 !important;
-}
-
-label, .css-1v3fvcr, .css-1kyxreq {
-    color: #646464 !important;
-    font-weight: 600;
-    font-size: 0.95rem !important;
-}
-
-div[data-testid="stCheckbox"] label > div {
-    color: #ffffff70 !important;
-    font-weight: 600 !important;
-    font-size: 0.95rem !important;
-}
-
-body, .stApp, h1, h2, h3, p, div, span, input, textarea, button, a, table, th, td {
-    font-family: 'Segoe UI', sans-serif !important;
-}
-
-header.stAppHeader {
-    display: none !important;
-}
-
-h1, h2, h3 {
-    color: #2BB17A;
-    font-weight: bold;
-    text-align: center;
-}
-
-input, textarea {
-    background-color: #1a1a2e !important;
-    color: white !important;
-    border-radius: 10px !important;
-    border: 1px solid #2BB17A !important;
-    transition: border-color 0.3s ease;
-}
-
-input:focus, textarea:focus {
-    border-color: #3de79f !important;
-    outline: none !important;
-    box-shadow: 0 0 8px #3de79f !important;
-}
-
-.stAlert {
-    border-left: 5px solid #ffb700 !important;
-    background-color: #333 !important;
-    color: white !important;
-}
-
-table {
-    background-color: #1a1a2e;
+    background-color: #2C3E50; /* Cor de fundo escura */
+    border-bottom: 2px solid #3498DB; /* Linha abaixo do navbar */
     color: white;
-    border-collapse: collapse;
 }
 
-table, th, td {
-    border: 1px solid #2BB17A;
-    padding: 8px;
+/* Logo Alignment */
+.nav-left {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
 
-a {
-    color: #2BB17A;
-    text-decoration: none;
+.logo-img {
+    height: 40px; /* Ajuste o tamanho da logo */
+    margin-right: 10px; /* Espaço entre a logo e o nome */
 }
 
-a:hover {
-    color: #21a36b;
-    text-decoration: underline;
+/* Nome do Logo */
+h3 {
+    font-size: 24px; 
+    font-weight: bold;
+    margin-left: 10px;
+    color: #ffffff;  
+    text-align: left;
 }
 
-.custom-popup {
-    background-color: #1a1a2e;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-    border: 2px solid #2bb179;
-    margin-top: 20px;
-    animation: fadeIn 0.3s ease-in-out;
-    color: #ffffff;
+.st-emotion-cache-t1wise {
+    width: 100%;
+    padding: 1rem;
+    max-width: initial;
+    min-width: auto;
+    box-sizing: border-box;
 }
 
-.custom-popup h3 {
-    margin-top: 0;
-    color: #2bb179;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-button[data-key="enviar_alerta_button"] {
-    background-color: #2BB17A !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 8px !important;
-    padding: 8px 16px !important;
-    cursor: pointer !important;
-    font-weight: 600 !important;
-    transition: background-color 0.3s ease !important;
-}
-
-button[data-key="enviar_alerta_button"]:hover {
-    background-color: #21a36b !important;
+div[data-testid="stMarkdownContainer"] {
+    text-align: justify;
 }
