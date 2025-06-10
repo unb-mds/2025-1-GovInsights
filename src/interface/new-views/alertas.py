@@ -11,11 +11,11 @@ css_path = current_dir / "assets" / "stylesheets" / "style2.css"
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
-st.set_page_config(
-    page_title="GovInsights",
-    layout="wide",
-    page_icon=str(img_path)  
-)
+# st.set_page_config(
+#     page_title="GovInsights",
+#     layout="wide",
+#     page_icon=str(img_path)  
+# )
 
 if css_path.exists():
     with open(css_path) as f:
@@ -24,7 +24,7 @@ else:
     st.warning("Arquivo CSS não encontrado em: " + str(css_path))
 
 from services.search import search
-from services.graph import plotar_grafico_periodo, calcular_percentual_aumento_por_periodo
+# from services.graph import plotar_grafico_periodo, calcular_percentual_aumento_por_periodo
 
 if 'current_page' not in st.session_state:
     st.session_state.current_page = "Dashboard"
@@ -65,7 +65,7 @@ def alertas_page():
 
     frequencia = st.pills(
         label="Selecione a frequência da série",
-        options=["Diária", "Mensal", "Trimestral", "Anual", "Decenal"],
+        options=["Diária", "Mensal", "Trimestral", "Anual"],
         key="frequencia_pills",
         label_visibility="visible",
         default=None
@@ -75,7 +75,7 @@ def alertas_page():
 
     orgaos_selecionados = orgaos
     temas_selecionados = temas
-    frequencia_selecionada = [frequencia] if frequencia else []
+    frequencia_selecionada = st.session_state['frequencia_pills'] if frequencia else []
 
     st.session_state['resultado_pesquisa'] = search(orgaos_selecionados, temas_selecionados, frequencia_selecionada)
 
