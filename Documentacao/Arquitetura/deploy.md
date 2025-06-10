@@ -1,28 +1,27 @@
-🚀 #Deploy do GovInsights no Streamlit Community Cloud
+🚀 DEPLOY DO GOVINSIGHTS NO STREAMLIT COMMUNITY CLOUD
+Visão Geral
+Este documento detalha o processo de deploy da aplicação GovInsights na plataforma Streamlit Community Cloud. Ele serve como um guia rápido para entender como o aplicativo está rodando em produção, como a integração com o DeepSeek é gerenciada e quais foram as etapas cruciais para o deploy inicial.
 
-Este README.md detalha o processo de deploy da aplicação GovInsights no Streamlit Community Cloud. Ele serve como um guia rápido para entender como o aplicativo está rodando em produção, como o DeepSeek é configurado e o que foi feito para o deploy inicial.
+Plataforma de Deploy: Streamlit Community Cloud
+Ambiente: Produção (configuração inicial para testes e feedback)
+URL de Acesso: https://<nome_do_seu_app_no_github>-<hash_aleatorio>.streamlit.app/ (Atenção: Preencha este URL com o link real do seu aplicativo após o deploy.)
+Tecnologias: Python, Streamlit, Plotly, Pandas, e integração com DeepSeek AI (via Together.ai).
+1. Preparação do Código para o Deploy
+Para que o GovInsights funcione corretamente na nuvem, algumas configurações essenciais foram aplicadas ao código e ao repositório GitHub.
 
-#1. Visão Geral do Deploy#
-Plataforma Principal: Streamlit Community Cloud
-Ambiente: Produção (deploy inicial para testes e feedback).
-URL de Acesso: https://<nome_do_seu_app_no_github>-<hash_aleatorio>.streamlit.app/ (Atenção: Preencha o URL final após o deploy bem-sucedido.)
-Tecnologias: Python, Streamlit, Plotly, Pandas, integração com DeepSeek AI (via Together.ai).
-#2. Preparação do Código para o Deploy#
-Para que o GovInsights funcione corretamente no Streamlit Community Cloud, algumas configurações foram aplicadas ao código e ao repositório:
+1.1. Dependências Python (requirements.txt)
+Função: Este arquivo lista todas as bibliotecas Python que o aplicativo precisa. O Streamlit Cloud lê essa lista e instala tudo automaticamente.
+Ação Realizada: O arquivo requirements.txt foi gerado/atualizado na raiz do projeto (usando pip freeze > requirements.txt).
+Conteúdo Verificado: Garante que bibliotecas como streamlit, plotly, pandas, together (para a API DeepSeek), e outras bibliotecas de IA (como transformers, torch) estão presentes.
+1.2. Configuração Segura da Chave DeepSeek (src/services/ia.py)
+Motivo: A chave de API do DeepSeek é uma informação sensível e não deve ficar exposta diretamente no código.
 
-#2.1. Dependências (requirements.txt)#
-O que é: Um arquivo que lista todas as bibliotecas Python que o aplicativo precisa para funcionar. O Streamlit Cloud o lê e instala tudo automaticamente.
-Ação: O requirements.txt foi gerado/atualizado na raiz do projeto (pip freeze > requirements.txt).
-Verificação: Garante que bibliotecas como streamlit, plotly, pandas, together, e outras bibliotecas de IA (ex: transformers, torch) estejam listadas.
-#2.2. Chave de API do DeepSeek (src/services/ia.py)#
-O que foi feito: Para proteger a chave de API do DeepSeek (usada via Together.ai), ela foi removida do código diretamente e configurada para ser lida de uma variável de ambiente.
+Arquivo Alvo: src/services/ia.py
 
-Arquivo Modificado: src/services/ia.py
+Alteração Feita:
 
-Detalhe da Modificação:
-
-Adicionado import os no início do arquivo.
-A linha que usava a chave fixa foi substituída para carregar a chave da variável de ambiente DEEPSEEK_API_KEY:
+Adicionada a importação de os: import os no início do arquivo.
+A linha que continha a chave fixa foi substituída para carregar a chave de uma variável de ambiente chamada DEEPSEEK_API_KEY:
 <!-- end list -->
 
 Python
@@ -33,53 +32,67 @@ import os
 def gerar_relatorio(...):
     # ...
     try:
-        deepseek_api_key = os.environ.get("DEEPSEEK_API_KEY")
+        deepseek_api_key = os.environ.get("DEEPSEEK_API_KEY") # Chave lida de forma segura
 
         if not deepseek_api_key:
-            raise Exception("Erro: A chave de API do DeepSeek (DEEPSEEK_API_KEY) não foi configurada. Adicione-a nas 'Secrets' do Streamlit Cloud.")
+            raise Exception("Erro: A chave de API do DeepSeek (DEEPSEEK_API_KEY) não foi configurada. Por favor, adicione-a nas 'Secrets' do Streamlit Cloud.")
 
-        client = Together(api_key=deepseek_api_key)
+        client = Together(api_key=deepseek_api_key) # Usa a chave segura
         # ... restante do código da função
     except Exception as e:
         raise Exception(f"Conexão com IA falhou: {e}")
-#2.3. Autenticação de Usuário (Temporariamente Desativada)#
-Situação Atual: A lógica de login/logout baseada em st.user.is_logged_in foi temporariamente desativada/comentada no app.py para facilitar o deploy inicial e o acesso público.
-Implicação: O aplicativo está acessível para qualquer pessoa sem a necessidade de login.
-Futuro: Se o login for necessário, essa lógica será reativada e credenciais OAuth (ex: GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET) serão configuradas como Secrets no Streamlit Cloud.
-#2.4. Estrutura de Pastas#
-Verificação: A estrutura de pastas foi revisada para garantir que o Streamlit Cloud encontre todos os arquivos importados (como alertas.py, analises.py, src/interface/views/styles/style.css, etc.) em seus caminhos corretos em relação ao app.py.
-#2.5. Commit e Push para o GitHub#
-Ação: Todas as modificações de código e no requirements.txt foram enviadas para a branch principal (main ou master) do repositório GitHub.
-#3. Processo de Deploy (Passo a Passo)#
-Para replicar o deploy, siga estes passos:
+1.3. Lógica de Autenticação de Usuário (app.py)
+Status: A lógica de login/logout baseada em st.user.is_logged_in foi temporariamente desativada/comentada no app.py.
+Implicação: Para este deploy inicial, o aplicativo é acessível publicamente, sem a necessidade de um login.
+Plano Futuro: Se a autenticação for necessária em próximas versões, essa lógica será reativada e credenciais OAuth (ex: GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET) serão configuradas como "Secrets" no Streamlit Cloud.
+1.4. Estrutura de Pastas e Caminhos
+Verificação: A estrutura de pastas do repositório foi ajustada para garantir que todos os arquivos importados (como alertas.py, analises.py, e o arquivo CSS src/interface/views/styles/style.css) sejam encontrados corretamente pelo app.py no ambiente do Streamlit Cloud.
+1.5. Commit e Push para o GitHub
+Ação: Todas as modificações no código (src/services/ia.py, app.py se alterado) e no requirements.txt foram salvas e enviadas para a branch principal (main ou master) do repositório GitHub.
+Comando Exemplo:
+Bash
 
-Acesse o Streamlit Community Cloud: Vá para share.streamlit.io e faça login com sua conta GitHub.
-Crie um Novo Aplicativo: No painel, clique em "New app".
-Configure o Repositório:
-Repository: Selecione o repositório do seu GovInsights.
-Branch: Escolha a branch main (ou master).
-Main file path: app.py (ou o caminho completo se seu app.py não estiver na raiz, ex: src/interface/views/app.py).
-Adicione os Segredos (Secrets):
-Expanda "Advanced settings".
-Na área "Secrets", adicione a chave do DeepSeek (e outras, se necessário):
+git add .
+git commit -m "Prepara GovInsights para deploy no Streamlit Cloud"
+git push origin main
+2. Processo de Deploy (Passo a Passo Guiado)
+Para colocar o GovInsights online, siga estas etapas na plataforma Streamlit Community Cloud:
+
+2.1. Acesso à Plataforma
+Acesse: share.streamlit.io
+Faça login usando sua conta do GitHub.
+2.2. Criação do Aplicativo
+No painel do Streamlit Community Cloud, clique no botão "New app" (Novo aplicativo) no canto superior direito.
+Preencha os campos de configuração do deploy:
+Repository: Selecione o repositório do seu projeto GovInsights no GitHub.
+Branch: Escolha a branch principal (main ou master) onde o código está pronto.
+Main file path: Indique o caminho para o seu arquivo Streamlit principal (provavelmente app.py, ou o caminho completo se estiver em uma subpasta como src/interface/views/app.py).
+2.3. Configuração dos Segredos (Secrets)
+Etapa CRUCIAL para a segurança da chave DeepSeek.
+Na mesma página de deploy, expanda a seção "Advanced settings".
+Localize a área de "Secrets".
+Clique em "Add a new secret" e adicione a chave do DeepSeek no formato:
 DEEPSEEK_API_KEY="SUA_CHAVE_COMPLETA_DO_DEEPSEEK_AQUI"
-(Substitua pela chave real)
-Inicie o Deploy: Clique no botão "Deploy!".
-Monitore: Acompanhe os logs na tela até a mensagem de sucesso.
-#4. Verificação Pós-Deploy#
-Após o deploy, verifique os seguintes pontos para confirmar o sucesso:
+(Importante: Cole sua chave real dentro das aspas.)
+2.4. Iniciar o Deploy
+Após preencher todas as informações, clique no botão "Deploy!".
+Aguarde enquanto o Streamlit Cloud clona seu código, instala as dependências (do requirements.txt) e inicia seu aplicativo. Este processo será visível nos logs na tela.
+3. Verificação Pós-Deploy
+Após a conclusão bem-sucedida do deploy, é hora de verificar se tudo está funcionando como esperado:
 
-Acessibilidade Pública: A aplicação deve estar acessível pelo URL fornecido pelo Streamlit Community Cloud (https://<nome_do_seu_app>-<hash_aleatorio>.streamlit.app/).
-Funcionalidade da IA: Teste as seções do aplicativo que interagem com o DeepSeek para garantir que as respostas da IA estão sendo geradas corretamente.
-Acesso a Logs: Em caso de problemas, os logs detalhados podem ser acessados diretamente no painel do Streamlit Community Cloud, na página do aplicativo deployado.
-#5. Próximos Passos e Melhorias Futuras#
-Este deploy é a versão inicial. Futuras melhorias podem incluir:
+3.1. Acessibilidade da Aplicação
+Verificação: A aplicação GovInsights deve estar acessível publicamente através do URL fornecido pelo Streamlit Community Cloud.
+Teste: Abra o URL em diferentes navegadores e dispositivos.
+3.2. Funcionalidade da IA (DeepSeek)
+Verificação: As funcionalidades que utilizam o DeepSeek (como as "Análises inteligentes") devem estar processando as informações e retornando as respostas da IA corretamente.
+Teste: Interaja com essas seções do aplicativo.
+3.3. Acesso aos Logs
+Local: Em caso de problemas ou para monitoramento, os logs detalhados do aplicativo podem ser acessados diretamente no painel do Streamlit Community Cloud, na página específica do seu aplicativo deployado.
+4. Próximos Passos e Melhorias Futuras
+Este é o deploy inicial do GovInsights. Melhorias e expansões futuras podem incluir:
 
-Automação CI/CD: Configurar deploys automáticos a cada push no GitHub.
-Autenticação de Usuário: Reativar e configurar o sistema de login com credenciais OAuth.
-Banco de Dados: Conectar a um banco de dados real e gerenciar suas credenciais.
-Domínio Personalizado: Configurar um URL mais amigável (ex: www.govinsights.com.br).
-Monitoramento Avançado: Implementar ferramentas de monitoramento mais detalhadas.
-Este README está pronto para ser copiado e colado no seu repositório GitHub como README.md (o . final é importante).
-
-
+Automação CI/CD: Configurar deploys automáticos a cada git push para a branch principal do repositório.
+Autenticação de Usuário: Reativar e configurar o sistema de login com um provedor OAuth (ex: Google).
+Banco de Dados: Implementar a integração com um banco de dados externo real para dados persistentes.
+Domínio Personalizado: Configurar um URL mais amigável e personalizado (ex: www.govinsights.com.br).
+Monitoramento Avançado: Implementar ferramentas de monitoramento e alertas mais robustos para o ambiente de produção.
