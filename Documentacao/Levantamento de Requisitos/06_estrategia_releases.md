@@ -16,12 +16,12 @@ Este documento descreve a abordagem de versionamento, critérios de entrega e pl
 
 ## **Release v0.1.0** - MVP (Mínimo Produto Viável)
 - **Objetivos**: Implementação de funcionalidades básicas de visualização de dados e geração de relatórios automáticos.
-- **Tecnologias**: **Streamlit**, **API do IPEA**, **Mistral-7B**, **Plotly**
+- **Tecnologias**: **Streamlit**, **API do IPEA**, **Deepseek**, **Plotly**
 - **Deploy**: **Streamlit Deploy**
 
 ## **Release v0.2.0** - Integração e Otimizações
 - **Objetivos**: Integração das funcionalidades, melhorias na visualização de dados e otimização do sistema.
-- **Tecnologias**: **pandas**, **requests**, **Mistral-7B**
+- **Tecnologias**: **pandas**, **requests**, **Deepseek**
 - **Deploy**: **Streamlit Deploy**, **Git Pages**
 
 ## **Release v1.0.0** - Versão Final

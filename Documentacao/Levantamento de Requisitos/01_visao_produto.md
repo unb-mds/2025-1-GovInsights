@@ -7,11 +7,11 @@
 ## Objetivos 
 Este projeto tem como objetivo fornecer uma plataforma interativa e acessível para a visualização de dados financeiros do IPEA (Instituto de Pesquisa Econômica Aplicada), utilizando **Streamlit** e **modelos de Processamento de Linguagem Natural (NLP)** para gerar relatórios automáticos e análises detalhadas. A solução visa democratizar o acesso a dados financeiros, oferecendo relatórios interativos, automáticos e dinâmicos, facilitando a tomada de decisões.
 
-Através da **API do IPEA**, o projeto consome dados financeiros atualizados, enquanto o uso do **Mistral-7B** permite gerar resumos automáticos e previsões financeiras. A plataforma será hospedada utilizando **Streamlit Deploy** e **Git Pages**, proporcionando fácil acesso a partir de qualquer dispositivo conectado à internet.
+Através da **API do IPEA**, o projeto consome dados financeiros atualizados, enquanto o uso do **Deepseek** permite gerar resumos automáticos e previsões financeiras. A plataforma será hospedada utilizando **Streamlit Deploy** e **Git Pages**, proporcionando fácil acesso a partir de qualquer dispositivo conectado à internet.
 
 ### **Objetivos principais:**
 1. **Acesso Interativo aos Dados**: Exibição de dados financeiros do IPEA por meio de gráficos interativos.
-2. **Geração Automática de Relatórios**: Utilizando **Mistral-7B** para geração de relatórios automáticos.
+2. **Geração Automática de Relatórios**: Utilizando **Deepseek** para geração de relatórios automáticos.
 3. **Sistema de Alertas**: Notificação de mudanças ou tendências financeiras importantes.
 4. **Visibilidade e Transparência**: Informações de fácil acesso para cidadãos, pesquisadores e gestores públicos.
 
@@ -49,7 +49,7 @@ Ela permitirá que qualquer usuário:
 - Interface amigável, desenvolvida com Streamlit + HTML/CSS customizado;
 - Identidade visual própria (marca, paleta de cores e design manual);
 - Pipeline automatizado para coleta, processamento e exibição dos dados;
-- Uso de modelos NLP ou LLM open-source (cMistral 7B);
+- Uso de modelos NLP ou LLM open-source (Deepseek);
 - Integração direta com a API do IPEA para atualização contínua dos dados;
 - Geração de relatórios em múltiplos formatos (PDF e HTML).
 
@@ -66,7 +66,7 @@ Ela permitirá que qualquer usuário:
 ### **Tecnologias Utilizadas**:
 - **Backend**: **Python**
 - **Frontend**: **Streamlit**
-- **NLP**: **LLM Mistral-7B**
+- **NLP**: **LLM Deepseek**
 - **Bibliotecas**: **pandas 2.2.3**, **plotly 6.0.1**, **requests 2.32.3**
 - **Deploy**: **Streamlit Deploy**, **Git Pages**
 
