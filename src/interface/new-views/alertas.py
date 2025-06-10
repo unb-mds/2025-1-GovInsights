@@ -65,7 +65,7 @@ def alertas_page():
 
     frequencia = st.pills(
         label="Selecione a frequência da série",
-        options=["Diária", "Mensal", "Trimestral", "Anual", "Decenal"],
+        options=["Diária", "Mensal", "Trimestral", "Anual"],
         key="frequencia_pills",
         label_visibility="visible",
         default=None
@@ -75,7 +75,7 @@ def alertas_page():
 
     orgaos_selecionados = orgaos
     temas_selecionados = temas
-    frequencia_selecionada = [frequencia] if frequencia else []
+    frequencia_selecionada = st.session_state['frequencia_pills'] if frequencia else []
 
     st.session_state['resultado_pesquisa'] = search(orgaos_selecionados, temas_selecionados, frequencia_selecionada)
 

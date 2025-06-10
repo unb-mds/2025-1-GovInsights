@@ -102,9 +102,6 @@ with st.sidebar:
     orgaos_selecionados = st.session_state['orgaos'] if filtrar_por_orgao else []
     temas_selecionados = st.session_state['temas'] if filtrar_por_tema else []
     frequencia_selecionada = st.session_state['frequencia'] if filtrar_por_frequencia else []
-    if not frequencia_selecionada:
-        st.warning("Selecione a frequência da série para continuar.")
-        st.stop()
     st.session_state['resultado_pesquisa'] = search(orgaos_selecionados, temas_selecionados, frequencia_selecionada)
     
     st.markdown("#### Selecione ou pesquise uma série estatística")
