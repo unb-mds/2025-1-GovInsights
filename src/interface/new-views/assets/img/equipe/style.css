@@ -1,0 +1,387 @@
+body {
+    background-color: #0F1020;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+html {
+  scroll-behavior: smooth;
+}
+
+header.stAppHeader {
+    display: none !important;
+}
+
+html, body, main, .block-container {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+main .block-container {
+    padding: 0 !important;
+    max-width: 100%;
+}
+
+.content-wrapper {
+    padding: 0 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0f172a;
+    padding: 2rem;
+    border-bottom: 1px solid #2BB17A;
+}
+
+.nav-left a {
+    color: white;
+    margin: 0 1rem;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.logo-text {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #2BB17A;
+    margin-right: 2rem;
+}
+
+.nav-button {
+    background-color: transparent;
+    color: white;
+    border: 1px solid #2BB17A;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    margin-left: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.nav-button.signup {
+    background-color: #2BB17A;
+    color: white;
+}
+
+/* banner */
+.banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4rem;
+}
+
+.banner-text {
+    flex: 1.1;
+}
+
+.banner-image {
+    flex: 0.9;
+    display: flex;
+    justify-content: center;
+}
+
+.custom-image {
+    width: 400px;
+}
+
+/* text */
+.content-area {
+    margin-top: 120px;
+    padding-left: 9rem;
+    padding-right: 6rem;
+}
+
+.title {
+    margin-top: 40px;  
+    font-size: 4rem !important;
+    font-weight: 700 !important;
+    font-family: 'Montserrat', sans-serif !important;
+    color: white !important;
+}
+
+.subtitle {
+    font-size: 1.5rem !important;
+    font-style: italic;
+    color: #2BB17A !important;
+}
+
+.descricao {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+    color: #d1d5db;
+}
+
+/* buton gerar relatorio */
+.report-button {
+    background-color: #179e66;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.report-button:hover {
+    background-color: #09663f;
+}
+
+.content-area {
+    padding-left: 7rem;
+    padding-right: 6rem;
+}
+
+.title {
+    font-size: 4rem !important;
+    font-weight: bold !important;
+    color: white !important;
+}
+
+.subtitle {
+    font-size: 1.5rem !important;
+    color: #2BB17A !important;
+}
+
+.descricao {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+    color: #d1d5db;
+}
+
+.report-button {
+    background-color: #179e66;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.report-button:hover {
+    background-color: #09663f;
+}
+
+.logo-img {
+    height: 40px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0f172a;
+    padding: 2rem;
+    border-bottom: 1px solid #2BB17A;
+    position: relative;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.nav-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-center a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+/* como funciona */
+.como-funciona-section {
+    background-color: #0F1020;
+    padding: 3rem 2rem 0.8rem 2rem;
+    text-align: center;
+}
+
+.como-titulo {
+    font-size: 3rem !important;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.como-subtitulo {
+    font-size: 1rem;
+    color: #2BB17A;
+    margin-bottom: 0.3rem;
+    text-align: center !important;
+}
+
+/* cards */
+.cards-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 0 2rem;
+    gap: 1rem;
+}
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 1rem;
+    width: 250px;
+    height: 135px;
+    box-shadow: 0px 4px 12px #0F1020;
+    color: #111;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: transform 0.5s ease;
+}
+
+.card:hover {
+    transform: translateY(-15px);
+}
+
+.card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #0f172a;
+}
+
+.card-text {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.cards-section {
+    background-color: #0F1020;
+    padding: 3rem 2rem 1rem 2rem;
+}
+
+/* sobre o projeto*/
+.sobre-projeto-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5rem 6rem;
+    background-color: #0F1020;
+    gap: 3rem;
+    flex-wrap: wrap; 
+}
+
+.sobre-imagem {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sobre-imagem img {
+    width: 100%;
+    max-width: 400px;
+}
+
+.sobre-texto {
+    flex: 1.4;
+    color: white;
+    padding-left: 6rem; /* <<--- AQUI e o novo espacamento */
+}
+
+/* titulo */
+.sobre-texto .title {
+    margin-top: -1rem !important;
+    font-size: 3rem !important;
+    font-weight: 600 !important;
+    margin-bottom: 0.8rem !important;
+    color: white !important;
+    font-family: 'Source Sans Pro' !important;
+}
+
+/* subtitulo */
+.sobre-texto .subtitle {
+    font-size: 1rem !important;
+    font-weight: 50 !important;
+    line-height: 1.8 !important;
+    font-style: normal !important;
+    color: #2BB17A !important;
+    margin-bottom: 2rem !important;
+}
+
+/* botao */
+.sobre-texto .report-button {
+    background-color: #0C3248;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sobre-texto .report-button:hover {
+    background-color: #052233;
+}
+
+/* equipe */
+.equipe-section {
+    padding: 4rem 2rem;
+    background-color: #0F1020;
+    text-align: center;
+}
+
+.equipe-section h2 {
+    font-size: 3rem;
+    font-weight: 600 !important;
+    color: white;
+    margin-bottom: 0.2rem;
+}
+
+.equipe-section p {
+    font-size: 1rem;
+    color: #2BB17A;
+    margin-bottom: 3rem;
+}
+
+.equipe-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    max-width: 920px;
+    margin: 0 auto;
+}
+
+.equipe-grid img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.equipe-grid img:hover {
+    transform: scale(1.03);
+}

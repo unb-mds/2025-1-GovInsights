@@ -15,7 +15,7 @@ logo_path = current_dir / "interface" / "new-views" / "assets" / "img" / "Icon.p
 ilustra_path = current_dir / "interface" / "new-views" / "assets" / "img" / "home_ilustracao.png"
 main_style_path = current_dir / "interface" / "new-views" / "assets" /"stylesheets" / "mainStyle.css"
 base_img_path = current_dir / "interface" / "new-views" / "assets" / "img" / "sobre_ilustracao.png"
-
+equipe_img_path = current_dir / "interface" / "new-views" / "assets" / "img" 
 
 
 # Estilo principal
@@ -52,7 +52,7 @@ st.markdown("<hr style='border: 1px solid #00DFA2;'>", unsafe_allow_html=True)
 
 
 
-# Hero Section
+# SESSÂO: HOME 
 col_text, col_img = st.columns([3, 2])
 with col_text:
     st.markdown("""
@@ -154,3 +154,35 @@ with col_text:
                     if st.button("Como contribuir", key="btn_contribuir", help="Clique para saber como contribuir"):
                         st.session_state.page = "contribuir"  #depois ajeito ####################################################
     
+st.markdown("""
+<h2 style='text-align: center; color: white; font-size: 2.5rem;'>NOSSA EQUIPE</h2>
+<p style='text-align: center; color: #00DFA2; font-size: 1.2rem;'>Quem está por trás do projeto?</p>
+""", unsafe_allow_html=True)
+
+# SESSÃO: Lista de membros
+membros = [
+    ("­", "­", "eric.png"),
+    ("­", "­", "mayra.png"),
+    ("­", "­", "brenda.png"),
+    ("­", "­", "marjorie.png"),
+    ("­", "­", "eduarda.png"),
+    ("­", "­", "guilherme.png"),
+    ("­", "­", "rodrigues.png"),
+    ("­", "­", "gabriel.png")
+]
+
+# Pasta base onde estão as imagens
+equipe_img_path = current_dir / "interface" / "new-views" / "assets" / "img" / "equipe"
+
+# Divide em linhas de 4 colunas
+for i in range(0, len(membros), 4):
+    cols = st.columns(4)
+    for col, (nome, funcao, img_file) in zip(cols, membros[i:i+4]):
+        img_path = equipe_img_path / img_file
+        with col:
+            if img_path.exists():
+                st.image(str(img_path), use_container_width=True)
+            else:
+                st.warning(f"Imagem não encontrada: {img_file}")
+            st.markdown(f"<h4 style='margin: 0.3rem 0 0; color: white;'>{nome}</h4>", unsafe_allow_html=True)
+            st.markdown(f"<p style='margin: 0; color: #00DFA2; font-size: 0.9rem;'>{funcao}</p>", unsafe_allow_html=True)

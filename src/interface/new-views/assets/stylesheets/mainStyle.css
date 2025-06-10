@@ -336,3 +336,43 @@ h1.titulo {
     height: 40px;
     margin-bottom: 10px;
 }
+
+/* equipe */
+.equipe-section {
+    padding: 4rem 2rem;
+    background-color: #0F1020;
+    text-align: center;
+}
+
+.equipe-section h2 {
+    font-size: 3rem;
+    font-weight: 600 !important;
+    color: white;
+    margin-bottom: 0.2rem;
+}
+
+.equipe-section p {
+    font-size: 1rem;
+    color: #2BB17A;
+    margin-bottom: 3rem;
+}
+
+.equipe-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    max-width: 920px;
+    margin: 0 auto;
+}
+
+.equipe-grid img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.equipe-grid img:hover {
+    transform: scale(1.03);
+}
