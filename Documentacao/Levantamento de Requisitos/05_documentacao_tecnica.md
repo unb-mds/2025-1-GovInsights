@@ -13,7 +13,7 @@ A arquitetura monolítica foi escolhida para facilitar a integração entre o ba
 1. O sistema consome dados da **API do IPEA**.
 2. O backend processa os dados utilizando **pandas**.
 3. O frontend, construído com **Streamlit**, exibe os dados em **gráficos interativos** utilizando **Plotly**.
-4. O modelo **Mistral-7B** é utilizado para gerar relatórios automáticos a partir dos dados financeiros processados.
+4. O modelo **Deepseek** é utilizado para gerar relatórios automáticos a partir dos dados financeiros processados.
 
 ## **Deploy**:
 - **Streamlit Deploy** será usado para hospedar a aplicação web.
@@ -21,7 +21,7 @@ A arquitetura monolítica foi escolhida para facilitar a integração entre o ba
 
 ## **Tecnologias**:
 - **Python 3.x**, **Streamlit**
-- **Mistral-7B** para geração de relatórios automáticos
+- **Deepseek** para geração de relatórios automáticos
 - **pandas**, **plotly**, **requests**
 
 ## 🧪 Testes e Validação
