@@ -17,9 +17,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 
 # importação de funções do backEnd
-from services import *
 from services.search import search
-from services.graph import timeSeries, obter_dados_serie
+from services.graph import timeSeries
 from services.ia import gerar_relatorio
 from services.pdf import gerar_pdf
 
@@ -56,9 +55,6 @@ if 'frequencia' not in st.session_state:
     st.session_state['frequencia'] = None
 if 'resultado_pesquisa' not in st.session_state:
     st.session_state['resultado_pesquisa'] = []
-if 'periodo_analise' not in st.session_state:
-    if 'frequencia' in st.session_state and st.session_state['frequencia'] == "Diária":
-        st.session_state['periodo_analise'] = 'Última semana'
 
 # Função para mudar de página
 def change_page(page_name):
@@ -106,6 +102,9 @@ with st.sidebar:
     orgaos_selecionados = st.session_state['orgaos'] if filtrar_por_orgao else []
     temas_selecionados = st.session_state['temas'] if filtrar_por_tema else []
     frequencia_selecionada = st.session_state['frequencia'] if filtrar_por_frequencia else []
+    if not frequencia_selecionada:
+        st.warning("Selecione a frequência da série para continuar.")
+        st.stop()
     st.session_state['resultado_pesquisa'] = search(orgaos_selecionados, temas_selecionados, frequencia_selecionada)
     
     st.markdown("#### Selecione ou pesquise uma série estatística")
@@ -124,11 +123,26 @@ with st.sidebar:
     if st.button("Home"):
         change_page("Dashboard")
 
-def obter_obj_serie(serie_selecionada):
-    if 'serie_obj' not in st.session_state or st.session_state.get('last_serie_selecionada') != serie_selecionada:
-        st.session_state['serie_obj'] = timeSeries(serie_selecionada)
-        st.session_state['last_serie_selecionada'] = serie_selecionada
-    return st.session_state['serie_obj']
+def obter_obj_serie(serie_selecionada: str, frequencia: str):
+                if 'serie_obj' not in st.session_state or st.session_state.get('last_serie_selecionada') != serie_selecionada:
+                    st.session_state['serie_obj'] = timeSeries(serie_selecionada, st.session_state['frequencia'])
+                    st.session_state['last_serie_selecionada'] = serie_selecionada
+                return st.session_state['serie_obj']
+
+def criar_pills_periodo_analise(frequencia):
+    freq_options = {
+        "Diária": ['Última semana', 'Último mês', 'Últimos 6 meses', 'Último ano', 'Últimos 3 anos', 'Últimos 5 anos'],
+        "Mensal": ['Últimos 6 meses', 'Último ano', 'Últimos 2 anos', 'Últimos 3 anos', 'Últimos 5 anos', 'Últimos 10 anos'],
+        "Trimestral": ['Últimos 6 meses', 'Último ano', 'Últimos 2 anos', 'Últimos 3 anos', 'Últimos 5 anos', 'Últimos 10 anos'],
+        "Anual": ['Últimos 5 anos', 'Últimos 10 anos', 'Últimos 20 anos']
+    }
+    st.pills(
+        label="Período de análise",
+        options=freq_options.get(frequencia),
+        key="periodo_analise",
+        default=freq_options.get(frequencia)[0],
+    )
+
 
 def main_page():
     # cabeçalho
@@ -148,8 +162,9 @@ def main_page():
     col3, col4 = st.columns([4, 2])
     with col3:
         if serie_selecionada: 
-            serie = obter_obj_serie(serie_selecionada)
+            serie = obter_obj_serie(serie_selecionada, st.session_state['frequencia'])
             info_serie = serie.descricao
+            criar_pills_periodo_analise(st.session_state['frequencia'])
             color_indicator = "#2BB17A" if serie.percentuais[st.session_state['periodo_analise']] >= 0 else "#f0423c"
             text_indicator = ("↑ " if serie.percentuais[st.session_state['periodo_analise']] >= 0 else "↓ ") + str(serie.percentuais[st.session_state['periodo_analise']]) + "%"
             st.html(
@@ -168,20 +183,10 @@ def main_page():
                 <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 18px 0 0 0;"/>
                 """
             )
-            if info_serie.iloc[8,0] == "Diária":
-                st.pills(
-                    label="Período de análise",
-                    options=['Última semana', 'Último mês', 'Últimos 6 meses', 'Último ano', 'Últimos 3 anos', 'Últimos 5 anos'],
-                    key="periodo_analise",
-                    default='Última semana',
-                )
-                st.plotly_chart(
-                    serie.graficos[st.session_state['periodo_analise']],
-                    use_container_width=True,
-                )
-            else:
-                st.markdown('''#### Lógica ainda não implementada para séries com periodicidade diferente de diária.''')
-
+            st.plotly_chart(
+                serie.graficos[st.session_state['periodo_analise']],
+                use_container_width=True,
+            )
         else:
             st.markdown("""
                 <div class="painel" style="border: 1px solid #2BB17A; background-color: #101120; padding: 16px; border-radius: 8px;">
@@ -196,7 +201,7 @@ def main_page():
         response = None
         if serie_selecionada:
             try:
-                dfSerie = obter_dados_serie(serie_selecionada)
+                dfSerie = serie.dados_periodos[st.session_state['periodo_analise']]
                 if dfSerie.empty:
                     st.error("Nenhum dado encontrado para a série informada")
                 else:
