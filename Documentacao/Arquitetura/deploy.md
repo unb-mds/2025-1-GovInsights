@@ -1,4 +1,5 @@
 🚀 DEPLOY DO GOVINSIGHTS NO STREAMLIT COMMUNITY CLOUD
+
 Visão Geral
 Este documento detalha o processo de deploy da aplicação GovInsights na plataforma Streamlit Community Cloud. Ele serve como um guia rápido para entender como o aplicativo está rodando em produção, como a integração com o DeepSeek é gerenciada e quais foram as etapas cruciais para o deploy inicial.
 
