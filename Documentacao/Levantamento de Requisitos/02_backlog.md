@@ -26,7 +26,7 @@
 - **API do IPEA**: Integração para acessar dados financeiros atualizados.
 - **Python 3.x**: Ambiente de desenvolvimento.
 - **Streamlit**: Interface do usuário interativa.
-- **LLM Mistral-7B**: Utilizado para geração de relatórios automáticos.
+- **LLM**: Utilizado para geração de relatórios automáticos.
 - **Pandas**: Manipulação de dados financeiros.
 - **Plotly**: Visualização gráfica interativa.
 - **Requests**: Requisições para consumir dados da API.
@@ -155,7 +155,7 @@
 ## **Funcionalidades Prioritárias**:
 - Integração da API do IPEA.
 - Visualização de dados financeiros em gráficos dinâmicos.
-- Geração de relatórios automáticos utilizando **Mistral-7B**.
+- Geração de relatórios automáticos utilizando **LLM**.
 - Sistema de alertas financeiros.
 ---
 

@@ -12,14 +12,14 @@ A dificuldade de acesso e a complexidade da análise dos dados financeiros do go
 ## **Solução**:
 Uma plataforma simples, interativa e automatizada para visualização e análise dos dados financeiros do IPEA, que inclui:
 1. **Gráficos interativos** baseados em **Plotly**.
-2. **Geração de relatórios automáticos** utilizando **Mistral-7B**.
+2. **Geração de relatórios automáticos** utilizando **Deepseek**.
 3. **Sistema de alertas** para mudanças importantes nos dados financeiros.
 ---
 
 ### **Tecnologias que Facilitam a Jornada do Usuário**:
 - **API do IPEA**: Para fornecer dados financeiros atualizados.
 - **Streamlit**: Para criar uma interface interativa e fácil de usar.
-- **Mistral-7B**: Para gerar resumos financeiros automáticos.
+- **Deepseek**: Para gerar resumos financeiros automáticos.
 - **Plotly**: Para criar gráficos interativos e visualizações em tempo real.
 ---
 
