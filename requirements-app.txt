@@ -8,3 +8,4 @@ together==1.5.8
 xhtml2pdf==0.2.17
 supabase==2.15.2
 together
+markdown
