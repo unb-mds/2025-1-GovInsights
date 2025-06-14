@@ -1,0 +1,19 @@
+:root  > * {
+    --md-accent-fg-color:         #2BB17A;
+    --md-primary-fg-color:        #0C3248;
+    --md-primary-fg-color--light: #2BB17A;
+    --md-primary-fg-color--dark:  #0F1020;
+    --md-text-font: "Inter";
+}
+
+@font-face{
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    src: "'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap'";
+
+}
+
+/*impede que o css do mkdocs-material substitua a altura de imagens/videos especificada em nossa documentação*/
+.md-typeset img, .md-typeset svg, .md-typeset video{
+    height: revert-layer;
+}
