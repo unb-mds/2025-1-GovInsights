@@ -87,29 +87,12 @@ class SearchService:
     
     def get_available_sources(self, frequencia: str, fonte_list: list) -> list:
         filtragem_frequencia = self.get_by_frequency(frequencia)
-        filtragem_tema = self.get_by_theme(fonte_list)
-        merge_df = pd.merge(
-            filtragem_frequencia,
-            filtragem_tema,
-            how="inner",
-            on=['CODE'],
-            suffixes=('', '_DROP')
-        )
-        return merge_df[['SOURCE ACRONYM']].drop_duplicates()
+        return filtragem_frequencia[['SOURCE ACRONYM']].drop_duplicates()
     
     def get_available_themes(self, frequencia: str, fonte_list: list) -> dict:
         filtragem_frequencia = self.get_by_frequency(frequencia)
-        filtragem_fonte = self.get_by_source(fonte_list)
         merge_df = pd.merge(
             filtragem_frequencia,
-            filtragem_fonte,
-            how="inner",
-            on=['CODE'],
-            suffixes=('', '_DROP')
-        )
-        # Faz merge também com o dataframe de temas do ipea para trazer o nome do tema
-        merge_df = pd.merge(
-            merge_df,
             temas_df,
             how="left",
             on='THEME CODE'

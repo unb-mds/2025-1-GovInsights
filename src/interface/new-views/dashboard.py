@@ -8,6 +8,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 from services.search import SearchService
 from services.graph import timeSeries
 from alertas import alertas_page
+from functools import lru_cache
 
 current_dir = Path(__file__).parent
 img_path = current_dir / "assets" / "img" / "Icon.png"
@@ -54,6 +55,20 @@ pesquisa_service = st.session_state['pesquisa_service']
 def change_page(page_name):
     st.session_state.current_page = page_name
 
+
+# Funções auxiliares para cache usando lru_cache para evitar chamadas de função repetidas
+@st.cache_data(show_spinner=False)
+def cached_get_available_sources(frequencia, temas):
+    # Convert temas to tuple for hashing
+    temas_tuple = tuple([t['THEME NAME'] if isinstance(t, dict) and 'THEME NAME' in t else str(t) for t in temas]) if temas else ()
+    return pesquisa_service.get_available_sources(frequencia, temas_tuple)
+
+@st.cache_data(show_spinner=False)
+def cached_get_available_themes(frequencia, orgaos):
+    # Convert orgaos to tuple for hashing
+    orgaos_tuple = tuple(orgaos) if orgaos else ()
+    return pesquisa_service.get_available_themes(frequencia, orgaos_tuple)
+
 # Sidebar para pesquisa de séries estatísticas
 with st.sidebar:
     st.title("Filtros")
@@ -77,13 +92,13 @@ with st.sidebar:
 
         orgaos = st.multiselect(
             label="Selecione os órgãos",
-            options=pesquisa_service.get_available_sources(st.session_state['frequencia'], st.session_state['temas']),
+            options=cached_get_available_sources(st.session_state['frequencia'], st.session_state['temas']),
             disabled=not st.session_state['filtrar_por_orgao'],
             placeholder="Ex.: Bacen, IBGE, IPEA, etc...",
             key="orgaos",
             label_visibility="collapsed",
         )
-
+        
         def reset_temas():
             st.session_state['temas'] = []
         filtrar_por_tema = st.checkbox(
@@ -93,7 +108,7 @@ with st.sidebar:
         )
         temas = st.multiselect(
             label="Selecione os temas",
-            options=pesquisa_service.get_available_themes(st.session_state['frequencia'], st.session_state['orgaos']),  
+            options=cached_get_available_themes(st.session_state['frequencia'], st.session_state['orgaos']),  
             disabled=not filtrar_por_tema,
             placeholder="Ex.: Comércio e Vendas, Finanças Públicas, etc...",
             key="temas",
@@ -101,20 +116,15 @@ with st.sidebar:
             label_visibility="collapsed",
         )
         
-    frequencia_selecionada = st.session_state['frequencia']
-    serie_selecionada = st.session_state.get('serie_estatistica', None)
-    if not frequencia_selecionada:
-        st.warning("Selecione a frequência da série para continuar.")
-        st.stop()
-    if st.button("Pesquisar"):
+        frequencia_selecionada = st.session_state['frequencia']
+        serie_selecionada = st.session_state.get('serie_estatistica', None)
+        if not frequencia_selecionada:
+            st.warning("Selecione a frequência da série para continuar.")
         st.session_state['resultado_pesquisa'] = pesquisa_service.search(st.session_state['frequencia'], st.session_state['orgaos'], st.session_state['temas'])
-        st.success(f"{len(st.session_state['resultado_pesquisa'])} séries estatísticas encontradas.")
-        st.markdown("#### Selecione ou pesquise uma série estatística")
         serie_selecionada = st.selectbox(
-            label="Selecionar série",
+            label="Selecionar série estatística",
             options=st.session_state['resultado_pesquisa'],
             key="serie_estatistica",
-            label_visibility="collapsed",
             placeholder="Selecione ou pesquise uma série estatística...",
             format_func=lambda x: x['NAME'],
             index=None
@@ -171,22 +181,31 @@ def main_page():
             info_serie = serie.descricao
             criar_pills_periodo_analise(st.session_state['frequencia'])
             color_indicator = "#2BB17A" if serie.percentuais[st.session_state['periodo_analise']] >= 0 else "#f0423c"
-            text_indicator = ("↑ " if serie.percentuais[st.session_state['periodo_analise']] >= 0 else "↓ ") + str(serie.percentuais[st.session_state['periodo_analise']]) + "%"
-            st.html(
+            arrow = "↑" if serie.percentuais[st.session_state['periodo_analise']] >= 0 else "↓"
+            percent = f"{serie.percentuais[st.session_state['periodo_analise']]}%"
+            # Remove o espaço extra causado pelo stHeaderActionElements
+            st.markdown(
+                """
+                <style>/* Esconde o header extra do Streamlit para este bloco */ [data-testid="stHeaderActionElements"] {display: none !important; padding: 0 !important;}</style>
+                """,
+                unsafe_allow_html=True
+            )
+            st.markdown(
                 f"""
                 <div style="display: flex; flex-direction: row; align-items: baseline; row-gap: 1px; column-gap: 10px; flex-wrap: wrap; max-width: 1000px;">
                     <h1 style="font-size: 24px; font-weight: 900; margin: 0 0 12px 0; line-height: 22px; word-break: break-word; max-width: 1000px; text-align: justify; letter-spacing: 0.8px;">
                         {info_serie.iloc[0,0]}
                     </h1>
                     <span style="font-size: 24px; color: {color_indicator}; font-weight: 900; margin: -16px 0 0 0; letter-spacing: 0.5px;">
-                        {text_indicator}
+                        <span style="font-weight: 1000;">{arrow}</span> <span style="font-weight: 1000;">{percent}</span>
                     </span>
                 </div>
                 <div style="font-size: 16px; color: #cfcfcf; display: block; line-height: 18px; margin: -8px 0 0 0; max-width: 1000px; text-align: justify; letter-spacing: 0.4px;">
                     <b>{info_serie.iloc[1,0]}</b> · {ipea.themes(theme_id=serie.descricao.iloc[3,0]).iloc[0,1]} · {info_serie.iloc[4,0]} · {info_serie.iloc[8,0]}
                 </div>
                 <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 18px 0 0 0;"/>
-                """
+                """,
+                unsafe_allow_html=True
             )
             st.plotly_chart(
                 serie.graficos[st.session_state['periodo_analise']],
@@ -219,7 +238,5 @@ def main_page():
 if st.session_state.current_page == "Dashboard":
     main_page()
 
-
 elif st.session_state.current_page == "Alertas":
     alertas_page()
-
