@@ -20,6 +20,26 @@ if 'metadata_economicos' not in globals():
     load_global_variables()
 
 class SearchService:
+    """
+    Serviço para busca e filtragem de séries estatísticas econômicas a partir de metadados.
+    Métodos
+    -------
+    __init__():
+        Inicializa o serviço, carregando os metadados econômicos.
+    search(frequency: str, fonte_list: list, tema_list: list) -> pd.DataFrame:
+        Realiza busca filtrando por frequência, fontes e temas, retornando os resultados como lista de dicionários.
+    get_by_source(fonte_list: list) -> pd.DataFrame:
+        Filtra os metadados pelas fontes especificadas.
+    get_by_theme(tema_list: list) -> pd.DataFrame:
+        Filtra os metadados pelos temas especificados.
+    get_by_frequency(frequency: str) -> pd.DataFrame:
+        Filtra os metadados pela frequência especificada.
+    get_available_sources(frequencia: str) -> list:
+        Retorna as fontes disponíveis para uma determinada frequência.
+    get_available_themes(frequencia: str) -> dict:
+        Retorna os temas disponíveis para uma determinada frequência.
+    """
+    
     def __init__(self):
         print("Inicializando SearchService...")
         self.metadata_economicos = metadata_economicos.copy()
