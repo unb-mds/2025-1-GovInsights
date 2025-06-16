@@ -16,7 +16,7 @@ def get_alertas_ativos():
 
 def get_series_temporais():
     """Gera dados de séries temporais simulados para receitas e despesas."""
-    meses = pd.date_range("2023-01-01", periods=12, freq="M")
+    meses = pd.date_range("2023-01-01", periods=12, freq="ME")
     receitas = [random.randint(80, 240) for _ in range(12)]
     despesas = [random.randint(60, 180) for _ in range(12)]
     return pd.DataFrame({"Meses": meses, "Receitas": receitas, "Despesas": despesas})
