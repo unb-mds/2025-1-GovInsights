@@ -85,11 +85,11 @@ class SearchService:
         filtragem_frequencia = metadata_filtrado.reset_index(drop=True)
         return filtragem_frequencia
     
-    def get_available_sources(self, frequencia: str, fonte_list: list) -> list:
+    def get_available_sources(self, frequencia: str) -> list:
         filtragem_frequencia = self.get_by_frequency(frequencia)
         return filtragem_frequencia[['SOURCE ACRONYM']].drop_duplicates()
     
-    def get_available_themes(self, frequencia: str, fonte_list: list) -> dict:
+    def get_available_themes(self, frequencia: str) -> dict:
         filtragem_frequencia = self.get_by_frequency(frequencia)
         merge_df = pd.merge(
             filtragem_frequencia,
