@@ -7,14 +7,16 @@ import sys
 import os
 
 
-# Importação de tela de alerta
-from alertas import alertas_page
 
 # correção de diretorios 
 current_dir = Path(__file__).parent
 img_path = current_dir / "assets" / "img" / "Icon.png"
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
+
+
+# Importação de tela de alerta
+from interface.views.alertas import alertas_page
 
 # importação de funções do backEnd
 from services.search import search
