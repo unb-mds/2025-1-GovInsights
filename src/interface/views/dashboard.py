@@ -118,12 +118,6 @@ with st.sidebar:
     # Botões de navegação
     if st.button("Alertas"):
         change_page("Alertas")
-    
-
-
-    if st.button("Dashboard"):
-        change_page("Dashboard")
-
 
     if st.button("Home"):
         change_page("Dashboard")
