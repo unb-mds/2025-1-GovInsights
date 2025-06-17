@@ -1,143 +1,64 @@
-# importação de dependências
-import ipeadatapy as ipea
-import plotly.graph_objects as go
+# --- 1. Importações de bibliotecas básicas ---
+import streamlit as st
 from pathlib import Path
 import sys
 import os
-import streamlit as st
 
+# --- 2. Definições de caminhos e configurações que NÃO usam st. ---
+# Correção de diretórios (esta parte NÃO DEVE ter st.comandos)
 current_dir = Path(__file__).parent
 img_path = current_dir / "assets" / "img" / "Icon.png"
 
-# Configuração da página
+# Adiciona diretório pai ao PATH do sistema para importações de serviços
+# Esta linha DEVE vir antes das importações de seus serviços se eles estiverem em diretórios "superiores"
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+
+# --- 3. Configuração da página Streamlit (DEVE SER O PRIMEIRO st.comando) ---
 st.set_page_config(
     page_title="GovInsights",
     layout="wide",
     page_icon=str(img_path)
 )
 
-# Importação de tela de alerta
-from alertas import alertas_page
-
-# correção de diretorios 
-current_dir = Path(__file__).parent
-img_path = current_dir / "assets" / "img" / "Icon.png"
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
-
-# importação de funções do backEnd
-from services.search import SearchService
-from services.graph import timeSeries
-from services.ia import gerar_relatorio
-from services.pdf import gerar_pdf
-
-current_dir = Path(__file__).parent
+# --- 4. Carregamento de CSS (AGORA PODE USAR st.markdown) ---
 css_path = current_dir / "assets" / "stylesheets" / "style.css"
-
 if css_path.exists():
     with open(css_path) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 else:
     st.warning("Arquivo CSS não encontrado em: " + str(css_path))
 
-current_dir = Path(__file__).parent
+# --- 5. Importações de módulos e funções do Back-end/Outros módulos (APÓS st.set_page_config) ---
+# Importação de tela de alerta
+from alertas import alertas_page
 
+# Importação de funções do backEnd
+from services.search import search
+from services.graph import timeSeries
+from services.ia import gerar_relatorio
+from services.pdf import gerar_pdf
 
-# Estado da sessão para controlar a página atual
+# --- 6. Inicialização dos estados da sessão ---
 if 'current_page' not in st.session_state:
     st.session_state.current_page = "Dashboard"
 
-# Inicialização dos estados
 if 'orgaos' not in st.session_state:
     st.session_state['orgaos'] = []
 if 'temas' not in st.session_state:
     st.session_state['temas'] = []
 if 'frequencia' not in st.session_state:
-    st.session_state['frequencia'] = 'Diária'
+    st.session_state['frequencia'] = None
 if 'resultado_pesquisa' not in st.session_state:
     st.session_state['resultado_pesquisa'] = []
-if 'search_service' not in st.session_state:
-    st.session_state['search_service'] = SearchService()
-    
-pesquisa = st.session_state['search_service']
 
-# Função para mudar de página
+# --- 7. Funções Auxiliares ---
 def change_page(page_name):
     st.session_state.current_page = page_name
 
-# sidebar de navegação
-st.cache_data(ttl="2h")
-with st.sidebar:
-    st.title("Filtros")
-    with st.expander(label="Filtros de pesquisa", expanded=True):
-        st.pills(
-            label="Selecione a frequência da série",
-            options=["Diária", "Mensal", "Trimestral", "Anual"],
-            key="frequencia",
-            default=st.session_state.get('frequencia')
-        )
-        
-        filtrar_por_orgao = st.checkbox(label="Filtrar por órgão responsável")
-        st.multiselect(
-            label="Selecione os órgãos",
-            options=pesquisa.get_available_sources(st.session_state['frequencia']),
-            disabled=not filtrar_por_orgao,
-            placeholder="Ex.: Bacen, IBGE, IPEA, etc...",
-            key="orgaos",
-            label_visibility="collapsed",
-        )
-
-        filtrar_por_tema = st.checkbox(label="Filtrar por tema")
-        st.multiselect(
-            label="Selecione os temas",
-            options=pesquisa.get_available_themes(st.session_state['frequencia']),
-            disabled=not filtrar_por_tema,
-            placeholder="Ex.: Comércio e Vendas, Finanças Públicas, etc...",
-            key="temas",
-            format_func=lambda x: x['THEME NAME'],
-            label_visibility="collapsed",
-        )
-
-        # Atualiza o resultado da pesquisa sempre que filtros mudam
-        orgaos_selecionados = st.session_state['orgaos'] if filtrar_por_orgao else []
-        temas_selecionados = st.session_state['temas'] if filtrar_por_tema else []
-
-    st.session_state['resultado_pesquisa'] = pesquisa.search(
-        frequency=st.session_state['frequencia'],
-        fonte_list=orgaos_selecionados,
-        tema_list=temas_selecionados
-    )
-        # Exibe o número de séries encontradas
-    if st.session_state['resultado_pesquisa']:
-        placeholder_selectbox = f"{len(st.session_state['resultado_pesquisa'])} séries estatísticas encontradas."
-    else:
-        placeholder_selectbox = "Nenhuma série estatística encontrada."
-    
-    st.markdown("#### Selecione ou pesquise uma série estatística")
-    serie_selecionada = st.selectbox(
-        label="Selecionar série",
-        options=st.session_state['resultado_pesquisa'],
-        key="serie_estatistica",
-        label_visibility="collapsed",
-        placeholder=placeholder_selectbox,
-        format_func=lambda x: f"{x['NAME']} ({x['CODE']})",
-        index=None
-    )
-
-    # Botões de navegação
-    if st.button("Alertas"):
-        change_page("Alertas")
-
-    if st.button("Dashboard"):
-        change_page("Dashboard")
-
-    if st.button("Home"):
-        change_page("Dashboard")
-
+@st.cache_data(ttl="2h") # Cache para a função de obter a série
 def obter_obj_serie(serie_selecionada: str, frequencia: str):
-                if 'serie_obj' not in st.session_state or st.session_state.get('last_serie_selecionada') != serie_selecionada:
-                    st.session_state['serie_obj'] = timeSeries(serie_selecionada, st.session_state['frequencia'])
-                    st.session_state['last_serie_selecionada'] = serie_selecionada
-                return st.session_state['serie_obj']
+    # A lógica de cache para 'serie_obj' e 'last_serie_selecionada' foi movida para main_page
+    return timeSeries(serie_selecionada, frequencia)
 
 def criar_pills_periodo_analise(frequencia):
     freq_options = {
@@ -146,13 +67,100 @@ def criar_pills_periodo_analise(frequencia):
         "Trimestral": ['Últimos 6 meses', 'Último ano', 'Últimos 2 anos', 'Últimos 3 anos', 'Últimos 5 anos', 'Últimos 10 anos'],
         "Anual": ['Últimos 5 anos', 'Últimos 10 anos', 'Últimos 20 anos']
     }
+    options_to_use = freq_options.get(frequencia, [])
     st.pills(
         label="Período de análise",
-        options=freq_options.get(frequencia),
+        options=options_to_use,
         key="periodo_analise",
-        default=freq_options.get(frequencia)[0],
+        default=options_to_use[0] if options_to_use else None,
     )
 
+# --- 8. Sidebar de Navegação e Filtros ---
+# Não use st.cache_data diretamente em um 'with st.sidebar', o cache deve ser em funções
+with st.sidebar:
+    st.title("Filtros")
+    with st.expander(label="Filtros de pesquisa", expanded=False):
+        filtrar_por_frequencia = st.checkbox(label="Filtrar por periodicidade")
+        frequencia = st.pills(
+            label="Selecione a frequência da série",
+            options=["Diária", "Mensal", "Trimestral", "Anual"],
+            disabled=not filtrar_por_frequencia,
+            key="frequencia",
+            label_visibility="collapsed",
+            default=None
+        )
+
+        filtrar_por_orgao = st.checkbox(label="Filtrar por órgão responsável")
+        orgaos = st.multiselect(
+            label="Selecione os órgãos",
+            options=ipea.sources(), # Esta chamada pode ser lenta. Considere st.cache_data para ipea.sources() se for constante.
+            disabled=not filtrar_por_orgao,
+            placeholder="Ex.: Bacen, IBGE, IPEA, etc...",
+            key="orgaos",
+            label_visibility="collapsed",
+        )
+
+        filtrar_por_tema = st.checkbox(label="Filtrar por tema")
+        df_temas = ipea.themes() # Considere st.cache_data para ipea.themes()
+        temas = st.multiselect(
+            label="Selecione os temas",
+            options=df_temas['ID'],
+            disabled=not filtrar_por_tema,
+            format_func=lambda x: df_temas.loc[df_temas['ID'] == x, 'NAME'].values[0],
+            placeholder="Ex.: Comércio e Vendas, Finanças Públicas, etc...",
+            key="temas",
+            label_visibility="collapsed",
+        )
+
+    # Atualiza o resultado da pesquisa sempre que filtros mudam
+    orgaos_selecionados = st.session_state['orgaos'] if filtrar_por_orgao else []
+    temas_selecionados = st.session_state['temas'] if filtrar_por_tema else []
+    frequencia_selecionada = st.session_state['frequencia'] if filtrar_por_frequencia and st.session_state['frequencia'] else None
+
+    # Cache para a função search
+    @st.cache_data(ttl="2h")
+    def cached_search(orgaos, temas, freq):
+        return search(orgaos, temas, freq)
+
+    st.session_state['resultado_pesquisa'] = cached_search(orgaos_selecionados, temas_selecionados, frequencia_selecionada)
+
+    st.markdown("#### Selecione ou pesquise uma série estatística")
+    if not st.session_state['resultado_pesquisa'].empty:
+        options_codes = st.session_state['resultado_pesquisa']['CODE'].tolist()
+        options_names = st.session_state['resultado_pesquisa']['NAME'].tolist()
+        code_to_name_map = dict(zip(options_codes, options_names))
+
+        serie_selecionada = st.selectbox(
+            label="Selecionar série",
+            options=options_codes,
+            key="serie_estatistica",
+            label_visibility="collapsed",
+            placeholder="Selecione ou pesquise uma série estatística...",
+            format_func=lambda x: code_to_name_map.get(x, x),
+            index=None
+        )
+    else:
+        serie_selecionada = st.selectbox(
+            label="Selecionar série",
+            options=[],
+            key="serie_estatistica",
+            label_visibility="collapsed",
+            placeholder="Nenhum resultado para os filtros selecionados.",
+            index=None
+        )
+
+    # Botões de navegação (chaves renomeadas para evitar conflitos)
+    if st.button("Alertas", key="btn_alertas_sidebar"):
+        change_page("Alertas")
+
+    if st.button("Dashboard", key="btn_dashboard_sidebar"):
+        change_page("Dashboard")
+
+    if st.button("Home", key="btn_home_sidebar"):
+        change_page("Dashboard")
+
+
+# --- 9. Definição da Página Principal (main_page) ---
 def main_page():
     # cabeçalho
     col1, col2 = st.columns([1, 14])
@@ -170,32 +178,48 @@ def main_page():
 
     col3, col4 = st.columns([4, 2])
     with col3:
-        if serie_selecionada: 
-            serie = obter_obj_serie(serie_selecionada['CODE'], st.session_state['frequencia'])
+        local_serie_selecionada = st.session_state.get('serie_estatistica')
+
+        if local_serie_selecionada:
+            if 'serie_obj' not in st.session_state or st.session_state.get('last_serie_selecionada') != local_serie_selecionada:
+                st.session_state['serie_obj'] = obter_obj_serie(local_serie_selecionada, st.session_state['frequencia'])
+                st.session_state['last_serie_selecionada'] = local_serie_selecionada
+            serie = st.session_state['serie_obj']
+
             info_serie = serie.descricao
             criar_pills_periodo_analise(st.session_state['frequencia'])
-            color_indicator = "#2BB17A" if serie.percentuais[st.session_state['periodo_analise']] >= 0 else "#f0423c"
-            text_indicator = ("↑ " if serie.percentuais[st.session_state['periodo_analise']] >= 0 else "↓ ") + str(serie.percentuais[st.session_state['periodo_analise']]) + "%"
+
+            periodo_atual = st.session_state.get('periodo_analise')
+            if periodo_atual and periodo_atual in serie.percentuais and serie.percentuais[periodo_atual] is not None:
+                color_indicator = "#2BB17A" if serie.percentuais[periodo_atual] >= 0 else "#f0423c"
+                text_indicator = ("↑ " if serie.percentuais[periodo_atual] >= 0 else "↓ ") + str(serie.percentuais[periodo_atual]) + "%"
+            else:
+                color_indicator = "#CCCCCC"
+                text_indicator = "N/A"
+
             st.html(
                 f"""
                 <div style="display: flex; flex-direction: row; align-items: baseline; row-gap: 1px; column-gap: 10px; flex-wrap: wrap; max-width: 1000px;">
-                    <h1 style="font-size: 24px; font-weight: 1000; margin: 0 0 12px 0; line-height: 22px; word-break: break-word; max-width: 1000px; text-align: justify; letter-spacing: 0.8px;">
-                        {info_serie.iloc[0,0]}
+                    <h1 style="font-size: 24px; font-weight: 900; margin: 0 0 12px 0; line-height: 22px; word-break: break-word; max-width: 1000px; text-align: justify; letter-spacing: 0.8px;">
+                        {info_serie.iloc[0,0] if not info_serie.empty else 'Informação não disponível'}
                     </h1>
-                    <span style="font-size: 24px; color: {color_indicator}; font-weight: 1000; margin: -16px 0 0 0; letter-spacing: 0.5px;">
+                    <span style="font-size: 24px; color: {color_indicator}; font-weight: 900; margin: -16px 0 0 0; letter-spacing: 0.5px;">
                         {text_indicator}
                     </span>
                 </div>
                 <div style="font-size: 16px; color: #cfcfcf; display: block; line-height: 18px; margin: -8px 0 0 0; max-width: 1000px; text-align: justify; letter-spacing: 0.4px;">
-                    <b>{info_serie.iloc[1,0]}</b> · {info_serie.iloc[2,0]} · {info_serie.iloc[4,0]} · {info_serie.iloc[8,0]}
+                    <b>{info_serie.iloc[1,0] if not info_serie.empty else 'Órgão não disponível'}</b> · {info_serie.iloc[2,0] if not info_serie.empty else 'Tema não disponível'} · {info_serie.iloc[4,0] if not info_serie.empty else 'Unidade não disponível'} · {info_serie.iloc[8,0] if not info_serie.empty else 'Fonte não disponível'}
                 </div>
                 <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 18px 0 0 0;"/>
                 """
             )
-            st.plotly_chart(
-                serie.graficos[st.session_state['periodo_analise']],
-                use_container_width=True,
-            )
+            if periodo_atual and periodo_atual in serie.graficos:
+                st.plotly_chart(
+                    serie.graficos[periodo_atual],
+                    use_container_width=True,
+                )
+            else:
+                st.warning("Gráfico não disponível para o período selecionado ou dados insuficientes.")
         else:
             st.markdown("""
                 <div class="painel" style="border: 1px solid #2BB17A; background-color: #101120; padding: 16px; border-radius: 8px;">
@@ -208,40 +232,51 @@ def main_page():
             """, unsafe_allow_html=True)
     with col4:
         response = None
-        if serie_selecionada:
+        pdf_bytes = None
+        if local_serie_selecionada:
             try:
-                dfSerie = serie.dados_periodos[st.session_state['periodo_analise']]
-                if dfSerie.empty:
-                    st.error("Nenhum dado encontrado para a série informada")
-                else:
-                    st.subheader("Dados da série")
-                    with st.spinner("Gerando análise..."):
-                        response = gerar_relatorio(serie_selecionada, dfSerie)
+                if 'serie_obj' not in st.session_state or st.session_state.get('last_serie_selecionada') != local_serie_selecionada:
+                    st.session_state['serie_obj'] = obter_obj_serie(local_serie_selecionada, st.session_state['frequencia'])
+                    st.session_state['last_serie_selecionada'] = local_serie_selecionada
+                serie = st.session_state['serie_obj']
 
-                    with open(gerar_pdf(codSerie=serie_selecionada, dfSerie=dfSerie, iaText=response), "rb") as file:
-                        pdf_bytes = file.read()
+                periodo_analise_ia = st.session_state.get('periodo_analise')
+                dfSerie = serie.dados_periodos.get(periodo_analise_ia)
+
+                if dfSerie is None or dfSerie.empty:
+                    st.error("Nenhum dado encontrado para a série ou período informado para análise de IA.")
+                else:
+                    st.subheader("Análise inteligente")
+                    with st.spinner("Gerando análise..."):
+                        response = gerar_relatorio(local_serie_selecionada, dfSerie)
+
+                    if response:
+                        with open(gerar_pdf(codSerie=local_serie_selecionada, dfSerie=dfSerie, iaText=response), "rb") as file:
+                            pdf_bytes = file.read()
 
                 with st.container(height=600):
-                    st.markdown(response)
+                    if response:
+                        st.markdown(response)
+                    elif local_serie_selecionada and (dfSerie is None or dfSerie.empty):
+                        st.info("Não foi possível gerar a análise de IA. Verifique os dados da série ou o período selecionado.")
+                    elif local_serie_selecionada:
+                        st.warning("Análise de IA não gerada. Verifique as configurações da API ou os dados.")
 
             except Exception as e:
-                st.error(f"Erro ao buscar série para analise{e}")
-
+                st.error(f"Erro na análise de IA: {e}")
         else:
-            st.markdown('''#### ''') #MUDANÇA AQUI!
-    if response:
+            st.markdown('''#### ''')
+
+    if pdf_bytes:
         st.download_button(
-                        label="Exportar Relatório",
-                        data=pdf_bytes,
-                        file_name="relatorio.pdf",
-                        mime="application/pdf"
-                    )
+            label="Exportar Relatório",
+            data=pdf_bytes,
+            file_name="relatorio.pdf",
+            mime="application/pdf"
+        )
 
-
+# --- 10. Controle de Páginas (Último bloco no script principal) ---
 if st.session_state.current_page == "Dashboard":
     main_page()
-
-
 elif st.session_state.current_page == "Alertas":
     alertas_page()
-
