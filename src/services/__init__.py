@@ -1,7 +1,7 @@
 # init services
 from .ia import gerar_relatorio
 from .pdf import gerar_pdf
-from .search import search
+from .search import SearchService
 from .graph import timeSeries
 
 
