@@ -1,27 +1,13 @@
 # importação de dependências
-import streamlit as st 
 import ipeadatapy as ipea
 import plotly.graph_objects as go
 from pathlib import Path
 import sys
 import os
+import streamlit as st
 
-
-# Importação de tela de alerta
-from alertas import alertas_page
-
-# correção de diretorios 
 current_dir = Path(__file__).parent
 img_path = current_dir / "assets" / "img" / "Icon.png"
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
-
-
-# importação de funções do backEnd
-from services.search import search
-from services.graph import timeSeries
-from services.ia import gerar_relatorio
-from services.pdf import gerar_pdf
-
 
 # Configuração da página
 st.set_page_config(
@@ -29,6 +15,22 @@ st.set_page_config(
     layout="wide",
     page_icon=str(img_path)
 )
+
+
+# correção de diretorios 
+current_dir = Path(__file__).parent
+img_path = current_dir / "assets" / "img" / "Icon.png"
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
+
+
+# Importação de tela de alerta
+from interface.views.alertas import alertas_page
+
+# importação de funções do backEnd
+from services.search import SearchService
+from services.graph import timeSeries
+from services.ia import gerar_relatorio
+from services.pdf import gerar_pdf
 
 current_dir = Path(__file__).parent
 css_path = current_dir / "assets" / "stylesheets" / "style.css"
@@ -52,34 +54,34 @@ if 'orgaos' not in st.session_state:
 if 'temas' not in st.session_state:
     st.session_state['temas'] = []
 if 'frequencia' not in st.session_state:
-    st.session_state['frequencia'] = None
+    st.session_state['frequencia'] = 'Diária'
 if 'resultado_pesquisa' not in st.session_state:
     st.session_state['resultado_pesquisa'] = []
+if 'search_service' not in st.session_state:
+    st.session_state['search_service'] = SearchService()
+    
+pesquisa = st.session_state['search_service']
 
 # Função para mudar de página
 def change_page(page_name):
     st.session_state.current_page = page_name
 
-
 # sidebar de navegação
 st.cache_data(ttl="2h")
 with st.sidebar:
     st.title("Filtros")
-    with st.expander(label="Filtros de pesquisa", expanded=False):
-        filtrar_por_frequencia = st.checkbox(label="Filtrar por periodicidade")
-        frequencia = st.pills(
+    with st.expander(label="Filtros de pesquisa", expanded=True):
+        st.pills(
             label="Selecione a frequência da série",
             options=["Diária", "Mensal", "Trimestral", "Anual"],
-            disabled=not filtrar_por_frequencia,
             key="frequencia",
-            label_visibility="collapsed",
-            default=None
+            default=st.session_state.get('frequencia')
         )
         
         filtrar_por_orgao = st.checkbox(label="Filtrar por órgão responsável")
-        orgaos = st.multiselect(
+        st.multiselect(
             label="Selecione os órgãos",
-            options=ipea.sources(),
+            options=pesquisa.get_available_sources(st.session_state['frequencia']),
             disabled=not filtrar_por_orgao,
             placeholder="Ex.: Bacen, IBGE, IPEA, etc...",
             key="orgaos",
@@ -87,22 +89,30 @@ with st.sidebar:
         )
 
         filtrar_por_tema = st.checkbox(label="Filtrar por tema")
-        df_temas = ipea.themes()
-        temas = st.multiselect(
+        st.multiselect(
             label="Selecione os temas",
-            options=df_temas['ID'],
+            options=pesquisa.get_available_themes(st.session_state['frequencia']),
             disabled=not filtrar_por_tema,
-            format_func=lambda x: df_temas.loc[df_temas['ID'] == x, 'NAME'].values[0],
             placeholder="Ex.: Comércio e Vendas, Finanças Públicas, etc...",
             key="temas",
+            format_func=lambda x: x['THEME NAME'],
             label_visibility="collapsed",
         )
 
-    # Atualiza o resultado da pesquisa sempre que filtros mudam
-    orgaos_selecionados = st.session_state['orgaos'] if filtrar_por_orgao else []
-    temas_selecionados = st.session_state['temas'] if filtrar_por_tema else []
-    frequencia_selecionada = st.session_state['frequencia'] if filtrar_por_frequencia else []
-    st.session_state['resultado_pesquisa'] = search(orgaos_selecionados, temas_selecionados, frequencia_selecionada)
+        # Atualiza o resultado da pesquisa sempre que filtros mudam
+        orgaos_selecionados = st.session_state['orgaos'] if filtrar_por_orgao else []
+        temas_selecionados = st.session_state['temas'] if filtrar_por_tema else []
+
+    st.session_state['resultado_pesquisa'] = pesquisa.search(
+        frequency=st.session_state['frequencia'],
+        fonte_list=orgaos_selecionados,
+        tema_list=temas_selecionados
+    )
+        # Exibe o número de séries encontradas
+    if st.session_state['resultado_pesquisa']:
+        placeholder_selectbox = f"{len(st.session_state['resultado_pesquisa'])} séries estatísticas encontradas."
+    else:
+        placeholder_selectbox = "Nenhuma série estatística encontrada."
     
     st.markdown("#### Selecione ou pesquise uma série estatística")
     serie_selecionada = st.selectbox(
@@ -110,14 +120,17 @@ with st.sidebar:
         options=st.session_state['resultado_pesquisa'],
         key="serie_estatistica",
         label_visibility="collapsed",
-        placeholder="Selecione ou pesquise uma série estatística...",
-        format_func=lambda x: st.session_state['resultado_pesquisa'].loc[st.session_state['resultado_pesquisa']['CODE'] == x, 'NAME'].values[0],
+        placeholder=placeholder_selectbox,
+        format_func=lambda x: f"{x['NAME']} ({x['CODE']})",
         index=None
     )
 
     # Botões de navegação
     if st.button("Alertas"):
         change_page("Alertas")
+
+    if st.button("Dashboard"):
+        change_page("Dashboard")
 
     if st.button("Home"):
         change_page("Dashboard")
@@ -142,7 +155,6 @@ def criar_pills_periodo_analise(frequencia):
         default=freq_options.get(frequencia)[0],
     )
 
-
 def main_page():
     # cabeçalho
     col1, col2 = st.columns([1, 14])
@@ -161,7 +173,7 @@ def main_page():
     col3, col4 = st.columns([4, 2])
     with col3:
         if serie_selecionada: 
-            serie = obter_obj_serie(serie_selecionada, st.session_state['frequencia'])
+            serie = obter_obj_serie(serie_selecionada['CODE'], st.session_state['frequencia'])
             info_serie = serie.descricao
             criar_pills_periodo_analise(st.session_state['frequencia'])
             color_indicator = "#2BB17A" if serie.percentuais[st.session_state['periodo_analise']] >= 0 else "#f0423c"
@@ -169,10 +181,10 @@ def main_page():
             st.html(
                 f"""
                 <div style="display: flex; flex-direction: row; align-items: baseline; row-gap: 1px; column-gap: 10px; flex-wrap: wrap; max-width: 1000px;">
-                    <h1 style="font-size: 24px; font-weight: 900; margin: 0 0 12px 0; line-height: 22px; word-break: break-word; max-width: 1000px; text-align: justify; letter-spacing: 0.8px;">
+                    <h1 style="font-size: 24px; font-weight: 1000; margin: 0 0 12px 0; line-height: 22px; word-break: break-word; max-width: 1000px; text-align: justify; letter-spacing: 0.8px;">
                         {info_serie.iloc[0,0]}
                     </h1>
-                    <span style="font-size: 24px; color: {color_indicator}; font-weight: 900; margin: -16px 0 0 0; letter-spacing: 0.5px;">
+                    <span style="font-size: 24px; color: {color_indicator}; font-weight: 1000; margin: -16px 0 0 0; letter-spacing: 0.5px;">
                         {text_indicator}
                     </span>
                 </div>
