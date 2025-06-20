@@ -33,7 +33,7 @@ else:
 from alertas import alertas_page
 
 # Importação de funções do backEnd
-from services.search import search
+from services.search import SearchService
 from services.graph import timeSeries
 from services.ia import gerar_relatorio
 from services.pdf import gerar_pdf
@@ -47,9 +47,13 @@ if 'orgaos' not in st.session_state:
 if 'temas' not in st.session_state:
     st.session_state['temas'] = []
 if 'frequencia' not in st.session_state:
-    st.session_state['frequencia'] = None
+    st.session_state['frequencia'] = "Diária"  # Frequência padrão
 if 'resultado_pesquisa' not in st.session_state:
     st.session_state['resultado_pesquisa'] = []
+if 'search_service' not in st.session_state:
+    st.session_state['search_service'] = SearchService()
+    
+pesquisa = st.session_state['search_service']
 
 # --- 7. Funções Auxiliares ---
 def change_page(page_name):
@@ -80,20 +84,17 @@ def criar_pills_periodo_analise(frequencia):
 with st.sidebar:
     st.title("Filtros")
     with st.expander(label="Filtros de pesquisa", expanded=False):
-        filtrar_por_frequencia = st.checkbox(label="Filtrar por periodicidade")
-        frequencia = st.pills(
+        st.pills(
             label="Selecione a frequência da série",
             options=["Diária", "Mensal", "Trimestral", "Anual"],
-            disabled=not filtrar_por_frequencia,
             key="frequencia",
-            label_visibility="collapsed",
-            default=None
+            default=st.session_state.get('frequencia')
         )
 
         filtrar_por_orgao = st.checkbox(label="Filtrar por órgão responsável")
         orgaos = st.multiselect(
             label="Selecione os órgãos",
-            options=ipea.sources(), # Esta chamada pode ser lenta. Considere st.cache_data para ipea.sources() se for constante.
+            options=pesquisa.get_available_sources(st.session_state['frequencia']),
             disabled=not filtrar_por_orgao,
             placeholder="Ex.: Bacen, IBGE, IPEA, etc...",
             key="orgaos",
@@ -101,12 +102,11 @@ with st.sidebar:
         )
 
         filtrar_por_tema = st.checkbox(label="Filtrar por tema")
-        df_temas = ipea.themes() # Considere st.cache_data para ipea.themes()
         temas = st.multiselect(
             label="Selecione os temas",
-            options=df_temas['ID'],
+            options=pesquisa.get_available_themes(st.session_state['frequencia']),
             disabled=not filtrar_por_tema,
-            format_func=lambda x: df_temas.loc[df_temas['ID'] == x, 'NAME'].values[0],
+            format_func=lambda x: x['THEME NAME'],
             placeholder="Ex.: Comércio e Vendas, Finanças Públicas, etc...",
             key="temas",
             label_visibility="collapsed",
@@ -115,39 +115,29 @@ with st.sidebar:
     # Atualiza o resultado da pesquisa sempre que filtros mudam
     orgaos_selecionados = st.session_state['orgaos'] if filtrar_por_orgao else []
     temas_selecionados = st.session_state['temas'] if filtrar_por_tema else []
-    frequencia_selecionada = st.session_state['frequencia'] if filtrar_por_frequencia and st.session_state['frequencia'] else None
 
-    # Cache para a função search
-    @st.cache_data(ttl="2h")
-    def cached_search(orgaos, temas, freq):
-        return search(orgaos, temas, freq)
-
-    st.session_state['resultado_pesquisa'] = cached_search(orgaos_selecionados, temas_selecionados, frequencia_selecionada)
+    st.session_state['resultado_pesquisa'] = pesquisa.search(
+        frequency=st.session_state['frequencia'],
+        fonte_list=orgaos_selecionados,
+        tema_list=temas_selecionados
+    )
+    
+    # Exibe o número de séries encontradas
+    if st.session_state['resultado_pesquisa']:
+        placeholder_selectbox = f"{len(st.session_state['resultado_pesquisa'])} séries estatísticas encontradas."
+    else:
+        placeholder_selectbox = "Nenhuma série estatística encontrada."
 
     st.markdown("#### Selecione ou pesquise uma série estatística")
-    if not st.session_state['resultado_pesquisa'].empty:
-        options_codes = st.session_state['resultado_pesquisa']['CODE'].tolist()
-        options_names = st.session_state['resultado_pesquisa']['NAME'].tolist()
-        code_to_name_map = dict(zip(options_codes, options_names))
-
-        serie_selecionada = st.selectbox(
-            label="Selecionar série",
-            options=options_codes,
-            key="serie_estatistica",
-            label_visibility="collapsed",
-            placeholder="Selecione ou pesquise uma série estatística...",
-            format_func=lambda x: code_to_name_map.get(x, x),
-            index=None
-        )
-    else:
-        serie_selecionada = st.selectbox(
-            label="Selecionar série",
-            options=[],
-            key="serie_estatistica",
-            label_visibility="collapsed",
-            placeholder="Nenhum resultado para os filtros selecionados.",
-            index=None
-        )
+    serie_selecionada = st.selectbox(
+        label="Selecionar série",
+        options=st.session_state['resultado_pesquisa'],
+        key="serie_estatistica",
+        label_visibility="collapsed",
+        placeholder=placeholder_selectbox,
+        format_func=lambda x: f"{x['NAME']} ({x['CODE']})",
+        index=None
+    )
 
     # Botões de navegação (chaves renomeadas para evitar conflitos)
     if st.button("Alertas", key="btn_alertas_sidebar"):
@@ -178,9 +168,9 @@ def main_page():
 
     col3, col4 = st.columns([4, 2])
     with col3:
-        local_serie_selecionada = st.session_state.get('serie_estatistica')
-
-        if local_serie_selecionada:
+        local_serie_selecionada = None
+        if serie_selecionada:
+            local_serie_selecionada = st.session_state.get('serie_estatistica')['CODE']
             if 'serie_obj' not in st.session_state or st.session_state.get('last_serie_selecionada') != local_serie_selecionada:
                 st.session_state['serie_obj'] = obter_obj_serie(local_serie_selecionada, st.session_state['frequencia'])
                 st.session_state['last_serie_selecionada'] = local_serie_selecionada

@@ -9,11 +9,13 @@ weight = 500
 
 
 [[theme.fontFaces]]
-family = "Inter Black"
+family = "Inter Bold"
 url = "app/static/font/Inter-VariableFont.ttf"
-weight = 900
+weight = 600
 
 [theme]
 font = "Inter"
-headingFont = "Inter Black"
+headingFont = "Inter Bold"
 primaryColor = "#2BB17A"
+backgroundColor = "#0F1020"
+textColor = "#FFFfFF"
