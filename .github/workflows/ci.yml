@@ -7,6 +7,34 @@ on:
 permissions:
   contents: write
 jobs:
+  test_unit: # Job para a execução dos testes unitários
+    runs-on: ubuntu-latest 
+    steps:
+    - name: Checkout code 
+      uses: actions/checkout@v4
+
+    - name: Set up Python 
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.13' 
+
+    - name: Install dependencies 
+      run: |
+        python -m pip install --upgrade pip # Atualiza o pip
+        pip install -r requirements.txt # Instala as dependências do seu requirements.txt
+        pip install pytest pandas # Garante que pytest e pandas estão disponíveis, caso não estejam no requirements.txt
+        # Adicione aqui outras dependências de teste se você usar linters como flake8, black, isort
+        # Ex: pip install flake8 black isort pytest-cov
+
+    - name: Run unit tests # Executa seus testes unitários
+      run: |
+        # O Pytest irá procurar testes em 'tests/unit/' e 'tests/integration/'
+        # Adicione --cov=src --cov-report=xml --cov-report=term-missing se usar pytest-cov
+        pytest tests/unit/ tests/integration/
+      env:
+        # Configura o PYTHONPATH para que o Python encontre seus módulos em 'src/'
+        # Isso replica a configuração do seu pytest.ini no ambiente do GitHub Actions
+        PYTHONPATH: src
   deploy:
     runs-on: ubuntu-latest
     steps:
