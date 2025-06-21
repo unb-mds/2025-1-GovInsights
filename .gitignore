@@ -1,0 +1,22 @@
+# Ignorar arquivos de cache do Python
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+
+# Ignorar pastas de ambiente virtual
+venv/
+.venv/
+
+# Ignorar caches do pytest
+.pytest_cache/
+
+# Ignorar caches do Streamlit
+.streamlit/local_storage/
+
+# Ignorar arquivos temporários e de IDEs (se não estiverem já)
+.idea/
+.vscode/
+*.swp
+*~
+.DS_Store
