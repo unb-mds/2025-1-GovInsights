@@ -1,8 +1,9 @@
 import pandas as pd
 import re
 import ipeadatapy as ipea
-import email.message
 import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 
 from src.data.connect import supabase
@@ -26,34 +27,41 @@ def enviar_email(codigo_serie: str, email_usuario: str, margem: float):
     """
     Realiza o envio de um email contendo informações sobre a variação da margem de atualização de uma série do IPEA
 
-    :param codigo_serie: str - Recebe o código da série do IPEA.
-    :param email_usuario: str - Recebe o email do destinatário.
-    :param margem: float - Recebe o valor de margem de atualição da série.
-    :return: boolean - Retorna um valor booleano referente ao sucesso de envio do email.
+    :param codigo_serie: Recebe o código da série do IPEA.
+    :param email_usuario: Recebe o email do destinatário.
+    :param margem: Recebe o valor de margem de atualição da série.
+    :return: Retorna um valor booleano referente ao sucesso de envio do email.
+
     """
     texto = f"Houve um {'aumento' if margem > 0 else 'decréscimo'} de {margem:.2f}% na série {codigo_serie} de acordo com a nova atualizacação."
 
-    mensagem = email.message.Message()
+    # Configuração SMTP da Brevo
+    smtp_server = "smtp-relay.brevo.com"
+    smtp_port = 587
+    smtp_login = "905867001@smtp-brevo.com"  # Login SMTP da Brevo
+    smtp_password = "h92HcFkdMgUwVySJ"  # Sua SMTP Key
+
+    # Criar a mensagem
+    mensagem = MIMEMultipart()
     mensagem['Subject'] = f"Alerta da Série {codigo_serie}"
-    mensagem['From'] = 'govinsightstests@gmail.com' #Remetente
-    mensagem['To'] = email_usuario #Destinatário
-    senha = "vpdg gajg telq krlk"
-    mensagem.add_header('Content-Type', 'text/html')
-    mensagem.set_payload(texto)
+    mensagem['From'] = 'govinsightstests@gmail.com'
+    mensagem['To'] = email_usuario
+
+    # Corpo da mensagem
+    corpo = MIMEText(texto, 'html')
+    mensagem.attach(corpo)
+
+    # Enviar o e-mail
     try:
-        #Conexão com servidor Google
-        servidorGoogle = smtplib.SMTP('smtp.gmail.com', 587)
-        servidorGoogle.ehlo()
-        servidorGoogle.starttls()
-
-        #Credenciais para login
-        servidorGoogle.login(mensagem['From'], senha)
-        servidorGoogle.sendmail(mensagem['From'], [mensagem['To']], mensagem.as_string().encode("utf-8"))
-        servidorGoogle.quit()
-
+        servidor = smtplib.SMTP(smtp_server, smtp_port)
+        servidor.starttls()
+        servidor.login(smtp_login, smtp_password)
+        servidor.sendmail(mensagem['From'], [mensagem['To']], mensagem.as_string())
+        servidor.quit()
         return True
-    except Exception as erro:
+    except:
         return False
+
 
 
 def enviar_alerta(serie: dict, valores: pd.DataFrame, data: str):
@@ -127,11 +135,7 @@ def verificar_atualizacao_series():
                 if ultima_atualizacao_BD != ultima_atualizacao_IPEA:
 
                     alterar_ultima_atualizacao(str(ultima_atualizacao_IPEA), serie["id"])
-                    envio = enviar_alerta(serie, valores, str(hoje))
-                    if envio:
-                        print(f"Envio de alerta para ID {serie['id']} bem sucedido.")
-                    else:
-                        print(f"Envio de alerta para ID {serie['id']} mal sucedido.")
+                    enviar_alerta(serie, valores, str(hoje))
 
     except Exception as error:
         raise error
