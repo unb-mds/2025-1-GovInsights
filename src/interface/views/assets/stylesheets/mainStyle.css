@@ -292,8 +292,8 @@ h1.titulo {
     color: #000000;
     border-radius: 16px;
     padding: 1.5rem;
-    width: 500px;
-    height: 500px;
+    width: min(90vw, 400px);
+    height: auto;
     margin: 1rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -373,6 +373,89 @@ h1.titulo {
     transition: transform 0.3s ease;
 }
 
+.membro-img {
+    width: 80%;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: block;
+    margin: 0 auto;
+}
+
+.membro-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
 .equipe-grid img:hover {
     transform: scale(1.03);
+}
+
+@media (max-width: 1200px) {
+    h1 {
+        font-size: 60px;
+    }
+    .container {
+        flex-direction: column;
+    }
+    .card {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 40px;
+    }
+    .card {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+    .coluna-texto {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        display: block;
+    }
+    .card {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 1024px) {
+  .equipe-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .equipe-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+h1, h2, h3, h4, p {
+    word-wrap: break-word;
+}
+
+/* Responsividade geral */
+@media screen and (max-width: 768px) {
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .img-container img {
+        width: 100px;
+    }
+
+    .stColumn {
+        padding: 0 !important;
+    }
+
+    .custom-section {
+        padding: 1rem !important;
+    }
 }
