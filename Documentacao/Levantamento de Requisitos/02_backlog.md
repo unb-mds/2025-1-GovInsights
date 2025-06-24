@@ -4,19 +4,15 @@
 | ---------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
 | 🚨 **Alta** | Como desenvolvedor, quero importar arquivos via API, para alimentar o pipeline com dados do IPEA.                   | Funcional                     |
 | 🚨 **Alta** | Como desenvolvedor, quero que os dados sejam obtidos automaticamente (API ou scraping), para garantir atualizações. | Funcional                     |
-| ⚠️ **Média** | Como desenvolvedor, quero aplicar um pipeline de pré-processamento textual, para alimentar os modelos de NLP.       | Funcional                     |
-| 🚨 **Alta** | Como desenvolvedor, quero aplicar o BERTopic nos textos, para identificar tópicos relevantes.                       | Funcional                     |
-| ⚠️ **Média** | Como analista público, quero visualizar tópicos e exemplos de textos, para entender melhor as áreas críticas.       | Funcional                     |
+| ⚠️ **Média** | Como desenvolvedor, quero aplicar um pipeline de pré-processamento textual, para alimentar os modelos de LLM.        | Funcional                     |
+| 🚨 **Alta** | Como desenvolvedor, quero aplicar o LLM Mistral-7B nas séries da API, para identificar tópicos relevantes.                       | Funcional                     |
 | 🚨 **Alta** | Como cientista de dados, quero normalizar datas, moedas e categorias, para garantir consistência na análise.        | Funcional                     |
-| 🚨 **Alta** | Como gestor público, quero receber um resumo técnico mensal, para entender rapidamente os principais pontos.        | Funcional                     |
-| ⚠️ **Média** | Como desenvolvedor, quero utilizar modelos generativos (T5, BART) para gerar resumos a partir dos dados.            | Funcional                     |
 | 🚨 **Alta** | Como gestor, quero receber alertas automáticos sobre gastos anormais, para tomar decisões corretivas.               | Funcional                     |
 | ⚠️ **Média** | Como desenvolvedor, quero configurar regras para alertas, para evitar falsos positivos.                             | Funcional                     |
 | 🚨 **Alta** | Como gestor público, quero visualizar dados e relatórios em uma interface clara, para facilitar a análise.          | Funcional                     |
 | ⚠️ **Média** | Como usuário, quero interagir com filtros e gráficos, para explorar períodos e categorias.                 | Funcional                     |
-| ⚠️ **Média** | Como analista, quero exportar relatórios em PDF ou HTML, para enviar ou arquivar.                                   | Funcional                     |
-| ⚠️ **Média** | Como gestor, quero salvar relatórios anteriores, para acompanhar a evolução dos indicadores.                        | Funcional                     |
-| 🚨 **Alta** | Como desenvolvedor, quero criar endpoints REST com FastAPI, para a interface acessar dados dinamicamente.           | Funcional                     |
+| ⚠️ **Média** | Como analista, quero exportar relatórios em PDF ou CSV, para enviar ou arquivar.                                   | Funcional                     |
+| 🚨 **Alta** | Como desenvolvedor, quero criar endpoints, para a interface acessar dados dinamicamente.           | Funcional                     |
 | 🚨 **Alta** | Como desenvolvedor, quero escrever testes unitários e de integração, para garantir que o sistema funcione.          | Não funcional (qualidade)     |
 | 🚨 **Alta** | Como colaborador, quero ter uma documentação clara do pipeline, para facilitar o onboarding.                        | Não funcional (documentação)  |
 | ⚠️ **Média** | Como gestor, quero disponibilizar o projeto como código aberto, para outras instituições públicas replicarem.       | Não funcional (licenciamento) |
@@ -60,14 +56,14 @@
       <td style="border: 1px solid black;">Normaliza dados para garantir a consistência nas análises financeiras.</td>
     </tr>
     <tr>
-      <td style="border: 1px solid black;">Como desenvolvedor, quero aplicar um pipeline de pré-processamento textual (com remoção de stopwords, normalização e tokenização), para alimentar os modelos de NLP com dados limpos.</td>
-      <td style="border: 1px solid black;">Aplique pré-processamento nos dados textuais para alimentar o modelo de NLP com dados limpos e de qualidade.</td>
+      <td style="border: 1px solid black;">Como desenvolvedor, quero aplicar um pipeline de pré-processamento textual, para alimentar os modelos de LLM com dados limpos.</td>
+      <td style="border: 1px solid black;">Aplique pré-processamento nos dados textuais para alimentar o modelo de LLM com dados limpos e de qualidade.</td>
     </tr>
     <tr>
-      <td rowspan="6" style="text-align: center; writing-mode: vertical-lr; border: 1px solid black;">Análise Semântica e Geração de Insights com NLP</td>
+      <td rowspan="6" style="text-align: center; writing-mode: vertical-lr; border: 1px solid black;">Análise Semântica e Geração de Insights com LLM</td>
       <td rowspan="2" style="text-align: center; border: 1px solid black;">Feature 2.1: Extração de tópicos relevantes</td>
-      <td style="border: 1px solid black;">Como cientista de dados, quero aplicar o BERTopic nos textos financeiros, para identificar automaticamente os principais tópicos abordados.</td>
-      <td style="border: 1px solid black;">Aplica técnicas de NLP para identificar automaticamente os tópicos relevantes nos dados financeiros.</td>
+      <td style="border: 1px solid black;">Como cientista de dados, quero aplicar o LLM Mistral-7B nos textos financeiros, para identificar automaticamente os principais tópicos abordados.</td>
+      <td style="border: 1px solid black;">Aplica técnicas de LLM para identificar automaticamente os tópicos relevantes nos dados financeiros.</td>
     </tr>
     <tr>
       <td style="border: 1px solid black;">Como analista público, quero visualizar os tópicos e exemplos de textos relacionados, para entender melhor as áreas críticas.</td>
@@ -75,12 +71,10 @@
     </tr>
     <tr>
       <td rowspan="2" style="text-align: center; border: 1px solid black;">Feature 2.2: Geração de resumos automatizados</td>
-      <td style="border: 1px solid black;">Como gestor público, quero receber um resumo técnico sobre os dados do mês, para entender rapidamente os principais pontos financeiros.</td>
-      <td style="border: 1px solid black;">Gera resumos automatizados para facilitar a compreensão dos dados financeiros pelos gestores.</td>
     </tr>
     <tr>
-      <td style="border: 1px solid black;">Como desenvolvedor, quero utilizar modelos generativos open-source (ex: T5 ou BART), para gerar resumos a partir dos dados analisados.</td>
-      <td style="border: 1px solid black;">Usa modelos de NLP avançados para criar resumos de fácil compreensão a partir dos dados financeiros.</td>
+      <td style="border: 1px solid black;">Como desenvolvedor, quero utilizar modelos generativos open-source, para gerar resumos a partir dos dados analisados.</td>
+      <td style="border: 1px solid black;">Usa modelos de LLM avançados para criar resumos de fácil compreensão a partir dos dados financeiros.</td>
     </tr>
     <tr>
       <td rowspan="2" style="text-align: center; border: 1px solid black;">Feature 2.3: Emissão de alertas com base em anomalias</td>
@@ -103,17 +97,15 @@
     </tr>
     <tr>
       <td rowspan="2" style="text-align: center; border: 1px solid black;">Feature 3.2: Exportação e compartilhamento dos relatórios</td>
-      <td style="border: 1px solid black;">Como analista, quero exportar os relatórios gerados em formato PDF ou HTML, para enviar por e-mail ou arquivar.</td>
+      <td style="border: 1px solid black;">Como analista, quero exportar os relatórios gerados em formato PDF ou CSV, para enviar por e-mail ou arquivar.</td>
       <td style="border: 1px solid black;">Facilita a exportação dos relatórios para formatos populares, permitindo fácil compartilhamento e arquivamento.</td>
     </tr>
     <tr>
-      <td style="border: 1px solid black;">Como gestor, quero salvar os relatórios anteriores, para poder acompanhar a evolução dos indicadores.</td>
-      <td style="border: 1px solid black;">Permite salvar relatórios anteriores para comparação e análise de tendências ao longo do tempo.</td>
     </tr>
     <tr>
       <td rowspan="4" style="text-align: center; writing-mode: vertical-lr; border: 1px solid black;">Backend e Integração de Componentes</td>
       <td rowspan="2" style="text-align: center; border: 1px solid black;">Feature 4.1: Servir dados via API</td>
-      <td style="border: 1px solid black;">Como desenvolvedor, quero criar endpoints REST com FastAPI, para que a interface Streamlit acesse os dados e textos gerados dinamicamente.</td>
+      <td style="border: 1px solid black;">Como desenvolvedor, quero criar endpoints, para que a interface Streamlit acesse os dados e textos gerados dinamicamente.</td>
       <td style="border: 1px solid black;">Cria endpoints dinâmicos para que o Streamlit acesse dados financeiros em tempo real.</td>
     </tr>
     <tr>
@@ -150,6 +142,8 @@
     </tr>
   </tbody>
 </table>
+
+
 ---
 
 ## **Funcionalidades Prioritárias**:

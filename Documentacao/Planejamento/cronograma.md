@@ -8,19 +8,19 @@ A primeira sprint (Sprint 0) foi dedicada à formação do grupo e aos alinhamen
 
 | **Sprint** | **Descrição**                                               | **Data Início** | **Data Fim**   |
 |------------|-------------------------------------------------------------|-----------------|----------------|
-| **Sprint 0** | Formação do grupo e primeiros alinhamentos                  | 25/03/2025      | 31/03/2025     |
-| **Sprint 1** | Estudo e aquisição de conhecimentos básicos                 | 01/04/2025      | 07/04/2025     |
-| **Sprint 2** | Kickoff e estruturação do projeto                           | 08/04/2025      | 14/04/2025     |
-| **Sprint 3** | Setup do projeto, backlog, arquitetura                      | 15/04/2025      | 21/04/2025     |
-| **Sprint 4** | Ingestão e limpeza de dados                                 | 22/04/2025      | 28/04/2025     |
-| **Sprint 5** | Backend inicial + layout base Streamlit                     | 29/04/2025      | 05/05/2025     |
-| **Sprint 6** | Modelagem de tópicos com BERTopic e entrega do MVP funcional| 06/05/2025      | 12/05/2025     |
-| **Sprint 7** | Geração de resumos + alertas automáticos                    | 13/05/2025      | 19/05/2025     |
-| **Sprint 8** | Integração de componentes e entrega do MVP melhorado        | 20/05/2025      | 26/05/2025     |
-| **Sprint 9** | Validação com stakeholders e melhorias no MVP              | 27/05/2025      | 02/06/2025     |
-| **Sprint 10**| Filtros + exportação de relatórios                          | 03/06/2025      | 09/06/2025     |
-| **Sprint 11**| Automação da execução com agendamento                       | 10/06/2025      | 16/06/2025     |
-| **Sprint 12**| Testes finais, documentação e entrega do produto final     | 17/06/2025      | 23/06/2025     |
+| **Sprint 0** | Formação do grupo e primeiros alinhamentos                                                | 25/03/2025      | 31/03/2025     |
+| **Sprint 1** | Estudo e aquisição de conhecimentos básicos                                               | 01/04/2025      | 07/04/2025     |
+| **Sprint 2** | Kickoff e estruturação do projeto                                                         | 08/04/2025      | 14/04/2025     |
+| **Sprint 3** | Setup do projeto, backlog, arquitetura                                                    | 15/04/2025      | 21/04/2025     |
+| **Sprint 4** | Ingestão e limpeza de dados                                                               | 22/04/2025      | 28/04/2025     |
+| **Sprint 5** | Backend inicial + layout base Streamlit                                                   | 29/04/2025      | 05/05/2025     |
+| **Sprint 6** | Integração de FrontEnd e Back End                                                         | 06/05/2025      | 12/05/2025     |
+| **Sprint 7** | Visualização de Dados: Configuração de gráficos interativos com Plotly                    | 13/05/2025      | 19/05/2025     |
+| **Sprint 8** | Visualização de Dados: Ajustes nos gráficos interativos e feedbacks                       | 20/05/2025      | 26/05/2025     |
+| **Sprint 9** | Geração de Relatórios: Implementação de geração de relatórios automáticos com Mistral-7B  | 27/05/2025      | 02/06/2025     |
+| **Sprint 10**| Geração de Relatórios: Finalização dos relatórios automáticos e testes finais             | 03/06/2025      | 09/06/2025     |
+| **Sprint 11**| Alertas Automáticos: Implementação de notificações e testes                               | 10/06/2025      | 16/06/2025     |
+| **Sprint 12**| Revisão, Finalização do MVP e entrega do produto final                                    | 17/06/2025      | 23/06/2025     |
 
 ---
 
@@ -31,15 +31,16 @@ O projeto *Relatórios do IPEA* visa proporcionar uma solução ágil, eficiente
 
 **Tecnologias Utilizadas:**
 
-- **Backend:** FastAPI
-- **Frontend:** Streamlit
-- **Modelos de NLP:** T5, BART, BERTopic
-- **Automação e Agendamento:** Prefect, Cronjobs
+- **Backend**: **Python 3.x**
+- **Frontend**: **Streamlit**
+- **Modelo de NLP**: **Mistral-7B**
+- **Bibliotecas**: **pandas 2.2.3**, **plotly 6.0.1**, **requests 2.32.3**
+- **Deploy**: **Streamlit Deploy**, **Git Pages**
 
 ---
 
 **Notas:**
-- A Sprint 6 marca a entrega do **Mínimo Produto Viável (MVP)**, com uma versão funcional que permitirá feedbacks e ajustes.
+- A Sprint 6 marca a entrega da **Release 1, Viabilidade do Projeto**, com uma análise mercadologica e a viabilidade do projeto.
 - A Sprint 12 entrega o produto final, com **qualidade de software**, **documentação** e o **código aberto**.
 
 ---

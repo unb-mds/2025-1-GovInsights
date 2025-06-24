@@ -1,22 +1,32 @@
-# Ignorar arquivos de cache do Python
+bug/update-gitignore
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.pyc
-*.pyd
 *.pyo
+*.pyd
 
-# Ignorar pastas de ambiente virtual
+# Virtual environment
 venv/
 .venv/
+env/
+.env/
 
-# Ignorar caches do pytest
-.pytest_cache/
+# Log files
+*.log
 
-# Ignorar caches do Streamlit
-.streamlit/local_storage/
-
-# Ignorar arquivos temporários e de IDEs (se não estiverem já)
-.idea/
-.vscode/
+# Editor files
 *.swp
-*~
+*.swo
+*.idea/
+*.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# macOS files
 .DS_Store
+
+#IntelliJ IDEA
+.idea/
+=======
+__pycache__/
+

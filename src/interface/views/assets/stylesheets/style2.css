@@ -1,0 +1,352 @@
+body, .stApp {
+    background-color: #0F1020; /*cor do fundo*/
+    font-family: 'Segoe UI', sans-serif;
+    color: #ffffff; /*tetxo do tipulo*/
+    opacity: 0.9; 
+}
+
+
+body, .stApp {
+    background-color: #0F1020;
+    font-family: 'Segoe UI', sans-serif;
+    color: #ffffff;
+    /* opacity: 0.9; */
+}
+
+/*  SIDEBAR  */
+section[data-testid="stSidebar"] {
+    background: rgba(10, 65, 97, 0.171); /* Levemente azul  translúcido */
+    backdrop-filter: blur(25px); /* Efeito de vidro */
+    -webkit-backdrop-filter: blur(12px); /* Safari support */
+    border-right: 1px solid rgba(255, 255, 255, 0.3); /* borda de divisão sutil */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* sombra leve */
+    border-radius: 0 20px 20px 0; /* arredondamento da borda direita */
+    transition: all 0.3s ease;
+}
+
+
+section[data-testid="stSidebar"] .block-container {
+    padding: 2rem 1rem;
+    color: white; /* ou ajuste conforme seu tema */
+}
+
+
+
+/* Título da sidebar */
+section[data-testid="stSidebar"] h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff; /* cor do texto do sidebar */
+    margin-bottom: 2rem;
+    margin-top: -40px;
+    text-align: center; 
+}
+
+label, .stSelectbox label, .stCheckbox label {
+    color: white !important;
+    font-weight: 500;
+}
+
+/* pills filtros */
+button[kind="pills"]{
+    background-color: #0f1020;
+    color: #ffffff;
+}
+button[kind="pillsActivate"] {
+    background-color: #2BB17A !important;
+    color: #0F1020 !important;
+    border-radius: 20px !important;
+    border: 1px solid #2BB17A !important;
+    padding: 5px 10px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+button[kind="pills"]:hover {
+    background-color: #2BB17A !important;
+    color: #FFFFFF !important;
+}
+
+/* Botões da sidebar */
+button[kind="secondary"], .stButton > button {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.3rem 0;
+    background-color: #0F1020; /*cor dos botões*/
+    border: none;
+    border-radius: 10px;
+    color: #ffffff; /*escrita dos bottões*/
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+
+/*hover botões*/
+button[kind="secondary"]:hover, .stButton > button:hover {
+    background-color: #2BB17A;
+    color: #0F1020;
+}
+
+
+ /* Remove header invisível que deixa espaço */
+ header {
+    visibility: hidden;
+    height: 0px !important;
+    position: absolute;
+    top: 50px;
+} 
+
+h1.titulo {
+    font-size: 2.2rem;
+    padding: 1.2rem 2rem 0.5rem;
+    background-color: transparent;
+    border-bottom: 1px solid #ffffff;
+}
+
+.titulo-ipea {
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin-bottom: 0;
+    text-align: left;
+}
+
+/* Estilização do sidebar (expander e labels) */
+section[data-testid="stSidebar"] details summary {
+    color: white !important;
+    font-weight: 600;
+}
+
+section[data-testid="stSidebar"] label {
+    color: white !important;
+    font-weight: 500;
+}
+
+/* Cabeçalho da página */
+.header-ipea h3.titulo-ipea {
+    font-family: 'Inter Black', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    color: white;
+    margin: 0;
+}
+
+/* Estilo do header customizado da série */
+.custom-header {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    row-gap: 1px;
+    column-gap: 10px;
+    flex-wrap: wrap;
+    max-width: 1000px;
+}
+
+.custom-header h1 {
+    font-family: 'Inter Black', sans-serif;
+    font-size: 24px; 
+    font-weight: 900;
+    margin: 0 0 12px 0;
+    line-height: 22px;
+    word-break: break-word;
+    max-width: 1000px;
+    text-align: justify;
+}
+
+.indicator {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    margin: -16px 0 0 0;
+    /* A cor será definida dinamicamente via Streamlit */
+}
+
+.subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #ffffff;
+    display: block;
+    line-height: 18px;
+    margin: -8px 0 0 0;
+    max-width: 1000px;
+    text-align: justify;
+}
+
+.custom-divider {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 18px 0 0 0;
+}
+
+/* Painel lateral com explicação/resumo (à direita) */
+.painel {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 12px;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+}
+
+.painel h2.valor-indicador {
+    font-size: 32px;
+    font-weight: 700;
+    color: #2BB17A;
+}
+
+div[data-testid="stSidebar"] label,
+div[data-testid="stSidebar"] span {
+    color: white !important;
+    font-weight: 500 !important;
+}
+
+section[data-testid="stSidebar"] div[data-testid="stCheckbox"] > div > label > div:nth-child(2) {
+    color: white !important;
+    font-weight: 500 !important;
+}
+
+.custom-header-ipea {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #0F1020;
+    padding: 1rem 2rem;
+    z-index: 999;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.custom-header-ipea h3 {
+    margin: 0;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: left;
+}
+
+body, .stApp {
+    background-color: #0F1020;
+    font-family: 'Segoe UI', sans-serif !important;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    min-height: 100vh;
+}
+
+.stApp > div {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #bbb !important;
+    opacity: 1 !important;
+}
+
+label, .css-1v3fvcr, .css-1kyxreq {
+    color: #646464 !important;
+    font-weight: 600;
+    font-size: 0.95rem !important;
+}
+
+div[data-testid="stCheckbox"] label > div {
+    color: #ffffff70 !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+}
+
+body, .stApp, h1, h2, h3, p, div, span, input, textarea, button, a, table, th, td {
+    font-family: 'Segoe UI', sans-serif !important;
+}
+
+header.stAppHeader {
+    display: none !important;
+}
+
+h1, h2, h3 {
+    color: #2BB17A;
+    font-weight: bold;
+    text-align: center;
+}
+
+input, textarea {
+    background-color: #1a1a2e !important;
+    color: white !important;
+    border-radius: 10px !important;
+    border: 1px solid #2BB17A !important;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    border-color: #3de79f !important;
+    outline: none !important;
+    box-shadow: 0 0 8px #3de79f !important;
+}
+
+.stAlert {
+    border-left: 5px solid #ffb700 !important;
+    background-color: #333 !important;
+    color: white !important;
+}
+
+table {
+    background-color: #1a1a2e;
+    color: white;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #2BB17A;
+    padding: 8px;
+}
+
+a {
+    color: #2BB17A;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #21a36b;
+    text-decoration: underline;
+}
+
+.custom-popup {
+    background-color: #1a1a2e;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    border: 2px solid #2bb179;
+    margin-top: 20px;
+    animation: fadeIn 0.3s ease-in-out;
+    color: #ffffff;
+}
+
+.custom-popup h3 {
+    margin-top: 0;
+    color: #2bb179;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+button[data-key="enviar_alerta_button"] {
+    background-color: #2BB17A !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 8px 16px !important;
+    cursor: pointer !important;
+    font-weight: 600 !important;
+    transition: background-color 0.3s ease !important;
+}
+
+button[data-key="enviar_alerta_button"]:hover {
+    background-color: #21a36b !important;
+}

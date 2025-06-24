@@ -1,0 +1,4 @@
+pandas==2.2.3
+ipeadatapy==0.1.9
+supabase==2.15.2
+reportlab==4.4.1

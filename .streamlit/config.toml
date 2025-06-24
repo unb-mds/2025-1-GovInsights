@@ -1,0 +1,21 @@
+[server]
+runOnSave = true
+enableStaticServing = true
+
+[[theme.fontFaces]]
+family = "Inter"
+url = "app/static/font/Inter-VariableFont.ttf"
+weight = 500
+
+
+[[theme.fontFaces]]
+family = "Inter Bold"
+url = "app/static/font/Inter-VariableFont.ttf"
+weight = 600
+
+[theme]
+font = "Inter"
+headingFont = "Inter Bold"
+primaryColor = "#2BB17A"
+backgroundColor = "#0F1020"
+textColor = "#FFFfFF"
