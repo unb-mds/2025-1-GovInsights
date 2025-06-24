@@ -153,21 +153,19 @@ with st.sidebar:
 # --- 9. Definição da Página Principal (main_page) ---
 def main_page():
     # cabeçalho
-    col1, col2 = st.columns([1, 14])
-    with col1:
-        st.image(str(img_path), width=80)
-    with col2:
-        st.markdown("""
-        <div style="display: flex; align-items: left; height: 100%; justify-content: flex-start;">
-            <h3 style="margin-left: 10px;">
-                Gov Insights <br>
-                <p>Relatórios inteligentes IPEA</p>
-            </h3>
+    st.markdown("""
+    <div style="display: flex; align-items: center; height: 100%; justify-content: flex-start; gap: 12px; margin: 0 0 30px 0">
+        <img src="app/static/img/govinsights_logo.png" width=52px height=52px>
+        <div style="display: flex; flex-direction: column; justify-content: center;">
+            <h3 style="margin: 0; padding: 0">Gov Insights</h3>
+            <h5 style="color: #b0b0b0; margin: -4px 0 0 0; padding: 0">Relatórios Inteligentes</h5>
         </div>
-        """, unsafe_allow_html=True)
+        
+    </div>
+    """, unsafe_allow_html=True)
 
-    col3, col4 = st.columns([4, 2])
-    with col3:
+    col1, col4 = st.columns([4, 2])
+    with col1:
         local_serie_selecionada = None
         if serie_selecionada:
             local_serie_selecionada = st.session_state.get('serie_estatistica')['CODE']
