@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 
 from services.search import SearchService
-# from services.graph import plotar_grafico_periodo, calcular_percentual_aumento_por_periodo
+from data.operacoes_bd import inserir_nova_serie
 
 if 'current_page' not in st.session_state:
     st.session_state.current_page = "Dashboard"
@@ -66,6 +66,7 @@ def alertas_page():
         default=st.session_state.get('frequencia')
     )
     
+    filtrar_por_orgao = st.checkbox(label="Filtrar por órgão responsável")
     st.multiselect(
         label="Selecione os órgãos",
         options=pesquisa.get_available_sources(st.session_state['frequencia_pills']),
@@ -74,6 +75,7 @@ def alertas_page():
         label_visibility="visible"
     )
     
+    filtrar_por_tema = st.checkbox(label="Filtrar por tema")
     st.multiselect(
         label="Selecione os temas",
         options=pesquisa.get_available_themes(st.session_state['frequencia_pills']),
@@ -86,7 +88,15 @@ def alertas_page():
 
     porcentagem = st.slider("Porcentagem de variação para alerta", min_value=0, max_value=100, value=10, step=1)
 
+    # Atualiza o resultado da pesquisa sempre que filtros mudam
+    orgaos_selecionados = st.session_state['orgaos'] if filtrar_por_orgao else []
+    temas_selecionados = st.session_state['temas'] if filtrar_por_tema else []
 
+    st.session_state['resultado_pesquisa'] = pesquisa.search(
+        st.session_state['frequencia_pills'],
+        fonte_list=orgaos_selecionados,
+        tema_list=temas_selecionados
+    )
     st.session_state['resultado_pesquisa'] = pesquisa.search(
         st.session_state['frequencia_pills'],
         st.session_state['orgaos_multiselect'],
