@@ -26,5 +26,5 @@ theme:
         name: Switch to system preference
 extra_css:
   - stylesheets/extra.css
-repo_url: https://github.com/unb-mds/2025-1-Squad10/
+repo_url: https://unb-mds.github.io/2025-1-GovInsights/
 repo_name: 'GovInsights'

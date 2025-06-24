@@ -1,7 +1,7 @@
 <h1 align="center" style="font-weight: bold;">📊 GovInsights - Análise de Dados Públicos  </h1>
 
 <p align="center">
- <a href="https://unb-mds.github.io/2025-1-Squad10/">Git Pages</a>
+ <a href="https://unb-mds.github.io/2025-1-GovInsights/">Git Pages</a>
 </p>
 
 ## 📚 Projeto
