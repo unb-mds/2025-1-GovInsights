@@ -1,0 +1,27 @@
+name: Cronjob - Verificar Atualização das Séries
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # A cada 1 hora, no minuto 0
+  workflow_dispatch:
+
+jobs:
+  alerta_series:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Instalar dependências do cronjob
+        run: |
+          pip install -r requirements-cron.txt
+
+      - name: Executar o cronjob
+        run: |
+          python cronjob_runner.py
