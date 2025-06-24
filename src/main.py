@@ -27,6 +27,9 @@ if main_style_path.exists():
 else:
     st.warning("Arquivo mainStyle.css não encontrado.")
 
+st.markdown("""
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+""", unsafe_allow_html=True)
 
 def landing_page():
 
@@ -66,6 +69,10 @@ def landing_page():
                 <h1 style='color: #e0e0e0; font-size: 20px; max-width: 500px; margin-top: 0;'>
                     Sistema inteligente para Análise Automatizada de Notícias e Indicadores Públicos
                 </h1>
+                <br>
+                <br>
+                        <br>
+                        
             </div>
             """, unsafe_allow_html=True)
 
@@ -86,8 +93,11 @@ def landing_page():
     # Seção: Como Funciona
     st.markdown("""
     <div style='margin-top: -50px;'>
-        <h2 style='text-align: center; color: white;'>COMO FUNCIONA</h2>
-        <p style='text-align: center; color: #00DFA2;'>Como a plataforma transforma dados em decisões</p>
+        <h1 style='text-align: center; color: white;'>COMO FUNCIONA</h1>
+                <br>
+        <p style="text-align: center; color: #00DFA2; font-size: 30px;">
+            Como a plataforma transforma dados em decisões
+        </p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -168,21 +178,31 @@ def landing_page():
         ("­", "­", "gabriel.png")
     ]
 
-    # Pasta base onde estão as imagens
-    equipe_img_path = current_dir / "interface" /"views"/ "assets" / "img" / "equipe"
 
-    # Divide em linhas de 4 colunas
+
+    # Caminho das imagens
+    equipe_img_path = current_dir / "interface" / "views" / "assets" / "img" / "equipe"
+
+
+
+    # Exibe os membros em linhas de 4
     for i in range(0, len(membros), 4):
         cols = st.columns(4)
         for col, (nome, funcao, img_file) in zip(cols, membros[i:i+4]):
             img_path = equipe_img_path / img_file
             with col:
                 if img_path.exists():
-                    st.image(str(img_path), use_container_width=True)
+                    img_base64 = get_base64_image(img_path)
+                    st.markdown(f"""
+                        <div class="img-container">
+                            <img src="data:image/png;base64,{img_base64}" class="membro-img" />
+                        </div>
+                    """, unsafe_allow_html=True)
                 else:
                     st.warning(f"Imagem não encontrada: {img_file}")
                 st.markdown(f"<h4 style='margin: 0.3rem 0 0; color: white;'>{nome}</h4>", unsafe_allow_html=True)
                 st.markdown(f"<p style='margin: 0; color: #00DFA2; font-size: 0.9rem;'>{funcao}</p>", unsafe_allow_html=True)
+
 
 if st.session_state.page == "landing":
     landing_page()
