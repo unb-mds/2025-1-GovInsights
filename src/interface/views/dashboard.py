@@ -266,5 +266,18 @@ def main_page():
 # --- 10. Controle de Páginas (Último bloco no script principal) ---
 if st.session_state.current_page == "Dashboard":
     main_page()
+    
 elif st.session_state.current_page == "Alertas":
+    st.markdown("""
+    <script>
+        const body = window.parent.document.querySelector('body');
+        body.classList.add('sidebar-hidden');
+    </script>
+""", unsafe_allow_html=True)
+    css_path = current_dir / "assets" / "stylesheets" / "style2.css"
+    if css_path.exists():
+        with open(css_path) as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    else:
+        st.warning("Arquivo CSS não encontrado em: " + str(css_path))
     alertas_page()

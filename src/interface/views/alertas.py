@@ -12,12 +12,6 @@ css_path = current_dir / "assets" / "stylesheets" / "style2.css"
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
-# st.set_page_config(
-#     page_title="GovInsights",
-#     layout="wide",
-#     page_icon=str(img_path)  
-# )
-
 
 from services.search import SearchService
 from data.operacoes_bd import inserir_nova_serie
@@ -41,18 +35,18 @@ pesquisa = st.session_state['search_service']
 def change_page(page_name):
     st.session_state.current_page = page_name
 
-def inserir_nova_serie(codigo_serie: str, email_usuario: str, margem: str, ultima_atualizacao:str):
-    st.success("Alerta configurado com sucesso!")
-    detalhes_alerta = f"""
-            <div class="custom-popup">
-                <h3>Detalhes do alerta</h3>
-                <p><strong>E-mail:</strong> {email_usuario}</p>
-                <p><strong>Porcentagem:</strong> {margem}%</p>
-                <p><strong>Série Estatística:</strong> {codigo_serie}</p>
-                <p><strong>Ultima atualização em:</strong> {ultima_atualizacao}</p>
-            </div>
-            """
-    st.markdown(detalhes_alerta, unsafe_allow_html=True)
+# def inserir_nova_serie(codigo_serie: str, email_usuario: str, margem: str, ultima_atualizacao:str):
+#     st.success("Alerta configurado com sucesso!")
+#     detalhes_alerta = f"""
+#             <div class="custom-popup">
+#                 <h3>Detalhes do alerta</h3>
+#                 <p><strong>E-mail:</strong> {email_usuario}</p>
+#                 <p><strong>Porcentagem:</strong> {margem}%</p>
+#                 <p><strong>Série Estatística:</strong> {codigo_serie}</p>
+#                 <p><strong>Ultima atualização em:</strong> {ultima_atualizacao}</p>
+#             </div>
+#             """
+#     st.markdown(detalhes_alerta, unsafe_allow_html=True)
 
 def alertas_page():
     st.title("Alertas")
@@ -66,7 +60,7 @@ def alertas_page():
         default=st.session_state.get('frequencia')
     )
     
-    filtrar_por_orgao = st.checkbox(label="Filtrar por órgão responsável")
+    filtrar_por_orgao = st.checkbox(label="Filtrar por órgão responsável", key="filtro_por_orgao")
     st.multiselect(
         label="Selecione os órgãos",
         options=pesquisa.get_available_sources(st.session_state['frequencia_pills']),
@@ -75,7 +69,7 @@ def alertas_page():
         label_visibility="visible"
     )
     
-    filtrar_por_tema = st.checkbox(label="Filtrar por tema")
+    filtrar_por_tema = st.checkbox(label="Filtrar por tema", key="filtro_por_tema")
     st.multiselect(
         label="Selecione os temas",
         options=pesquisa.get_available_themes(st.session_state['frequencia_pills']),
@@ -97,14 +91,8 @@ def alertas_page():
         fonte_list=orgaos_selecionados,
         tema_list=temas_selecionados
     )
-    st.session_state['resultado_pesquisa'] = pesquisa.search(
-        st.session_state['frequencia_pills'],
-        st.session_state['orgaos_multiselect'],
-        st.session_state['temas_multiselect']
-    )
-
-
-    st.markdown("####Selecione ou pesquise uma série estatística")
+    
+    st.markdown("#### Selecione ou pesquise uma série estatística")
 
     resultado_df = st.session_state['resultado_pesquisa']
     serie_selecionada = st.selectbox(
@@ -116,30 +104,22 @@ def alertas_page():
         format_func=lambda x: f"{x['NAME']} ({x['CODE']})",
         index=None
     )
+    if serie_selecionada:
+        df = ipea.timeseries(serie_selecionada['CODE'])
+        ultima_atualizacao = df.iloc[0]["RAW DATE"]
+        ultima_atualizacao = re.sub(r"[a-zA-Z].*", "", ultima_atualizacao)
+        
+        porcentagem = str(porcentagem)
 
-    df = ipea.timeseries(serie_selecionada)
-    ultima_atualizacao = df.iloc[0]["RAW DATE"]
-    ultima_atualizacao = re.sub(r"[a-zA-Z].*", "", ultima_atualizacao)
-    
-    porcentagem = str(porcentagem)
-    if st.button("Enviar alerta", key="enviar_alerta_button"):
-        if not email:
-            st.warning("Preencha o campo de e-mail.")
-        elif not serie_selecionada:
-            st.warning("Selecione uma série estatística.")
-        else:
-            nome_serie = resultado_df.loc[resultado_df["CODE"] == serie_selecionada, "NAME"].values[0]
-            st.success("Alerta configurado com sucesso!")
+        if st.button("Enviar alerta", key="enviar_alerta_button"):
+            if not email:
+                st.warning("Preencha o campo de e-mail.")
+            elif not serie_selecionada:
+                st.warning("Selecione uma série estatística.")
+            else:
+                try:
+                    inserir_nova_serie(serie_selecionada['CODE'], email, porcentagem, ultima_atualizacao)
+                    st.success("Alerta configurado com sucesso!")
+                except Exception as error:
+                    st.warning("Erro ao comunicar com BD")
 
-            detalhes_alerta = f"""
-            <div class="custom-popup">
-                <h3>Detalhes do alerta</h3>
-                <p><strong>E-mail:</strong> {email}</p>
-                <p><strong>Porcentagem:</strong> {porcentagem}%</p>
-                <p><strong>Série Estatística:</strong> {nome_serie}</p>
-                <p><strong>Frequência:</strong> {', '.join(frequencia_selecionada) if frequencia_selecionada else 'Não selecionado'}</p>
-                <p><strong>Órgãos:</strong> {', '.join(orgaos_selecionados) if orgaos_selecionados else 'Não selecionado'}</p>
-                <p><strong>Temas:</strong> {', '.join([df_temas.loc[df_temas['ID'] == x, 'NAME'].values[0] for x in temas_selecionados]) if temas_selecionados else 'Não selecionado'}</p>
-            </div>
-            """
-            st.markdown(detalhes_alerta, unsafe_allow_html=True)
