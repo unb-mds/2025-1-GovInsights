@@ -13,6 +13,8 @@ body, .stApp {
     /* opacity: 0.9; */
 }
 
+
+
 /*  SIDEBAR  */
 section[data-testid="stSidebar"] {
     background: rgba(10, 65, 97, 0.171); /* Levemente azul  translúcido */
@@ -87,6 +89,22 @@ button[kind="secondary"]:hover, .stButton > button:hover {
     background-color: #2BB17A;
     color: #0F1020;
 }
+
+
+/* style2.css */
+
+.sidebar-hidden [data-testid="stSidebar"] {
+    transform: translateX(-300px);
+    transition: transform 0.5s ease;
+    visibility: hidden;
+    width: 0 !important;
+    padding: 0 !important;
+}
+
+.sidebar-hidden .main {
+    margin-left: 0 !important;
+}
+
 
 
  /* Remove header invisível que deixa espaço */

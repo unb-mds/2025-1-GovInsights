@@ -1,7 +1,9 @@
 from reportlab.lib.validators import isNumber
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 from src.data.connect import supabase
-
 # Quando for inserir a serie no BD o campo de ultima atualizacao diz respeito a última atualização da série no IPEA
 def inserir_nova_serie(codigo_serie: str, email_usuario: str, margem: str, ultima_atualizacao: str):
     """

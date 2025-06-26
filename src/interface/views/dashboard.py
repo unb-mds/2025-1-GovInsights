@@ -146,8 +146,6 @@ with st.sidebar:
     if st.button("Dashboard", key="btn_dashboard_sidebar"):
         change_page("Dashboard")
 
-    if st.button("Home", key="btn_home_sidebar"):
-        change_page("Dashboard")
 
 
 # --- 9. Definição da Página Principal (main_page) ---
@@ -224,36 +222,36 @@ def main_page():
         response = None
         pdf_bytes = None
         if local_serie_selecionada:
-            try:
-                if 'serie_obj' not in st.session_state or st.session_state.get('last_serie_selecionada') != local_serie_selecionada:
-                    st.session_state['serie_obj'] = obter_obj_serie(local_serie_selecionada, st.session_state['frequencia'])
-                    st.session_state['last_serie_selecionada'] = local_serie_selecionada
-                serie = st.session_state['serie_obj']
+            if st.button("Gerar Relatório Inteligente", key="btn_relatorio_ia"):
+                try:
+                    if 'serie_obj' not in st.session_state or st.session_state.get('last_serie_selecionada') != local_serie_selecionada:
+                        st.session_state['serie_obj'] = obter_obj_serie(local_serie_selecionada, st.session_state['frequencia'])
+                        st.session_state['last_serie_selecionada'] = local_serie_selecionada
+                    serie = st.session_state['serie_obj']
 
-                periodo_analise_ia = st.session_state.get('periodo_analise')
-                dfSerie = serie.dados_periodos.get(periodo_analise_ia)
+                    periodo_analise_ia = st.session_state.get('periodo_analise')
+                    dfSerie = serie.dados_periodos.get(periodo_analise_ia)
 
-                if dfSerie is None or dfSerie.empty:
-                    st.error("Nenhum dado encontrado para a série ou período informado para análise de IA.")
-                else:
-                    st.subheader("Análise inteligente")
-                    with st.spinner("Gerando análise..."):
-                        response = gerar_relatorio(local_serie_selecionada, dfSerie)
+                    if dfSerie is None or dfSerie.empty:
+                        st.error("Nenhum dado encontrado para a série ou período informado para análise de IA.")
+                    else:
+                        st.subheader("Análise inteligente")
+                        with st.spinner("Gerando análise..."):
+                            response = gerar_relatorio(local_serie_selecionada, dfSerie)
 
-                    if response:
-                        with open(gerar_pdf(codSerie=local_serie_selecionada, dfSerie=dfSerie, iaText=response), "rb") as file:
-                            pdf_bytes = file.read()
+                        if response:
+                            with open(gerar_pdf(codSerie=local_serie_selecionada, dfSerie=dfSerie, iaText=response), "rb") as file:
+                                pdf_bytes = file.read()
 
-                with st.container(height=600):
-                    if response:
-                        st.markdown(response)
-                    elif local_serie_selecionada and (dfSerie is None or dfSerie.empty):
-                        st.info("Não foi possível gerar a análise de IA. Verifique os dados da série ou o período selecionado.")
-                    elif local_serie_selecionada:
-                        st.warning("Análise de IA não gerada. Verifique as configurações da API ou os dados.")
-
-            except Exception as e:
-                st.error(f"Erro na análise de IA: {e}")
+                    with st.container(height=600):
+                        if response:
+                            st.markdown(response)
+                        elif local_serie_selecionada and (dfSerie is None or dfSerie.empty):
+                            st.info("Não foi possível gerar a análise de IA. Verifique os dados da série ou o período selecionado.")
+                        elif local_serie_selecionada:
+                            st.warning("Análise de IA não gerada. Verifique as configurações da API ou os dados.")
+                except Exception as e:
+                    st.error(f"Erro na análise de IA: {e}")
         else:
             st.markdown('''#### ''')
 
@@ -268,5 +266,18 @@ def main_page():
 # --- 10. Controle de Páginas (Último bloco no script principal) ---
 if st.session_state.current_page == "Dashboard":
     main_page()
+    
 elif st.session_state.current_page == "Alertas":
+    st.markdown("""
+    <script>
+        const body = window.parent.document.querySelector('body');
+        body.classList.add('sidebar-hidden');
+    </script>
+""", unsafe_allow_html=True)
+    css_path = current_dir / "assets" / "stylesheets" / "style2.css"
+    if css_path.exists():
+        with open(css_path) as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    else:
+        st.warning("Arquivo CSS não encontrado em: " + str(css_path))
     alertas_page()
