@@ -13,6 +13,8 @@ body, .stApp {
     /* opacity: 0.9; */
 }
 
+
+
 /*  SIDEBAR  */
 section[data-testid="stSidebar"] {
     background: rgba(10, 65, 97, 0.171); /* Levemente azul  translúcido */
@@ -87,6 +89,22 @@ button[kind="secondary"]:hover, .stButton > button:hover {
     background-color: #2BB17A;
     color: #0F1020;
 }
+
+
+/* style2.css */
+
+.sidebar-hidden [data-testid="stSidebar"] {
+    transform: translateX(-300px);
+    transition: transform 0.5s ease;
+    visibility: hidden;
+    width: 0 !important;
+    padding: 0 !important;
+}
+
+.sidebar-hidden .main {
+    margin-left: 0 !important;
+}
+
 
 
  /* Remove header invisível que deixa espaço */
@@ -239,7 +257,11 @@ body, .stApp {
     max-width: 600px;
     width: 100%;
     margin: 0 auto;
-    padding: 20px;
+    padding: 0 20px 20px 20px;;
+}
+
+.block-container {
+    padding-top: 0 !important;
 }
 
 input::placeholder,
@@ -349,4 +371,51 @@ button[data-key="enviar_alerta_button"] {
 
 button[data-key="enviar_alerta_button"]:hover {
     background-color: #21a36b !important;
+}
+
+select {
+    background-color: #1a1a2e !important;
+    color: white !important;
+    border-radius: 10px !important;
+    border: 1px solid #2BB17A !important;
+    padding: 0.5rem 0.75rem;
+    font-family: 'Segoe UI', sans-serif !important;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    appearance: none; 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+}
+
+select:focus {
+    border-color: #3de79f !important;
+    outline: none !important;
+    box-shadow: 0 0 8px #3de79f !important;
+}
+
+select option {
+    color: white;
+    background-color: #1a1a2e;
+}
+
+div[data-baseweb="select"] > div {
+    background-color: #1a1a2e !important;
+    border: 1px solid #2BB17A !important;
+    border-radius: 10px !important;
+    color: white !important;
+    font-family: 'Segoe UI', sans-serif !important;
+}
+
+div[data-baseweb="select"] > div:focus-within {
+    border-color: #3de79f !important;
+    box-shadow: 0 0 8px #3de79f !important;
+}
+
+div[data-baseweb="select"] > div > div:first-child {
+    color: white !important;
+}
+
+div[data-baseweb="select"] svg {
+    fill: white !important;
 }
