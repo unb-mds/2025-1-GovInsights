@@ -1,10 +1,9 @@
-import matplotlib.pyplot as plt
-import tempfile
-import pandas as pd
-from xhtml2pdf import pisa
-import markdown
-
 def gerar_pdf(codSerie: str, dfSerie: pd.DataFrame, iaText: str):
+    import matplotlib.pyplot as plt
+    import tempfile
+    import pandas as pd
+    from xhtml2pdf import pisa
+    import markdown
     """
     :arg codSerie: código da série do IPEA
     :arg dfSerie: dataframe da série do IPEA

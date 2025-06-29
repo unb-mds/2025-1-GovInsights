@@ -1,8 +1,8 @@
-from together import Together
 import pandas as pd
-import re
 
 def gerar_relatorio(codSerie: str, dataframe: pd.DataFrame):
+    from together import Together
+    import re
     """
     :arg codSerie: string contendo o código da série do IPEA
     :arg dataframe: dataframe contendo todos os dados da série do IPEA

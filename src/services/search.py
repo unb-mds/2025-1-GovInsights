@@ -1,6 +1,5 @@
 import pandas as pd
 import ipeadatapy as ipea
-import plotly.express as px
 
 @staticmethod
 def load_global_variables():
