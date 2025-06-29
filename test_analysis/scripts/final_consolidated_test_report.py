@@ -8,6 +8,7 @@ Data: Janeiro 2025
 import subprocess
 import sys
 from datetime import datetime
+from pathlib import Path
 
 
 def run_consolidated_test_report():
@@ -24,12 +25,15 @@ def run_consolidated_test_report():
     print("-" * 50)
     
     try:
+        # Definir diretório raiz do projeto
+        project_root = Path(__file__).parent.parent.parent
+        
         result_unit = subprocess.run([
             sys.executable, "-m", "pytest", 
             "tests/unit/",
             "--cov=src", "--cov-report=term-missing",
             "-v", "--tb=short", "--no-header", "-q"
-        ], capture_output=True, text=True, cwd=".")
+        ], capture_output=True, text=True, cwd=str(project_root))
         
         print("Resultado dos testes unitários:")
         if result_unit.returncode == 0:
@@ -67,7 +71,7 @@ def run_consolidated_test_report():
             "test_analysis/",
             "--cov=src", "--cov-append", "--cov-report=term-missing",
             "-v", "--tb=short", "--no-header", "-q"
-        ], capture_output=True, text=True, cwd=".")
+        ], capture_output=True, text=True, cwd=str(project_root))
         
         print("Resultado dos testes de integração:")
         if result_integration.returncode == 0:

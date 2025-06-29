@@ -17,8 +17,9 @@ def setup_ci_environment():
     os.environ['DISPLAY'] = ''
     
     # Configurar Python path
-    project_root = Path(__file__).parent
+    project_root = Path(__file__).parent.parent.parent  # Voltar para raiz: scripts -> test_analysis -> root
     os.environ['PYTHONPATH'] = str(project_root / 'src')
+    sys.path.insert(0, str(project_root / 'src'))  # Adicionar ao sys.path também
     
     print("✅ Ambiente configurado")
 
