@@ -60,7 +60,7 @@ def test_mock_data_validity():
         # Testar geração de dados mock
         mock_data = generate_mock_timeseries_data(periods=10)
         assert len(mock_data) == 10
-        assert 'VALUE (R$)' in mock_data.columns
+        assert 'VALUE' in mock_data.columns  # Padronizado para 'VALUE'
         
         # Testar resultados de busca mock
         search_results = get_mock_search_results()

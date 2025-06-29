@@ -183,7 +183,7 @@ def get_mock_graph_data(code: str, period: str = "Último ano"):
     return generate_mock_timeseries_data(code, periods=periods)
 
 def get_mock_dataframe(size=100, start_date='2020-01-01'):
-    """Gera DataFrame mock para testes"""
+    """Gera DataFrame mock para testes - compatível com gerar_pdf"""
     # Limitar o tamanho para evitar datas fora do limite
     safe_size = min(size, 500)  # Máximo 500 períodos (42 anos)
     dates = pd.date_range(start=start_date, periods=safe_size, freq='ME')
@@ -194,10 +194,13 @@ def get_mock_dataframe(size=100, start_date='2020-01-01'):
     # Se precisar de mais dados, usar apenas o que foi gerado
     actual_size = min(size, safe_size)
     
+    # Formato compatível com a função gerar_pdf (última coluna = valores)
     return pd.DataFrame({
-        'data': dates[:actual_size],
-        'valor': values[:actual_size],
-        'codigo': ['TEST_SERIES'] * actual_size
+        'RAW DATE': dates[:actual_size],
+        'CODE': ['TEST_SERIES'] * actual_size,
+        'YEAR': [d.year for d in dates[:actual_size]],
+        'MONTH': [d.month for d in dates[:actual_size]], 
+        'VALUE': values[:actual_size]  # Última coluna para gerar_pdf
     })
 
 def get_mock_ia_response(test_type='default'):
