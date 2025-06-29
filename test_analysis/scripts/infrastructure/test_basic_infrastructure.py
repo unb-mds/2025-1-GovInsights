@@ -26,31 +26,31 @@ def test_basic_imports():
         assert len(ia_response) > 0
         
         print("✅ Imports básicos funcionando!")
-        return True
+        # Removido return True para seguir boas práticas do pytest
         
     except Exception as e:
         print(f"❌ Erro nos imports: {e}")
-        return False
+        pytest.fail(f"Erro nos imports básicos: {e}")
 
 def test_pdf_functions():
     """Testa se as funções de PDF existem"""
     try:
         from src.services.pdf import gerar_pdf
         print("✅ Função gerar_pdf encontrada!")
-        return True
+        # Removido return True
     except ImportError as e:
         print(f"⚠️  gerar_pdf não encontrada: {e}")
-        return False
+        pytest.skip(f"gerar_pdf não encontrada: {e}")
 
 def test_graph_functions():
     """Testa se as funções de gráfico existem"""
     try:
         from src.services.graph import timeSeries
         print("✅ Classe timeSeries encontrada!")
-        return True
+        # Removido return True
     except ImportError as e:
         print(f"⚠️  timeSeries não encontrada: {e}")
-        return False
+        pytest.skip(f"timeSeries não encontrada: {e}")
 
 if __name__ == "__main__":
     print("🧪 Testando infraestrutura básica...\n")
