@@ -5,6 +5,7 @@ on:
       - main
       - develop
       - feature/testes
+      - feature/testes-integracao
 permissions:
   contents: write
 jobs:
