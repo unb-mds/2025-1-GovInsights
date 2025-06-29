@@ -1,0 +1,14 @@
+Name                         Stmts   Miss  Cover
+------------------------------------------------
+src\__init__.py                  0      0   100%
+src\core\__init__.py             0      0   100%
+src\core\data_providers.py      17      0   100%
+src\core\report_logic.py        24      0   100%
+src\main.py                     76      8    89%
+src\services\__init__.py         5      0   100%
+src\services\graph.py           67      9    87%
+src\services\ia.py              17      0   100%
+src\services\pdf.py             24      0   100%
+src\services\search.py          94      3    97%
+------------------------------------------------
+TOTAL                          324     20    94%
