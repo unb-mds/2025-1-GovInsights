@@ -1,7 +1,5 @@
 import ipeadatapy as ipea
-import time
 import pandas as pd
-import plotly.graph_objects as go
 
 class timeSeries:
     """
@@ -24,6 +22,7 @@ class timeSeries:
         self.descricao = self.__describe()
     
     def __obter_dados_serie(self, codigo_serie):
+        import time
         """
         Obtém a série estatística do IPEA para o código informado e os últimos 'Último anos' Último anos.
         """
@@ -95,6 +94,7 @@ class timeSeries:
         return percentuais
     
     def __plotar_graficos_periodos(self):
+        import plotly.graph_objects as go
         """
         Plota gráficos de linha usando Plotly para todos os períodos disponíveis em self.dados_periodos.
         O eixo x é a data e o eixo y é o valor em reais.
