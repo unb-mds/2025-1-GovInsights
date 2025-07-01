@@ -109,6 +109,7 @@ class timeSeries:
             dados = dados.rename(
                 columns={"RAW DATE": "Data", "VALUE " + medida: "Valor " + medida}
             )
+
             if not dados.empty:
                 valor_inicial = dados.iloc[0, dados.columns.get_loc("Valor " + medida)]
                 valor_final = dados.iloc[-1, dados.columns.get_loc("Valor " + medida)]
@@ -130,10 +131,24 @@ class timeSeries:
                 line=dict(color=cor),
                 name="Valores"
             ))
+            
+            if not dados.empty:
+                ultimo_valor = dados["Valor " + medida].iloc[-1]
+                ultima_data = dados["Data"].iloc[-1]
+                fig_pontos.add_shape(
+                    type="line",
+                    x0=dados["Data"].min(),
+                    x1=dados["Data"].max(),
+                    y0=ultimo_valor,
+                    y1=ultimo_valor,
+                    line=dict(color="gray", width=2, dash="dash"),
+                    xref="x",
+                    yref="y"
+                )
             fig_pontos.update_layout(
                 xaxis_title="Data",
                 yaxis_title="Valor " + medida,
-                height=600
+                height=500
             )
             graficos[periodo] = fig_pontos
         return graficos

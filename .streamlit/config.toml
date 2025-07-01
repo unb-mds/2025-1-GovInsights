@@ -17,5 +17,6 @@ weight = 600
 font = "Inter"
 headingFont = "Inter Bold"
 primaryColor = "#2BB17A"
+secondaryBackgroundColor = "#0C2348"
 backgroundColor = "#0F1020"
 textColor = "#FFFfFF"
