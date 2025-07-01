@@ -13,7 +13,7 @@ def test_gerar_relatorio_parametros_invalidos():
         gerar_relatorio("", df)
 
 
-@patch("src.services.ia.Together")
+@patch("together.Together")
 def test_gerar_relatorio_sucesso(mock_together):
     df = pd.DataFrame({"ano": range(2000, 2100), "valor": [i for i in range(100)]})
     df.index.name = "ano"
@@ -30,7 +30,7 @@ def test_gerar_relatorio_sucesso(mock_together):
     assert resultado == "Relatório gerado pela IA."
 
 
-@patch("src.services.ia.Together", side_effect=Exception("Falha de rede"))
+@patch("together.Together", side_effect=Exception("Falha de rede"))
 def test_gerar_relatorio_erro_api(mock_together):
     df = pd.DataFrame({"ano": range(2000, 2100), "valor": [i for i in range(100)]})
     df.index.name = "ano"
@@ -41,7 +41,7 @@ def test_gerar_relatorio_erro_api(mock_together):
 
 # NOVOS TESTES ADICIONADOS
 
-@patch("src.services.ia.Together")
+@patch("together.Together")
 def test_gerar_relatorio_formatacao_prompt(mock_together):
     df = pd.DataFrame({"ano": [2020, 2021], "valor": [100, 200]})
     df.index.name = "ano"
@@ -55,18 +55,17 @@ def test_gerar_relatorio_formatacao_prompt(mock_together):
     mock_together.return_value = mock_client
 
     # Captura o conteúdo enviado no prompt
-    with patch("src.services.ia.re") as mock_re:
-        gerar_relatorio("SERIE123", df)
+    gerar_relatorio("SERIE123", df)
 
-        args = mock_client.chat.completions.create.call_args[1]
-        prompt = args["messages"][0]["content"]
-        assert "SERIE123" in prompt
-        assert "Segue os dados da série no formato CSV:" in prompt
-        assert "Resumo sobre o que se trata a série" in prompt
-        assert "ano,valor" in prompt
+    args = mock_client.chat.completions.create.call_args[1]
+    prompt = args["messages"][0]["content"]
+    assert "SERIE123" in prompt
+    assert "Segue os dados da série no formato CSV:" in prompt
+    assert "Resumo sobre o que se trata a série" in prompt
+    assert "ano,valor" in prompt
 
 
-@patch("src.services.ia.Together")
+@patch("together.Together")
 def test_gerar_relatorio_processamento_dataframe(mock_together):
     df = pd.DataFrame({
         "valor": list(range(150))
@@ -91,8 +90,8 @@ def test_gerar_relatorio_processamento_dataframe(mock_together):
     assert str(df.index[-1].date()) in prompt
 
 
-@patch("src.services.ia.Together")
-def test_gerar_relatorio_processamento_dataframe(mock_together):
+@patch("together.Together")
+def test_gerar_relatorio_ordenacao_csv_dataframe(mock_together):
     import re
 
     df = pd.DataFrame({
@@ -138,7 +137,7 @@ def test_gerar_relatorio_dados_especiais():
     df.index.name = "índice"
 
     # Validação - Se a função lida com isso sem travar
-    with patch("src.services.ia.Together") as mock_together:
+    with patch("together.Together") as mock_together:
         mock_client = MagicMock()
         mock_response = MagicMock()
         mock_choice = MagicMock()
