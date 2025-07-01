@@ -7,7 +7,7 @@ from unittest.mock import patch, MagicMock
 def temp_files(tmp_path):
     # Cria arquivos temporários reais para simular NamedTemporaryFile
     img_file = tmp_path / "temp_img.png"
-    img_file.write_text("fake image data")  # conteúdo dummy só para existir o arquivo
+    img_file.write_text("fake image data")  
     pdf_file = tmp_path / "temp_pdf.pdf"
     pdf_file.write_text("fake pdf data")
     return str(img_file), str(pdf_file)
