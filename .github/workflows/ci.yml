@@ -4,6 +4,7 @@ on:
     branches:
       - main
       - develop
+      - feature/testes
 permissions:
   contents: write
 jobs:
