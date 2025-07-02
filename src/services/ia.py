@@ -53,11 +53,13 @@ def gerar_relatorio(codSerie: str, dataframe: pd.DataFrame):
         response = client.chat.completions.create(
             model="deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free",
             messages=[
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ]
+            {
+                "role": "user",
+                "content": prompt,
+            }
+            ],
+            tools=[{"type": "web_search"}],
+            tool_choice="auto"
         )
         text = re.sub(r'<think>.*?</think>', '', response.choices[0].message.content, flags=re.DOTALL).strip() # Regex formata o texto para remover a etapa de thinking retornada pela IA
         return text
