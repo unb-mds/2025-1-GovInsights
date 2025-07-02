@@ -55,7 +55,7 @@ def landing_page():
         <div class="nav-center">
             <a href="#como-funciona">Como Funciona</a>
             <a href="#sobre">Sobre o Projeto</a>
-            <a href="IPEADATAPY">API</a>
+            <a href="#ipeadatapy">API</a>
             <a href="#equipe">Equipe</a>
         </div>
         <div class="nav-right">
@@ -151,9 +151,10 @@ def landing_page():
         </div>
         """, unsafe_allow_html=True)
 
-        # texto white 
+        # Documetação IPEADATAPY 
         st.markdown("""
-            <div style="background-color: #F9FBFC; padding: 2rem 4rem; border-radius: 8px;">
+            <div id="ipeadatapy" style="background-color: #F9FBFC; padding: 2rem 4rem; border-radius: 8px;">
+                    <h3 id="IPEA" style="color: #1A1A1A;">IPEADATAPY</h3>
                 <p style="font-size: 1.2rem; line-height: 1.6; color: #1A1A1A; margin-bottom: 1rem;">
                     Hoje, os dados do IPEA estão dispersos e exigem conhecimento técnico para análise.
                     Isso afasta o cidadão comum e desacelera a gestão pública eficiente.
@@ -176,23 +177,6 @@ def landing_page():
                 </div>
             </div>
             """, unsafe_allow_html=True)
-        # st.markdown("""
-        # <div style="background-color: #F9FBFC; padding: 2rem 4rem; border-radius: 8px;">
-        #     <p style="font-size: 1.2rem; line-height: 1.6; color: #1A1A1A; margin-bottom: 1rem;">
-        #         Hoje, os dados do IPEA estão dispersos e exigem conhecimento técnico para análise.
-        #         Isso afasta o cidadão comum e desacelera a gestão pública eficiente.
-        #     </p>
-        #     <p style="font-size: 1.3rem; font-weight: bold; line-height: 1.6; color: #1A1A1A; margin-bottom: 0.9rem;">
-        #         O Gov Insights traduz grandes volumes de dados e notícias em insights claros, rápidos e visualmente acessíveis.
-        #     </p>
-        #     <a href="https://drive.google.com/file/d/1jE-Z9-whcvg3NkXryME-2nUC6YzT4aIc/view?usp=drive_link" target="_blank"
-        #     style="font-size: 1.1rem; color: #2BB17A; text-decoration: none; font-weight: 600;">
-        #         Ver Exemplo de Relatório →
-        #     </a>
-        # </div>
-        # """, unsafe_allow_html=True)
-
-        # Documentação IPEADATAPY
 
         # Equipe
         image_paths = [
@@ -234,26 +218,6 @@ def landing_page():
             </div>
         </div>
         """, unsafe_allow_html=True)
-
-
-        # # Exibe os membros em linhas de 4
-        # for i in range(0, len(membros), 4):
-        #     cols = st.columns(4)
-        #     for col, (nome, funcao, img_file) in zip(cols, membros[i:i+4]):
-        #         img_path = equipe_img_path / img_file
-        #         with col:
-        #             if img_path.exists():
-        #                 img_base64 = get_base64_image(img_path)
-        #                 st.markdown(f"""
-        #                     <div class="img-container">
-        #                         <img src="data:image/png;base64,{img_base64}" class="membro-img" />
-        #                     </div>
-        #                 """, unsafe_allow_html=True)
-        #             else:
-        #                 st.warning(f"Imagem não encontrada: {img_file}")
-        #             st.markdown(f"<h4 style='margin: 0.3rem 0 0; color: white;'>{nome}</h4>", unsafe_allow_html=True)
-        #             st.markdown(f"<p style='margin: 0; color: #00DFA2; font-size: 0.9rem;'>{funcao}</p>", unsafe_allow_html=True)
-
 
 if st.session_state.page == "landing":
     landing_page()
