@@ -1,128 +1,44 @@
-body, .stApp {
-    background-color: #0F1020; /*cor do fundo*/
-    font-family: 'Segoe UI', sans-serif;
-    color: #ffffff; /*tetxo do tipulo*/
-    opacity: 0.9; 
-}
-
-
+/* --- Estilos Globais --- */
 body, .stApp {
     background-color: #0F1020;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', sans-serif !important;
     color: #ffffff;
-    /* opacity: 0.9; */
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 
-
-
-/*  SIDEBAR  */
-section[data-testid="stSidebar"] {
-    background: rgba(10, 65, 97, 0.171); /* Levemente azul  translúcido */
-    backdrop-filter: blur(25px); /* Efeito de vidro */
-    -webkit-backdrop-filter: blur(12px); /* Safari support */
-    border-right: 1px solid rgba(255, 255, 255, 0.3); /* borda de divisão sutil */
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* sombra leve */
-    border-radius: 0 20px 20px 0; /* arredondamento da borda direita */
-    transition: all 0.3s ease;
+.stApp > header {
+    display: none !important;
 }
 
-
-section[data-testid="stSidebar"] .block-container {
-    padding: 2rem 1rem;
-    color: white; /* ou ajuste conforme seu tema */
-}
-
-
-
-/* Título da sidebar */
-section[data-testid="stSidebar"] h1 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #ffffff; /* cor do texto do sidebar */
-    margin-bottom: 2rem;
-    margin-top: -40px;
-    text-align: center; 
-}
-
-label, .stSelectbox label, .stCheckbox label {
-    color: white !important;
-    font-weight: 500;
-}
-
-/* pills filtros */
-button[kind="pills"]{
-    background-color: #0f1020;
-    color: #ffffff;
-}
-button[kind="pillsActivate"] {
-    background-color: #2BB17A !important;
-    color: #0F1020 !important;
-    border-radius: 20px !important;
-    border: 1px solid #2BB17A !important;
-    padding: 5px 10px !important;
-    font-weight: 600 !important;
-    cursor: pointer !important;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-button[kind="pills"]:hover {
-    background-color: #2BB17A !important;
-    color: #FFFFFF !important;
-}
-
-/* Botões da sidebar */
-button[kind="secondary"], .stButton > button {
+/* --- Layout principal --- */
+.block-container {
+    max-width: 600px !important;
     width: 100%;
-    padding: 0.8rem;
-    margin: 0.3rem 0;
-    background-color: #0F1020; /*cor dos botões*/
-    border: none;
-    border-radius: 10px;
-    color: #ffffff; /*escrita dos bottões*/
-    font-weight: 500;
-    transition: 0.3s;
+    margin: 0 auto !important;  /* Centraliza horizontalmente */
+    padding: 20px !important;
+    padding-top: 0 !important;
+    padding-bottom: 100px !important;
 }
 
-
-/*hover botões*/
-button[kind="secondary"]:hover, .stButton > button:hover {
-    background-color: #2BB17A;
-    color: #0F1020;
+/* --- Tipografia --- */
+h1, h2, h3 {
+    color: #2BB17A;
+    font-weight: bold;
+    text-align: center;
 }
 
-
-/* style2.css */
-
-.sidebar-hidden [data-testid="stSidebar"] {
-    transform: translateX(-300px);
-    transition: transform 0.5s ease;
-    visibility: hidden;
-    width: 0 !important;
-    padding: 0 !important;
-}
-
-.sidebar-hidden .main {
-    margin-left: 0 !important;
-}
-
-
-
- /* Remove header invisível que deixa espaço */
- header {
-    visibility: hidden;
-    height: 0px !important;
-    position: absolute;
-    top: 50px;
-} 
-
-h1.titulo {
+h1.title {
     font-size: 2.2rem;
-    padding: 1.2rem 2rem 0.5rem;
+    padding: 1.2rem 0 0.5rem;
     background-color: transparent;
-    border-bottom: 1px solid #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.titulo-ipea {
+.title-ipea {
     color: #fff;
     font-size: 1.8rem;
     font-weight: 500;
@@ -130,19 +46,7 @@ h1.titulo {
     text-align: left;
 }
 
-/* Estilização do sidebar (expander e labels) */
-section[data-testid="stSidebar"] details summary {
-    color: white !important;
-    font-weight: 600;
-}
-
-section[data-testid="stSidebar"] label {
-    color: white !important;
-    font-weight: 500;
-}
-
-/* Cabeçalho da página */
-.header-ipea h3.titulo-ipea {
+.header-ipea h3.title-ipea {
     font-family: 'Inter Black', sans-serif;
     font-size: 24px;
     font-weight: 900;
@@ -150,7 +54,6 @@ section[data-testid="stSidebar"] label {
     margin: 0;
 }
 
-/* Estilo do header customizado da série */
 .custom-header {
     display: flex;
     flex-direction: row;
@@ -163,13 +66,14 @@ section[data-testid="stSidebar"] label {
 
 .custom-header h1 {
     font-family: 'Inter Black', sans-serif;
-    font-size: 24px; 
+    font-size: 24px;
     font-weight: 900;
     margin: 0 0 12px 0;
     line-height: 22px;
     word-break: break-word;
     max-width: 1000px;
     text-align: justify;
+    color: #2BB17A;
 }
 
 .indicator {
@@ -177,7 +81,6 @@ section[data-testid="stSidebar"] label {
     font-size: 24px;
     font-weight: 900;
     margin: -16px 0 0 0;
-    /* A cor será definida dinamicamente via Streamlit */
 }
 
 .subtitle {
@@ -191,77 +94,10 @@ section[data-testid="stSidebar"] label {
     text-align: justify;
 }
 
-.custom-divider {
-    border: none;
-    border-top: 1px solid #e0e0e0;
-    margin: 18px 0 0 0;
-}
-
-/* Painel lateral com explicação/resumo (à direita) */
-.painel {
-    background-color: #1e1e1e;
-    padding: 20px;
-    border-radius: 12px;
-    color: white;
-    font-family: 'Inter', sans-serif;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
-}
-
-.painel h2.valor-indicador {
-    font-size: 32px;
-    font-weight: 700;
-    color: #2BB17A;
-}
-
-div[data-testid="stSidebar"] label,
-div[data-testid="stSidebar"] span {
-    color: white !important;
-    font-weight: 500 !important;
-}
-
-section[data-testid="stSidebar"] div[data-testid="stCheckbox"] > div > label > div:nth-child(2) {
-    color: white !important;
-    font-weight: 500 !important;
-}
-
-.custom-header-ipea {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #0F1020;
-    padding: 1rem 2rem;
-    z-index: 999;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.custom-header-ipea h3 {
-    margin: 0;
-    color: white;
-    font-size: 20px;
+label, .css-1v3fvcr, .css-1kyxreq {
+    color: #ffffffc0 !important;
     font-weight: 600;
-    text-align: left;
-}
-
-body, .stApp {
-    background-color: #0F1020;
-    font-family: 'Segoe UI', sans-serif !important;
-    color: #ffffff;
-    display: flex;
-    justify-content: center;
-    margin: 0;
-    min-height: 100vh;
-}
-
-.stApp > div {
-    max-width: 600px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 20px 20px 20px;;
-}
-
-.block-container {
-    padding-top: 0 !important;
+    font-size: 0.95rem !important;
 }
 
 input::placeholder,
@@ -270,71 +106,241 @@ textarea::placeholder {
     opacity: 1 !important;
 }
 
-label, .css-1v3fvcr, .css-1kyxreq {
-    color: #646464 !important;
-    font-weight: 600;
-    font-size: 0.95rem !important;
-}
-
 div[data-testid="stCheckbox"] label > div {
     color: #ffffff70 !important;
     font-weight: 600 !important;
     font-size: 0.95rem !important;
 }
 
-body, .stApp, h1, h2, h3, p, div, span, input, textarea, button, a, table, th, td {
-    font-family: 'Segoe UI', sans-serif !important;
+/* --- Corrige comportamento da sidebar para sobrepor, não empurrar --- */
+section[data-testid="stSidebar"] {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    height: 100% !important;
+    z-index: 1000 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(10, 65, 97, 0.1);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 0 20px 20px 0;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
 }
 
-header.stAppHeader {
-    display: none !important;
+section[data-testid="stSidebar"] .block-container {
+    padding: 2rem 1rem;
+    color: white;
 }
 
-h1, h2, h3 {
-    color: #2BB17A;
+section[data-testid="stSidebar"] h1 {
+    font-size: 1.5rem;
     font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 2rem;
+    margin-top: -40px;
     text-align: center;
 }
 
+section[data-testid="stSidebar"] details summary {
+    color: white !important;
+    font-weight: 600;
+}
+
+/* SIDEBAR FECHADA
+.sidebar-hidden [data-testid="stSidebar"] {
+    transform: translateX(0px);
+    transition: transform 0.5s ease;
+    visibility: hidden;
+    width: 0 !important;
+    padding: 0 !important;
+}
+
+.sidebar-hidden .main {
+    margin-left: 0 !important;
+}
+*/ 
+
+/* --- Botões --- */
+button[kind="pills"] {
+    background-color: #0f1020;
+    color: #ffffff;
+    border: 1px solid #0f1020;
+    border-radius: 20px;
+    padding: 5px 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button[kind="pillsActivate"] {
+    background-color: #2BB17A !important;
+    color: #0F1020 !important;
+    border-radius: 20px !important;
+    border: 1px solid #2BB17A !important;
+    padding: 5px 10px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease;
+}
+
+button[kind="pills"]:hover {
+    background-color: #2BB17A !important;
+    color: #FFFFFF !important;
+    border-color: #2BB17A !important;
+}
+
+button[kind="secondary"], .stButton > button {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.3rem 0;
+    background-color: #0F1020;
+    border: 1px solid #2BB17A;
+    border-radius: 10px;
+    color: #ffffff;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+button[kind="secondary"]:hover, .stButton > button:hover {
+    background-color: #2BB17A;
+    color: #0F1020;
+    border-color: #2BB17A;
+}
+
+button[data-key="enviar_alerta_button"] {
+    background-color: #2BB17A !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 8px 16px !important;
+    cursor: pointer !important;
+    font-weight: 600 !important;
+    transition: background-color 0.3s ease !important;
+}
+
+button[data-key="enviar_alerta_button"]:hover {
+    background-color: #21a36b !important;
+}
+
+/* --- Elementos de Formulário --- */
 input, textarea {
     background-color: #1a1a2e !important;
-    color: white !important;
+    color: #2BB17A !important;
     border-radius: 10px !important;
     border: 1px solid #2BB17A !important;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 input:focus, textarea:focus {
     border-color: #3de79f !important;
     outline: none !important;
-    box-shadow: 0 0 8px #3de79f !important;
+    box-shadow: 0 0 8px rgba(61, 231, 159, 0.5) !important;
 }
 
-.stAlert {
-    border-left: 5px solid #ffb700 !important;
-    background-color: #333 !important;
+select {
+    background-color: #1a1a2e !important;
+    color: white !important;
+    border-radius: 10px !important;
+    border: 1px solid #2BB17A !important;
+    padding: 0.5rem 0.75rem;
+    font-family: 'Segoe UI', sans-serif !important;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+}
+
+select:focus {
+    border-color: #3de79f !important;
+    outline: none !important;
+    box-shadow: 0 0 8px rgba(61, 231, 159, 0.5) !important;
+}
+
+select option {
+    color: white;
+    background-color: #1a1a2e;
+}
+
+div[data-baseweb="select"] > div {
+    background-color: #1a1a2e !important;
+    border: 1px solid #2BB17A !important;
+    border-radius: 10px !important;
+    color: white !important;
+    font-family: 'Segoe UI', sans-serif !important;
+    transition: all 0.3s ease;
+}
+
+div[data-baseweb="select"] > div:focus-within {
+    border-color: #3de79f !important;
+    box-shadow: 0 0 8px rgba(61, 231, 159, 0.5) !important;
+}
+
+div[data-baseweb="select"] > div > div:first-child {
     color: white !important;
 }
 
+div[data-baseweb="select"] svg {
+    fill: white !important;
+}
+
+/* --- Tabelas --- */
 table {
     background-color: #1a1a2e;
     color: white;
     border-collapse: collapse;
+    width: 100%;
+    margin-top: 1rem;
 }
 
 table, th, td {
     border: 1px solid #2BB17A;
-    padding: 8px;
+    padding: 10px;
+    text-align: left;
 }
 
+th {
+    background-color: #2BB17A;
+    color: #0F1020;
+    font-weight: bold;
+}
+
+/* --- Alertas --- */
+.stAlert {
+    border-left: 5px solid #ffb700 !important;
+    color: white !important;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+/* --- Links --- */
 a {
     color: #2BB17A;
     text-decoration: none;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
 }
 
 a:hover {
     color: #21a36b;
     text-decoration: underline;
+}
+
+/* --- Popups / Painéis Personalizados --- */
+.painel {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 12px;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    margin-bottom: 20px;
+}
+
+.painel h2.valor-indicador {
+    font-size: 32px;
+    font-weight: 700;
+    color: #2BB17A;
 }
 
 .custom-popup {
@@ -358,64 +364,154 @@ a:hover {
     to { opacity: 1; transform: translateY(0); }
 }
 
-button[data-key="enviar_alerta_button"] {
-    background-color: #2BB17A !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 8px !important;
-    padding: 8px 16px !important;
-    cursor: pointer !important;
-    font-weight: 600 !important;
-    transition: background-color 0.3s ease !important;
+/* --- Cabeçalho Fixo --- */
+.custom-header-ipea {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #0F1020;
+    padding: 1rem 2rem;
+    z-index: 999;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-button[data-key="enviar_alerta_button"]:hover {
-    background-color: #21a36b !important;
-}
-
-select {
-    background-color: #1a1a2e !important;
-    color: white !important;
-    border-radius: 10px !important;
-    border: 1px solid #2BB17A !important;
-    padding: 0.5rem 0.75rem;
-    font-family: 'Segoe UI', sans-serif !important;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-    appearance: none; 
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    cursor: pointer;
-}
-
-select:focus {
-    border-color: #3de79f !important;
-    outline: none !important;
-    box-shadow: 0 0 8px #3de79f !important;
-}
-
-select option {
+.custom-header-ipea h3 {
+    margin: 0;
     color: white;
-    background-color: #1a1a2e;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: left;
 }
 
-div[data-baseweb="select"] > div {
+/* --- Divisores --- */
+.custom-divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 18px 0;
+}
+
+div[data-baseweb="popover"] [role="option"] > div {
+    color: rgb(238, 238, 238) !important;
+}
+
+div[data-baseweb="popover"] [role="option"]:hover > div,
+div[data-baseweb="popover"] [role="option"][aria-selected="true"] > div,
+div[data-baseweb="popover"] [role="option"][data-highlighted="true"] > div {
+    color: #0F1020 !important;
+}
+
+div[data-baseweb="popover"] [role="option"]:hover,
+div[data-baseweb="popover"] [role="option"][aria-selected="true"],
+div[data-baseweb="popover"] [role="option"][data-highlighted="true"] {
+    background-color: #2BB17A !important;
+}
+
+div[data-baseweb="popover"] [role="option"]:hover svg,
+div[data-baseweb="popover"] [role="option"][aria-selected="true"] svg,
+div[data-baseweb="popover"] [role="option"][data-highlighted="true"] svg {
+    fill: #0F1020 !important;
+}
+
+div[data-baseweb="popover"] div[role="listbox"] {
     background-color: #1a1a2e !important;
     border: 1px solid #2BB17A !important;
     border-radius: 10px !important;
-    color: white !important;
-    font-family: 'Segoe UI', sans-serif !important;
 }
 
-div[data-baseweb="select"] > div:focus-within {
-    border-color: #3de79f !important;
-    box-shadow: 0 0 8px #3de79f !important;
+div[data-baseweb="tooltip"] {
+    background-color: #030218 !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    padding: 6px 10px !important;
+    border-radius: 6px !important;
+    font-size: 0.85rem !important;
+    white-space: nowrap !important;
+    max-width: max-content !important;
+    z-index: 9999 !important;
 }
 
-div[data-baseweb="select"] > div > div:first-child {
-    color: white !important;
+div[data-baseweb="tooltip"] > div,
+div[data-baseweb="tooltip"] > span,
+div[data-baseweb="tooltip"] * {
+    background-color: transparent !important;
+    color: #FFFFFF !important;
 }
 
-div[data-baseweb="select"] svg {
-    fill: white !important;
+.baseui-popover-arrow {
+    background-color: #2BB17A !important;
+    border: none !important;
+}
+
+.baseui-popover-arrow::before,
+.baseui-popover-arrow::after {
+    border-color: transparent !important;
+}
+
+.block-container {
+    padding-bottom: 100px !important; 
+}
+
+/* sidebar sobrepondo */
+section[data-testid="stSidebar"] {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    height: 100% !important;
+    z-index: 1000 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(10, 65, 97, 0.1);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 0 20px 20px 0;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 10 ease;  
+    transform: translateX(0); 
+}
+
+.sidebar-hidden [data-testid="stSidebar"] {
+    transform: translateX(0px);
+    visibility: hidden;
+    width: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+ 
+.block-container {
+    padding-left: 20px !important; 
+}
+
+section[data-testid="stSidebar"] {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    height: 100% !important;
+    z-index: 1000 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(10, 65, 97, 0.1);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 0 20px 20px 0;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(0);
+}
+
+/* SIDEBAR FECHADA
+body.sidebar-hidden section[data-testid="stSidebar"] {
+    transform: translateX(-100%) !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+body.sidebar-hidden .block-container {
+    margin-left: 0 !important;
+}
+*/
+
+main .block-container {
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
