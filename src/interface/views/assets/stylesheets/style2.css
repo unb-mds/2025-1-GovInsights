@@ -16,12 +16,12 @@ body, .stApp {
 
 /* --- Layout principal --- */
 .block-container {
-    max-width: 600px !important;  
+    max-width: 600px !important;
     width: 100%;
-    margin: 0 auto !important;   
-    padding: 20px !important;    
+    margin: 0 auto !important;  /* Centraliza horizontalmente */
+    padding: 20px !important;
     padding-top: 0 !important;
-    
+    padding-bottom: 100px !important;
 }
 
 /* --- Tipografia --- */
@@ -476,16 +476,7 @@ section[data-testid="stSidebar"] {
     padding: 0 !important;
     overflow: hidden !important;
 }
-
-.sidebar-hidden .block-container {
-    margin-left: 0 !important;
-}
-
-.block-container {
-    margin-left: 370px !important;  
-    padding-bottom: 100px !important; 
-}
-
+ 
 .block-container {
     padding-left: 20px !important; 
 }
@@ -520,8 +511,7 @@ body.sidebar-hidden .block-container {
 }
 */
 
-.block-container {
-    margin-left: 370px !important;
-    padding-left: 20px !important;
-    padding-bottom: 100px !important;
+main .block-container {
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
