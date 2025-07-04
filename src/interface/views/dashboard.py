@@ -178,7 +178,7 @@ def main_page():
             periodo_atual = st.session_state.get('periodo_analise')
             if periodo_atual and periodo_atual in serie.percentuais and serie.percentuais[periodo_atual] is not None:
                 color_indicator = "#2BB17A" if serie.percentuais[periodo_atual] >= 0 else "#f0423c"
-                current_value = info_serie.iloc[9,0] + " " + str(serie.dados_periodos['Última semana'].iloc[-1, 5])
+                current_value = info_serie.iloc[9,0] + " " + str(round(serie.dados_periodos[periodo_atual].iloc[-1, 5], 2))
                 text_indicator = current_value + " " + ("↑ " if serie.percentuais[periodo_atual] >= 0 else "↓ ") + str(serie.percentuais[periodo_atual]) + "%"
             else:
                 color_indicator = "#CCCCCC"
