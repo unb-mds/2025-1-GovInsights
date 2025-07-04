@@ -1,0 +1,16 @@
+name: Keep Alive
+
+on:
+  schedule:
+    # Executa a cada 30 minutos. Ajuste conforme a política do seu provedor de hospedagem.
+    # Por exemplo, '0 * * * *' para cada hora, '*/15 * * * *' para cada 15 minutos.
+    - cron: '*/30 * * * *'
+  workflow_dispatch: # Permite acionar o workflow manualmente pela interface do GitHub
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Application URL
+        run: |
+          curl -sS ${{ secrets.APP_URL }}

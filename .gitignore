@@ -30,3 +30,6 @@ env/
 =======
 __pycache__/
 
+# Coverage file
+.coverage
+
