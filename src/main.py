@@ -59,7 +59,7 @@ def landing_page():
             <a href="#equipe">Equipe</a>
         </div>
         <div class="nav-right">
-            <a href="https://govinsights1.streamlit.app/" target="_self">
+            <a href="https://2025-1-govinsights.streamlit.app/" target="_self">
                 <button class="nav-button Dashboard">Dashboard</button>
             </a>
         </div>
@@ -76,7 +76,7 @@ def landing_page():
                 <h1 class='title'>GOV INSIGHTS</h1>
                 <h3 class='subtitle'>Relatórios inteligentes IPEA</h3>
                 <p class='descricao'>Sistema Inteligente para Análise Automatizada de Notícias e Indicadores Públicos</p>
-                <a href="https://govinsights1.streamlit.app/" target="_self">
+                <a href="https://2025-1-govinsights.streamlit.app/" target="_self">
                     <button class="report-button">Gerar Relatório</button>
                 </a>
             </div>
