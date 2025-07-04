@@ -49,38 +49,38 @@ def change_page(page_name):
 #     st.markdown(detalhes_alerta, unsafe_allow_html=True)
 
 def alertas_page():
-    st.markdown("""
-<style>
-/* Esconder sidebar */
-section[data-testid="stSidebar"] {
-    display: none !important;
-}
+#    st.markdown("""                SIDEBAR FECHADA
+# <style>
+# /* Esconder sidebar */
+# section[data-testid="stSidebar"] {
+#    display: none !important;
+# }
+#
+# /* conteúdo ocupa a tela toda */
+# div[class^="main"] {
+#     margin-left: 0rem !important;
+# }
+# </style>
+# """, unsafe_allow_html=True)
 
-/* conteúdo ocupa a tela toda */
-div[class^="main"] {
-    margin-left: 0rem !important;
-}
-</style>
-""", unsafe_allow_html=True)
-
-    st.markdown("""
-    <script>
-    window.addEventListener('load', function () {
-        const sidebar = window.parent.document.querySelector('section[data-testid="stSidebar"]');
-        if (sidebar) {
-            sidebar.style.transform = 'translateX(-100%)';
-            sidebar.style.visibility = 'hidden';
-            sidebar.style.width = '0px';
-            sidebar.style.padding = '0px';
-        }
-
-        const mainContent = window.parent.document.querySelector('.main');
-        if (mainContent) {
-            mainContent.style.marginLeft = '0px';
-        }
-    });
-    </script>
-""", unsafe_allow_html=True)
+#    st.markdown("""
+#    <script>
+#    window.addEventListener('load', function () {
+#        const sidebar = window.parent.document.querySelector('section[data-testid="stSidebar"]');
+#        if (sidebar) {
+#            sidebar.style.transform = 'translateX(-100%)';
+#            sidebar.style.visibility = 'hidden';
+#            sidebar.style.width = '0px';
+#            sidebar.style.padding = '0px';
+#        }
+#
+#        const mainContent = window.parent.document.querySelector('.main');
+#        if (mainContent) {
+#            mainContent.style.marginLeft = '0px';
+#        }
+#    });
+#    </script>
+#""", unsafe_allow_html=True)
 
 
     st.title("Alertas")
