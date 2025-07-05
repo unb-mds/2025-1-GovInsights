@@ -128,19 +128,6 @@ def gerar_relatorio_com_busca_externa_stream(codSerie: str, dataframe: pd.DataFr
     {contexto_noticias}
     """
     
-    # Criar header antes do streaming (sem comentarioSerie para economizar espaço)
-    header = f"""
-    - **Período dos Dados:** {dataframe.index.min()} a {dataframe.index.max()}
-    - **Total de Observações:** {len(dataframe)}
-
-    ---
-
-    """
-    
-    # Mostrar header imediatamente se callback for fornecido
-    if callback:
-        callback(header)
-    
     try:
         client = Together(api_key='31c6c1ddf940cd1ac1ad20db676e21745a49f1975e5913ec4ecfac8969c431ab')
         
@@ -197,7 +184,7 @@ def gerar_relatorio_com_busca_externa_stream(codSerie: str, dataframe: pd.DataFr
                         if callback:
                             callback(escaped_char)
         
-        return header + full_text.strip()
+        return full_text.strip()
         
     except Exception as e:
         print(f"Erro detalhado: {e}")
