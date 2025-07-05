@@ -207,8 +207,14 @@ def main_page():
                 )
             else:
                 st.warning("Gráfico não disponível para o período selecionado ou dados insuficientes.")
-            st.expander("Descrição da série estatística", expanded=True, icon=":material/description:").html(
+            st.expander("Descrição da série estatística", expanded=False, icon=":material/description:").html(
                 serie.descricao.iloc[6,0] if not info_serie.empty else 'Descrição não disponível')
+            st.html("""
+                    <div style="display: flex; flex-direction: row; align-items: center; gap: 8px">
+                        <h4 style="color: white; font-size: 16px; font-weight: 500;">Dados fornecidos pelo</h4>
+                        <img src="/app/static/img/ipea.png" width="50px" style="margin: 0; padding: 0;"/>
+                    </div>
+                    """)
         else:
             st.markdown("""
                 <div class="painel" style="border: 1px solid #2BB17A; background-color: #101120; padding: 16px; border-radius: 8px;">
@@ -224,7 +230,7 @@ def main_page():
         pdf_bytes = None
         
         # Container sempre presente com altura limitada
-        with st.container(height=600):
+        with st.container(height=700):
             if local_serie_selecionada:
                 if st.button("Gerar Relatório Inteligente", key="btn_relatorio_ia"):
                     try:
@@ -253,8 +259,7 @@ def main_page():
                                 response_container.markdown(accumulated_text)
                             
                             # Gerar relatório com streaming
-                            st.info("🤖 Gerando análise inteligente...")
-                            
+                        with st.spinner("Gerando relatório inteligente... Aguarde, isso pode levar alguns minutos."):
                             try:
                                 response = gerar_relatorio_com_busca_externa_stream(
                                     local_serie_selecionada, 
@@ -277,7 +282,6 @@ def main_page():
                                         st.session_state['pdf_bytes'] = pdf_bytes
                                 else:
                                     st.error("❌ Erro ao gerar análise")
-                                    
                             except Exception as e:
                                 st.error(f"❌ Erro na análise: {str(e)}")
                                 response_container.markdown("Erro ao gerar análise. Tente novamente.")
@@ -291,7 +295,7 @@ def main_page():
                     
             else:
                 # Container vazio quando não há série selecionada
-                st.info("👆 Selecione uma série na barra lateral para começar")
+                st.markdown("")
 
         # Botão de download fora do container (sempre visível quando há PDF)
         if local_serie_selecionada and 'pdf_bytes' in st.session_state and st.session_state.get('relatorio_serie') == local_serie_selecionada:

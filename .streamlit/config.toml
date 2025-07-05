@@ -7,7 +7,6 @@ family = "Inter"
 url = "app/static/font/Inter-VariableFont.ttf"
 weight = 500
 
-
 [[theme.fontFaces]]
 family = "Inter Bold"
 url = "app/static/font/Inter-VariableFont.ttf"
@@ -17,6 +16,6 @@ weight = 600
 font = "Inter"
 headingFont = "Inter Bold"
 primaryColor = "#2BB17A"
-secondaryBackgroundColor = "#0C2348"
+secondaryBackgroundColor = "#0C0C14"
 backgroundColor = "#0F1020"
 textColor = "#FFFfFF"
