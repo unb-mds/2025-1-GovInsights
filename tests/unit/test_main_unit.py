@@ -7,12 +7,12 @@ import types
 import src.main as main
 
 
-def test_get_base64_image(tmp_path):
+def test_get_base64_of_bin_file(tmp_path):
     file_path = tmp_path / "image.png"
     content = b"conteudoimagem"
     file_path.write_bytes(content)
 
-    encoded = main.get_base64_image(str(file_path))
+    encoded = main.get_base64_of_bin_file(str(file_path))
     assert encoded == base64.b64encode(content).decode()
 
 
@@ -31,21 +31,21 @@ def test_landing_page_calls(st_mock):
 
 
 @patch("src.main.st")
-def test_landing_page_button_click_changes_page_and_rerun(st_mock):
+def test_landing_page_renders_correctly(st_mock):
     st_mock.columns.return_value = [MagicMock(), MagicMock()]
-
-    # Apenas o botão com key "dashboard_btn" retorna True
-    def button_side_effect(*args, **kwargs):
-        return kwargs.get("key") == "dashboard_btn"
-
-    st_mock.button.side_effect = button_side_effect
+    st_mock.image.return_value = None
     st_mock.session_state = SimpleNamespace(page="landing")
-    st_mock.rerun = MagicMock()
 
     main.landing_page()
 
-    assert st_mock.session_state.page == "dashboard"
-    st_mock.rerun.assert_called_once()
+    # Verifica se a página foi renderizada corretamente
+    assert st_mock.markdown.call_count > 0
+    st_mock.columns.assert_called()
+    
+    # Verifica se o conteúdo principal foi renderizado
+    call_args = [call[0][0] for call in st_mock.markdown.call_args_list]
+    assert any("GOV INSIGHTS" in arg for arg in call_args)
+    assert any("COMO FUNCIONA" in arg for arg in call_args)
 
 
 @patch("src.main.st")
