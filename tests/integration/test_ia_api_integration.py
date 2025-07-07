@@ -20,7 +20,7 @@ class TestIAAPIIntegration:
     def test_together_ai_real_api_call(self):
         """Testa chamada real para Together.ai (se configurado)."""
         # Para testes de integração, vamos usar mock ao invés de API real
-        with patch('src.services.ia.Together') as mock_together:
+        with patch('together.Together') as mock_together:
             mock_client = MagicMock()
             mock_response = MagicMock()
             mock_choice = MagicMock()
@@ -50,7 +50,7 @@ class TestIAAPIIntegration:
     
     def test_together_ai_with_different_data_types(self):
         """Testa API com diferentes tipos de dados econômicos."""
-        with patch('src.services.ia.Together') as mock_together:
+        with patch('together.Together') as mock_together:
             # Setup mock para API
             mock_client = MagicMock()
             mock_response = MagicMock()
@@ -86,7 +86,7 @@ class TestIAAPIIntegration:
     
     def test_ia_service_error_handling(self):
         """Testa tratamento de erros da API de IA."""
-        with patch('src.services.ia.Together') as mock_together:
+        with patch('together.Together') as mock_together:
             # Testar erro de conexão
             mock_together.side_effect = Exception("Conexão com IA falhou.")
             
@@ -97,7 +97,7 @@ class TestIAAPIIntegration:
     
     def test_ia_service_with_large_context(self):
         """Testa serviço de IA com contexto extenso."""
-        with patch('src.services.ia.Together') as mock_together:
+        with patch('together.Together') as mock_together:
             mock_client = MagicMock()
             mock_response = MagicMock()
             mock_choice = MagicMock()
@@ -121,7 +121,7 @@ class TestIAAPIIntegration:
     
     def test_ia_service_retry_mechanism(self):
         """Testa mecanismo de retry em caso de falhas temporárias."""
-        with patch('src.services.ia.Together') as mock_together:
+        with patch('together.Together') as mock_together:
             # Simular sucesso direto (já que não há retry implementado na função atual)
             mock_client = MagicMock()
             mock_response = MagicMock()
@@ -142,7 +142,7 @@ class TestIAAPIIntegration:
     
     def test_ia_service_response_validation(self):
         """Testa validação de respostas da API de IA."""
-        with patch('src.services.ia.Together') as mock_together:
+        with patch('together.Together') as mock_together:
             mock_client = MagicMock()
             mock_response = MagicMock()
             mock_choice = MagicMock()
@@ -162,7 +162,7 @@ class TestIAAPIIntegration:
     
     def test_ia_service_with_different_models(self):
         """Testa serviço com diferentes modelos de IA."""
-        with patch('src.services.ia.Together') as mock_together:
+        with patch('together.Together') as mock_together:
             mock_client = MagicMock()
             mock_response = MagicMock()
             mock_choice = MagicMock()
@@ -186,7 +186,7 @@ class TestIAAPIIntegration:
     
     def test_ia_service_context_optimization(self):
         """Testa otimização de contexto para economizar tokens."""
-        with patch('src.services.ia.Together') as mock_together:
+        with patch('together.Together') as mock_together:
             mock_client = MagicMock()
             mock_response = MagicMock()
             mock_choice = MagicMock()
@@ -221,7 +221,7 @@ class TestIAAPIIntegration:
         import concurrent.futures
         import time
         
-        with patch('src.services.ia.Together') as mock_together:
+        with patch('together.Together') as mock_together:
             mock_client = MagicMock()
             mock_response = MagicMock()
             mock_choice = MagicMock()

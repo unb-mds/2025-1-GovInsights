@@ -92,7 +92,7 @@ class TestSearchGraphIAPipeline:
             # Verificar se a classe foi inicializada corretamente
             assert time_series.dados_serie is not None
     
-    @patch('src.services.ia.Together')
+    @patch('together.Together')
     def test_ia_service_integration(self, mock_together, sample_series_code, mock_series_data):
         """Testa integração com serviço de IA"""
         # Configurar mock da IA
@@ -146,7 +146,7 @@ class TestSearchGraphIAPipeline:
         if call_args and len(call_args) > 0 and len(call_args[0]) > 0:
             assert call_args[0][0] == sample_series_code  # Primeiro argumento (codSerie)
     
-    @patch('src.services.ia.Together')
+    @patch('together.Together')
     @patch('src.services.graph.timeSeries')
     def test_complete_pipeline_flow(self, mock_timeseries, mock_together, sample_series_code, mock_series_data):
         """Testa o pipeline completo: Search -> Graph -> IA -> PDF"""
@@ -195,7 +195,7 @@ class TestSearchGraphIAPipeline:
         with pytest.raises(Exception):
             timeSeries(invalid_code, "Mensal")
     
-    @patch('src.services.ia.Together')
+    @patch('together.Together')
     def test_ia_error_handling(self, mock_together, sample_series_code, mock_series_data):
         """Testa tratamento de erros da IA"""
         # Simular erro de conexão
@@ -204,7 +204,7 @@ class TestSearchGraphIAPipeline:
         with pytest.raises(Exception, match="Conexão com IA falhou"):
             gerar_relatorio(sample_series_code, mock_series_data)
     
-    @patch('src.services.ia.Together')
+    @patch('together.Together')
     @patch('src.services.graph.timeSeries')
     def test_pipeline_with_different_frequencies(self, mock_timeseries, mock_together, mock_series_data):
         """Testa pipeline com diferentes frequências de dados"""
@@ -253,7 +253,7 @@ class TestSearchGraphIAPipeline:
             relatorio = gerar_relatorio("BM12_TJOVER12", time_series.dados_serie)
             assert relatorio is not None
     
-    @patch('src.services.ia.Together')
+    @patch('together.Together')
     @patch('src.services.graph.timeSeries')
     def test_pipeline_concurrent_processing(self, mock_timeseries, mock_together, mock_series_data):
         """Testa processamento concorrente do pipeline"""
@@ -316,7 +316,7 @@ class TestSearchGraphIAPipeline:
                 assert len(dados) <= len(time_series.dados_serie)
     
     @pytest.mark.slow
-    @patch('src.services.ia.Together')
+    @patch('together.Together')
     @patch('src.services.graph.timeSeries')
     def test_pipeline_performance_benchmark(self, mock_timeseries, mock_together, mock_series_data):
         """Testa benchmark de performance do pipeline"""
