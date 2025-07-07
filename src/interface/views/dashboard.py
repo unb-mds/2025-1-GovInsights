@@ -30,7 +30,7 @@ else:
 
 # --- 5. Importações de módulos e funções do Back-end/Outros módulos (APÓS st.set_page_config) ---
 # Importação de tela de alerta
-from alertas import alertas_page
+from alertas import alertas_page, del_alertas_page
 
 # Importação de funções do backEnd
 from services.search import SearchService
@@ -142,6 +142,9 @@ with st.sidebar:
     # Botões de navegação (chaves renomeadas para evitar conflitos)
     if st.button("Alertas", key="btn_alertas_sidebar"):
         change_page("Alertas")
+
+    if st.button("Deletar Alertas", key="btn_del_alertas"):
+        change_page("del_Alertas")
 
     if st.button("Dashboard", key="btn_dashboard_sidebar"):
         change_page("Dashboard")
@@ -317,10 +320,24 @@ elif st.session_state.current_page == "Alertas":
         body.classList.add('sidebar-hidden');
     </script>
 """, unsafe_allow_html=True)
-    css_path = current_dir / "assets" / "stylesheets" / "style2.css"
+    css_path = current_dir / "assets" / "stylesheets" / "styleAlertas.css"
     if css_path.exists():
         with open(css_path) as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
     else:
         st.warning("Arquivo CSS não encontrado em: " + str(css_path))
     alertas_page()
+elif st.session_state.current_page == "del_Alertas":
+    st.markdown("""
+        <script>
+            const body = window.parent.document.querySelector('body');
+            body.classList.add('sidebar-hidden');
+        </script>
+        """, unsafe_allow_html=True)
+    css_path = current_dir / "assets" / "stylesheets" / "styleAlertas.css"
+    if css_path.exists():
+        with open(css_path) as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    else:
+        st.warning("Arquivo CSS não encontrado em: " + str(css_path))
+    del_alertas_page()
