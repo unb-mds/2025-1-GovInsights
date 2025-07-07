@@ -35,7 +35,7 @@ from alertas import alertas_page
 # Importação de funções do backEnd
 from services.search import SearchService
 from services.graph import timeSeries
-from services.ia import gerar_relatorio
+from services.ia import gerar_relatorio_com_busca_externa_stream
 from services.pdf import gerar_pdf
 
 # --- 6. Inicialização dos estados da sessão ---
@@ -207,8 +207,14 @@ def main_page():
                 )
             else:
                 st.warning("Gráfico não disponível para o período selecionado ou dados insuficientes.")
-            st.expander("Descrição da série estatística", expanded=True, icon=":material/description:").html(
+            st.expander("Descrição da série estatística", expanded=False, icon=":material/description:").html(
                 serie.descricao.iloc[6,0] if not info_serie.empty else 'Descrição não disponível')
+            st.html("""
+                    <div style="display: flex; flex-direction: row; align-items: center; gap: 8px">
+                        <h4 style="color: white; font-size: 16px; font-weight: 500;">Dados fornecidos pelo</h4>
+                        <img src="/app/static/img/ipea.png" width="50px" style="margin: 0; padding: 0;"/>
+                    </div>
+                    """)
         else:
             st.markdown("""
                 <div class="painel" style="border: 1px solid #2BB17A; background-color: #101120; padding: 16px; border-radius: 8px;">
@@ -222,50 +228,83 @@ def main_page():
     with col4:
         response = None
         pdf_bytes = None
-        if local_serie_selecionada:
-            if st.button("Gerar Relatório Inteligente", key="btn_relatorio_ia"):
-                try:
-                    if 'serie_obj' not in st.session_state or st.session_state.get('last_serie_selecionada') != local_serie_selecionada:
-                        st.session_state['serie_obj'] = obter_obj_serie(local_serie_selecionada, st.session_state['frequencia'])
-                        st.session_state['last_serie_selecionada'] = local_serie_selecionada
-                    serie = st.session_state['serie_obj']
+        
+        # Container sempre presente com altura limitada
+        with st.container(height=700):
+            if local_serie_selecionada:
+                if st.button("Gerar Relatório Inteligente", key="btn_relatorio_ia"):
+                    try:
+                        if 'serie_obj' not in st.session_state or st.session_state.get('last_serie_selecionada') != local_serie_selecionada:
+                            st.session_state['serie_obj'] = obter_obj_serie(local_serie_selecionada, st.session_state['frequencia'])
+                            st.session_state['last_serie_selecionada'] = local_serie_selecionada
+                        serie = st.session_state['serie_obj']
+                        
+                        periodo_analise_ia = st.session_state.get('periodo_analise')
+                        dfSerie = serie.dados_periodos.get(periodo_analise_ia)
+
+                        if dfSerie is None or dfSerie.empty:
+                            st.error("Nenhum dado encontrado para a série ou período informado para análise de IA.")
+                        else:
+                            st.subheader("Análise inteligente")
+                            
+                            # Container para exibir texto em tempo real
+                            response_container = st.empty()
+                            
+                            # Inicializar variáveis para streaming
+                            accumulated_text = ""
+                            
+                            def update_display(new_text):
+                                nonlocal accumulated_text
+                                accumulated_text += new_text
+                                response_container.markdown(accumulated_text)
+                            
+                            # Gerar relatório com streaming
+                        with st.spinner("Gerando relatório inteligente... Aguarde, isso pode levar alguns minutos."):
+                            try:
+                                response = gerar_relatorio_com_busca_externa_stream(
+                                    local_serie_selecionada, 
+                                    dfSerie,
+                                    callback=update_display
+                                )
+                                
+                                # Atualizar com resposta final
+                                if response:
+                                    response_container.markdown(response)
+                                    st.success("✅ Análise concluída!")
+                                    
+                                    # Salvar no session_state para persistir
+                                    st.session_state['relatorio_gerado'] = response
+                                    st.session_state['relatorio_serie'] = local_serie_selecionada
+                                    
+                                    # Gerar PDF
+                                    with open(gerar_pdf(codSerie=local_serie_selecionada, dfSerie=dfSerie, iaText=response), "rb") as file:
+                                        pdf_bytes = file.read()
+                                        st.session_state['pdf_bytes'] = pdf_bytes
+                                else:
+                                    st.error("❌ Erro ao gerar análise")
+                            except Exception as e:
+                                st.error(f"❌ Erro na análise: {str(e)}")
+                                response_container.markdown("Erro ao gerar análise. Tente novamente.")
+
+                    except Exception as e:
+                        st.error(f"❌ Erro geral: {str(e)}")
+                        
+                # Exibir relatório se já foi gerado E não está sendo gerado agora
+                elif 'relatorio_gerado' in st.session_state and st.session_state.get('relatorio_serie') == local_serie_selecionada:
+                    st.markdown(st.session_state['relatorio_gerado'])
                     
-                    periodo_analise_ia = st.session_state.get('periodo_analise')
-                    dfSerie = serie.dados_periodos.get(periodo_analise_ia)
+            else:
+                # Container vazio quando não há série selecionada
+                st.markdown("")
 
-                    if dfSerie is None or dfSerie.empty:
-                        st.error("Nenhum dado encontrado para a série ou período informado para análise de IA.")
-                    else:
-                        st.subheader("Análise inteligente")
-                        with st.spinner("Gerando análise..."):
-                            @st.cache_data(ttl="2h", show_spinner=False)
-                            def cached_gerar_relatorio(cod_serie, df):
-                                return gerar_relatorio(cod_serie, df)
-                            response = cached_gerar_relatorio(local_serie_selecionada, dfSerie)
-
-                        if response:
-                            with open(gerar_pdf(codSerie=local_serie_selecionada, dfSerie=dfSerie, iaText=response), "rb") as file:
-                                pdf_bytes = file.read()
-
-                    with st.container(height=600):
-                        if response:
-                            st.markdown(response)
-                        elif local_serie_selecionada and (dfSerie is None or dfSerie.empty):
-                            st.info("Não foi possível gerar a análise de IA. Verifique os dados da série ou o período selecionado.")
-                        elif local_serie_selecionada:
-                            st.warning("Análise de IA não gerada. Verifique as configurações da API ou os dados.")
-                except Exception as e:
-                    st.error(f"Erro na análise de IA: {e}")
-        else:
-            st.markdown('''#### ''')
-
-    if pdf_bytes:
-        st.download_button(
-            label="Exportar Relatório",
-            data=pdf_bytes,
-            file_name="relatorio.pdf",
-            mime="application/pdf"
-        )
+        # Botão de download fora do container (sempre visível quando há PDF)
+        if local_serie_selecionada and 'pdf_bytes' in st.session_state and st.session_state.get('relatorio_serie') == local_serie_selecionada:
+            st.download_button(
+                label="Exportar Relatório",
+                data=st.session_state['pdf_bytes'],
+                file_name="relatorio.pdf",
+                mime="application/pdf"
+            )
 
 # --- 10. Controle de Páginas (Último bloco no script principal) ---
 if st.session_state.current_page == "Dashboard":

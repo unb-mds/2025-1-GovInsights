@@ -29,7 +29,7 @@ O projeto busca democratizar o acesso às informações públicas através de re
 
 - **Backend**: **Python 3.x**
 - **Frontend**: **Streamlit**
-- **Modelo de NLP**: **Mistral-7B**
+- **Modelo de NLP**: **DeepSeek-R1-Distill-Llama-70B-free via API do Together AI**
 - **Bibliotecas**: **pandas 2.2.3**, **plotly 6.0.1**, **requests 2.32.3**
 - **Deploy**: **Streamlit Deploy**, **Git Pages**
 ---

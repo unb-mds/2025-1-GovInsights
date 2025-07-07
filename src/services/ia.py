@@ -1,67 +1,191 @@
 import pandas as pd
 
-def gerar_relatorio(codSerie: str, dataframe: pd.DataFrame):
+def gerar_relatorio_com_busca_externa_stream(codSerie: str, dataframe: pd.DataFrame, callback=None):
+    """
+    Versão com streaming e busca externa, que utiliza feedparser, da função gerar_relatorio
+    
+    :param codSerie: Código da série do IPEA
+    :param dataframe: DataFrame com os dados da série
+    :param callback: Função callback para receber o texto conforme é gerado (opcional)
+    :return: Texto completo do relatório
+    """
     from together import Together
-    import re
-    """
-    :arg codSerie: string contendo o código da série do IPEA
-    :arg dataframe: dataframe contendo todos os dados da série do IPEA
-
-    :return retorna uma string com marcações markdown contedo um relatório gerado pela DeepSeek R1 Distill Llama 70B Free sobre as últimas 100 atualizações da série parametrizada
-    """
+    import ipeadatapy as ip
+    
     if dataframe.empty or codSerie == '':
         raise Exception("Parametros incorretos.")
 
-    dataframe = dataframe.sort_index(ascending=False)  # Ordena do mais atual para o mais antigo
-    csv_text = dataframe.head(100).to_csv(index=True)  # Limita em <5000 tokens de entrada para que restem ~3200 tokens de saída
-
-    prompt = f"""Você deve analisar a seguinte série temporal financeira do IPEA. Com base nos dados a seguir, gere uma análise em linguagem natural precisa e completa sem limite de caracteres mas em nível profissional em relação a série {codSerie} do IPEA: 
-                
-                 1. Resumo sobre o que se trata a série temporal financeira observada.
-                 2. Uma descrição da tendência observada (crescimento, queda, estabilidade etc.);
-                 3. Interpretação dos principais eventos que influenciaram os dados;
-                 4. Classificação da anomalia (se presente) e possíveis causas;
-                 5. Implicações para investidores e/ou formuladores de políticas públicas;
-                 6. Sugestões de ação ou atenção, baseadas na interpretação dos dados;
-                 7. Nomes de empresas brasileiras ligadas ao setor (se aplicável).
-                
-                 A saída deve ser compreensível para um gestor público ou investidor, clara e fundamentada em dados.
-                 Evite campos em aberto.
-                
-                 Segue os dados da série no formato CSV:
-
-                 {csv_text}"""
-    # try:
-    #     deepseek_api_key = os.environ.get("DEEPSEEK_API_KEY")  # Pega a chave da variável de ambiente
-    #     if not deepseek_api_key:
-    #         raise Exception("Erro: A chave de API do DeepSeek (DEEPSEEK_API_KEY) não foi configurada. Por favor, adicione-a nas 'Secrets' do Streamlit Cloud.")
-    #     client = Together(api_key=deepseek_api_key)  # AGORA USA A CHAVE DA VARIÁVEL DE AMBIENTE
-    #     response = client.chat.completions.create(
-    #         model="deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free",
-    #         messages=[
-    #             {
-    #                 "role": "user",
-    #                 "content": prompt
-    #             }
-    #         ]
-    #     )
-    #     text = re.sub(r'<think>.*?</think>', '', response.choices[0].message.content, flags=re.DOTALL).strip() # Regex formata o texto para remover a etapa de thinking retornada pela IA
-    #     return text
-        
+    # Obter informações detalhadas da série
     try:
-        client = Together(api_key='31c6c1ddf940cd1ac1ad20db676e21745a49f1975e5913ec4ecfac8969c431ab')  # Realiza a conexão com a API da Together.ai
-        response = client.chat.completions.create(
+        descricaoSerie = ip.describe(codSerie)
+        nomeSerie = descricaoSerie.iloc[0,0] if len(descricaoSerie) > 0 else "Série não identificada"
+        comentarioSerie = descricaoSerie.iloc[6,0] if len(descricaoSerie) > 6 else "Comentário não disponível"
+        
+        # Limpar dados vazios ou NaN e limitar comentário a 150 caracteres
+        if pd.isna(nomeSerie) or nomeSerie == "":
+            nomeSerie = f"Série {codSerie}"
+        if pd.isna(comentarioSerie) or comentarioSerie == "":
+            comentarioSerie = "Descrição não disponível para esta série"
+        else:
+            comentarioSerie = comentarioSerie[:150]
+            
+        print(f"📊 Série: {nomeSerie}")
+        print(f"📝 Comentário: {comentarioSerie[:100]}...")
+        
+    except Exception as e:
+        print(f"⚠️ Erro ao obter informações da série: {e}")
+        nomeSerie = f"Série {codSerie}"
+        comentarioSerie = "Descrição não disponível para esta série"
+
+    dataframe = dataframe.sort_index(ascending=False)
+    
+    # Extrair apenas a coluna VALUE para otimizar o prompt (índice já contém a data)
+    try:
+        # Verificar quantas colunas existem
+        num_cols = len(dataframe.columns)
+        print(f"📊 DataFrame: {dataframe.shape} colunas - {list(dataframe.columns)}")
+        
+        # Usar a última coluna como VALUE (geralmente é a coluna de valores)
+        value_col_idx = num_cols - 1
+        
+        # Extrair os últimos 300 registros com a coluna de valores
+        # O índice já contém a informação de data
+        df_otimizado = dataframe.iloc[:300, [value_col_idx]].copy()
+        
+        # Renomear a coluna para facilitar leitura
+        df_otimizado.columns = ['Valor']
+        csv_text = df_otimizado.to_csv(index=True)  # Mantém o índice (data)
+        print(f"✅ CSV otimizado gerado com {len(df_otimizado)} linhas - apenas coluna Valor + índice de data")
+        
+    except Exception as e:
+        print(f"⚠️ Erro na otimização do CSV: {e}")
+        # Fallback seguro: usar todo o DataFrame limitado
+        csv_text = dataframe.head(50).to_csv(index=True)
+    
+    # Busca externa por notícias (mesma lógica da função original)
+    def buscar_noticias_google(query):
+        try:
+            import feedparser
+            url = f"https://news.google.com/rss/search?q={query.replace(' ', '+')}&hl=pt-BR&gl=BR&ceid=BR:pt"
+            feed = feedparser.parse(url)
+            
+            noticias = []
+            for entry in feed.entries[:5]:
+                noticias.append({
+                    'titulo': entry.title,
+                    'link': entry.link,
+                    'data': entry.published if hasattr(entry, 'published') else 'N/A',
+                    'resumo': entry.summary if hasattr(entry, 'summary') else 'N/A'
+                })
+            
+            return noticias
+        except Exception as e:
+            print(f"Erro ao buscar notícias: {e}")
+            return []
+    
+    # Busca notícias relacionadas
+    termos_busca = [
+        f"IPEA {codSerie}",
+        f"{nomeSerie} Brasil",
+        f"economia brasileira {nomeSerie.split()[-1] if nomeSerie else 'indicadores'}",
+        "dados econômicos Brasil IPEA",
+        f"análise econômica {nomeSerie.split()[0] if nomeSerie else 'atual'}"
+    ]
+    
+    todas_noticias = []
+    for termo in termos_busca:
+        noticias = buscar_noticias_google(termo)
+        todas_noticias.extend(noticias)
+    
+    # Formata as notícias para incluir no prompt (versão resumida)
+    contexto_noticias = ""
+    if todas_noticias:
+        contexto_noticias = f"\n\nNOTÍCIAS RELACIONADAS À SÉRIE '{nomeSerie}':\n"
+        for i, noticia in enumerate(todas_noticias[:5], 1):  # Apenas 5 notícias
+            contexto_noticias += f"{i}. {noticia['titulo'][:100]}...\n"  # Título limitado a 100 chars
+    else:
+        contexto_noticias = f"\n\nNOTA: Análise baseada no contexto econômico brasileiro atual.\n"
+    
+    prompt = f"""Analise esta série temporal financeira real do IPEA e responda EXCLUSIVAMENTE EM PORTUGUÊS BRASILEIRO:
+
+    SÉRIE: {codSerie} - {nomeSerie}
+
+    Gere uma análise profissional em português brasileiro abordando:
+    1. Resumo da série temporal observada
+    2. Tendência observada (crescimento, queda, estabilidade)
+    3. Principais eventos que influenciaram os dados
+    4. Anomalias e possíveis causas
+    5. Implicações para investidores/formuladores de políticas
+    6. Sugestões de ação
+    7. Empresas brasileiras do setor (se aplicável)
+    8. Correlação com as notícias fornecidas
+
+    IMPORTANTE: Responda APENAS em português brasileiro, sem usar expressões em inglês.
+
+    Dados da série (CSV):
+    {csv_text}
+    
+    {contexto_noticias}
+    """
+    
+    try:
+        client = Together(api_key='31c6c1ddf940cd1ac1ad20db676e21745a49f1975e5913ec4ecfac8969c431ab')
+        
+        # Fazer streaming da resposta
+        stream = client.chat.completions.create(
             model="deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free",
             messages=[
-            {
-                "role": "user",
-                "content": prompt,
-            }
+                {
+                    "role": "user",
+                    "content": prompt,
+                }
             ],
-            tools=[{"type": "web_search"}],
-            tool_choice="auto"
+            max_tokens=4000,
+            temperature=0.7,
+            stream=True  # Habilita streaming
         )
-        text = re.sub(r'<think>.*?</think>', '', response.choices[0].message.content, flags=re.DOTALL).strip() # Regex formata o texto para remover a etapa de thinking retornada pela IA
-        return text
-    except:
+        
+        full_text = ""
+        thinking_buffer = ""
+        in_thinking = False
+        
+        for chunk in stream:
+            if chunk.choices[0].delta.content:
+                content = chunk.choices[0].delta.content
+                
+                # Filtrar tags <think> em tempo real
+                for char in content:
+                    if char == '<' and not in_thinking:
+                        thinking_buffer = '<'
+                    elif in_thinking:
+                        thinking_buffer += char
+                        if thinking_buffer.endswith('</think>'):
+                            in_thinking = False
+                            thinking_buffer = ""
+                    elif thinking_buffer:
+                        thinking_buffer += char
+                        if thinking_buffer == '<think>':
+                            in_thinking = True
+                            thinking_buffer = ""
+                        elif not thinking_buffer.startswith('<'):
+                            # Não é tag <think>, adicionar ao texto
+                            text_to_add = thinking_buffer
+                            # Escapar $ para evitar modo matemático do Markdown
+                            text_to_add = text_to_add.replace('$', '\\$')
+                            full_text += text_to_add
+                            if callback:
+                                callback(text_to_add)
+                            thinking_buffer = ""
+                            thinking_buffer += char
+                    else:
+                        # Escapar $ para evitar modo matemático do Markdown
+                        escaped_char = char.replace('$', '\\$')
+                        full_text += escaped_char
+                        if callback:
+                            callback(escaped_char)
+        
+        return full_text.strip()
+        
+    except Exception as e:
+        print(f"Erro detalhado: {e}")
         raise Exception("Conexão com IA falhou.")
