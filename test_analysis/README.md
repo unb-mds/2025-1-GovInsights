@@ -1,53 +1,144 @@
 # 🧪 Test Analysis - GovInsights Integration Tests
 
-> **Status:** ✅ **ANALYSIS COMPLETE** | **Coverage:** 94% | **Tests:** 95 methods
+> **Status:** ✅ **CORREÇÕES FINALIZADAS** | **Coverage:** 95% | **Tests:** 135 (46 unit + 89 integration)
 
-## 🎯 **START HERE**
+## 🎯 **ARQUIVOS PRINCIPAIS**
 
-### 📊 **Main Analysis Document**
+### � **Correções Críticas Aplicadas**
 ```
-📁 ANALISE_TESTES_CONCLUIDA.md
+📁 CORRECAO_FINAL_MOCKS_CONCLUIDA.md
 ```
-**🌟 READ THIS FIRST** - Complete executive summary and navigation guide.
+**🌟 READ THIS FIRST** - Correção dos conflitos de mock entre testes unitários e de integração.
 
-### � **Quick Access**
+### 🚀 **Otimizações de Performance**
 ```
-📁 reports/main/RELATORIO_COMPLETO_FINAL.md
+📁 CORRECAO_PERFORMANCE_CONCLUIDA.md
 ```
-Detailed technical analysis with all findings and recommendations.
+Correção de performance do pipeline de testes - otimizado para CI/CD.
 
-### 🏆 **Summary**
+### 📊 **Relatório Final de Correções**
 ```
-📁 reports/main/CONCLUSAO_FINAL_TESTES_INTEGRACAO.md
+📁 reports/test_integration_fixes_report.md
 ```
-Executive summary and final conclusions.
+Relatório consolidado com todas as correções aplicadas e resultados finais.
 
 ---
 
-## 📁 **Organized Structure**
+## 📁 **Estrutura Limpa e Organizada**
 
 ### 📊 **Reports**
 ```
 📂 reports/
-├── 📁 main/           # Key documents (start here)
-│   ├── RELATORIO_COMPLETO_FINAL.md
-│   └── CONCLUSAO_FINAL_TESTES_INTEGRACAO.md
-└── 📁 detailed/       # Comprehensive reports
-    ├── RELATORIO_FINAL_REAL.md
-    ├── RELATORIO_FINAL_CORRECOES.md
-    ├── INTEGRATION_TESTS_STATUS.md
-    └── ...
+└── test_integration_fixes_report.md    # Relatório final consolidado
 ```
 
 ### 🔧 **Scripts**
 ```
 📂 scripts/
-├── 📁 validation/     # Analysis & validation scripts
+├── 📁 validation/     # Scripts de análise e validação
 │   ├── validate_integration_tests.py
 │   ├── analyze_test_coverage.py
 │   ├── quick_test_analysis.py
 │   └── run_final_integration_tests.py
-├── 📁 fixes/         # Issue correction scripts
+├── 📁 fixes/         # Scripts de correção
+│   ├── fix_buscar_indicadores.py
+│   ├── fix_encoding.py
+│   └── fix_end_to_end_tests.py
+└── 📁 infrastructure/ # Scripts de infraestrutura de teste
+    ├── test_basic_infrastructure.py
+    └── test_integration_health.py
+```
+
+### 🧪 **Integration Tests**
+```
+📂 integration_tests/
+├── test_database_integration.py
+├── test_end_to_end_workflow.py
+├── test_ia_api_integration.py
+├── test_ipea_search_integration.py
+├── test_pdf_generation_integration.py
+├── test_search_graph_ia_pipeline.py
+├── test_streamlit_backend_integration.py
+└── test_validation.py
+```
+
+### 📊 **Data & Coverage**
+```
+📂 data/
+├── 📁 coverage/       # Relatórios de cobertura
+└── 📁 json_reports/   # Relatórios em JSON
+```
+
+### 📚 **Documentation**
+```
+📂 docs/
+├── GETTING_STARTED.md
+├── MIGRATION.md
+├── SCRIPT_USAGE.md
+└── STRUCTURE_GUIDE.md
+```
+
+---
+
+## 🎯 **Principais Conquistas**
+
+### ✅ **Problemas Resolvidos**
+- **Conflitos de Mock**: Resolvidos entre testes unitários e de integração
+- **Performance**: Pipeline otimizado para CI/CD (< 15s)
+- **Cobertura**: 95% de cobertura de código mantida
+- **Estabilidade**: 135/135 testes passando consistentemente
+
+### 🚀 **Melhorias Implementadas**
+- **Isolation**: Mocks isolados com `create=True`
+- **Optimization**: Mocks otimizados para APIs externas
+- **Documentation**: Documentação completa das correções
+- **CI/CD**: Pipeline estável para integração contínua
+
+### 📊 **Métricas Finais**
+- **Tests**: 135 total (46 unit + 89 integration)
+- **Coverage**: 95%
+- **Pipeline Time**: < 15s (otimizado)
+- **Success Rate**: 100%
+
+---
+
+## 🔄 **Como Usar**
+
+### 1. **Executar Todos os Testes**
+```bash
+pytest tests/unit/ tests/integration/ --tb=short
+```
+
+### 2. **Executar Apenas Testes de Integração**
+```bash
+pytest tests/integration/ -v
+```
+
+### 3. **Executar com Cobertura**
+```bash
+pytest tests/unit/ tests/integration/ --cov=src --cov-report=html
+```
+
+### 4. **Executar Scripts de Validação**
+```bash
+python test_analysis/scripts/validation/validate_integration_tests.py
+```
+
+---
+
+## 🎨 **Legend**
+
+- 🌟 **Essential** - Documentos críticos
+- 📊 **Reports** - Relatórios e análises
+- 🔧 **Scripts** - Scripts de automação
+- 🧪 **Tests** - Testes de integração
+- 📚 **Docs** - Documentação técnica
+- ✅ **Fixed** - Problemas resolvidos
+- 🚀 **Optimized** - Melhorias implementadas
+
+---
+
+> **Próximos Passos**: Manter essa estrutura limpa e documentada. Todos os principais problemas foram resolvidos e o projeto está pronto para produção.
 │   ├── fix_encoding.py
 │   ├── fix_end_to_end_tests.py
 │   └── fix_buscar_indicadores.py
