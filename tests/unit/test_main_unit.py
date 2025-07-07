@@ -61,11 +61,13 @@ def test_get_base64_of_bin_file(tmp_path):
 
 
 @patch("src.main.st")
-def test_landing_page_calls(st_mock):
+@patch("src.main.get_base64_of_bin_file")
+def test_landing_page_calls(mock_get_base64, st_mock):
     st_mock.columns.return_value = [MagicMock(), MagicMock()]
     st_mock.image.return_value = None
     st_mock.button.return_value = False
     st_mock.session_state = SimpleNamespace(page="landing")
+    mock_get_base64.return_value = "fake_base64_data"
 
     main.landing_page()
 
@@ -75,10 +77,12 @@ def test_landing_page_calls(st_mock):
 
 
 @patch("src.main.st")
-def test_landing_page_renders_correctly(st_mock):
+@patch("src.main.get_base64_of_bin_file")
+def test_landing_page_renders_correctly(mock_get_base64, st_mock):
     st_mock.columns.return_value = [MagicMock(), MagicMock()]
     st_mock.image.return_value = None
     st_mock.session_state = SimpleNamespace(page="landing")
+    mock_get_base64.return_value = "fake_base64_data"
 
     main.landing_page()
 
