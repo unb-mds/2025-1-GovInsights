@@ -6,8 +6,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 
-from data.connect import supabase
-from data.operacoes_bd import alterar_ultima_atualizacao, alterar_ultima_checagem, alterar_ultimo_alerta
+from src.data.connect import supabase
+from src.data.operacoes_bd import alterar_ultima_atualizacao, alterar_ultima_checagem, alterar_ultimo_alerta
 
 
 def calcular_margem(valores: pd.DataFrame):
