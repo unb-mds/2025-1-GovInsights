@@ -1,0 +1,23 @@
+# Nome do Workflow
+name: Keep Streamlit App Alive
+
+# Gatilho (trigger) do workflow
+on:
+  schedule:
+    # Executa a cada 15 minutos. A sintaxe é de cron job.
+    # '*/15' -> a cada 15 minutos
+    # '*' -> toda hora, todo dia do mês, todo mês, todo dia da semana
+    - cron: '*/15 * * * *'
+
+jobs:
+  # Nome do job
+  wake-up:
+    # O tipo de máquina virtual para executar o job
+    runs-on: ubuntu-latest
+
+    steps:
+      # Nome do passo
+      - name: Send GET request to Streamlit app
+        # O comando que será executado
+        # Use o 'curl' para enviar uma requisição HTTP para a URL da sua aplicação
+        run: curl -s "https://2025-1-govinsights.streamlit.app/"

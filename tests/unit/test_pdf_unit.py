@@ -7,7 +7,7 @@ from unittest.mock import patch, MagicMock
 def temp_files(tmp_path):
     # Cria arquivos temporários reais para simular NamedTemporaryFile
     img_file = tmp_path / "temp_img.png"
-    img_file.write_text("fake image data")  # conteúdo dummy só para existir o arquivo
+    img_file.write_text("fake image data")  
     pdf_file = tmp_path / "temp_pdf.pdf"
     pdf_file.write_text("fake pdf data")
     return str(img_file), str(pdf_file)
@@ -44,10 +44,10 @@ def test_gerar_pdf_raises_exception_on_invalid_params():
         pdf.gerar_pdf("COD", pd.DataFrame(), "texto")
 
 
-@patch("src.services.pdf.pd.DataFrame.plot")  # evitar plot real
-@patch("src.services.pdf.plt.subplots")
-@patch("src.services.pdf.pisa.CreatePDF")
-@patch("src.services.pdf.markdown.markdown")
+@patch("pandas.DataFrame.plot")  # evitar plot real
+@patch("matplotlib.pyplot.subplots")
+@patch("xhtml2pdf.pisa.CreatePDF")
+@patch("markdown.markdown")
 def test_gerar_pdf_success(mock_md, mock_pisa, mock_subplots, mock_plot, temp_files):
     import src.services.pdf as pdf
 
@@ -61,7 +61,7 @@ def test_gerar_pdf_success(mock_md, mock_pisa, mock_subplots, mock_plot, temp_fi
     mock_subplots.return_value = (mock_fig, mock_ax)
     mock_fig.savefig = MagicMock()
 
-    with patch("src.services.pdf.tempfile.NamedTemporaryFile", side_effect=fake_tempfile_factory(tmp_img_name, tmp_pdf_name)):
+    with patch("tempfile.NamedTemporaryFile", side_effect=fake_tempfile_factory(tmp_img_name, tmp_pdf_name)):
         df = pd.DataFrame({"valores": [1, 2, 3, 4]})
         caminho_pdf = pdf.gerar_pdf("COD123", df, "Texto em markdown")
 
@@ -72,7 +72,7 @@ def test_gerar_pdf_success(mock_md, mock_pisa, mock_subplots, mock_plot, temp_fi
         mock_pisa.assert_called_once()
 
 
-@patch("src.services.pdf.pisa.CreatePDF")
+@patch("xhtml2pdf.pisa.CreatePDF")
 def test_gerar_pdf_raises_exception_on_pdf_error(mock_pisa, temp_files):
     import src.services.pdf as pdf
 
@@ -80,14 +80,14 @@ def test_gerar_pdf_raises_exception_on_pdf_error(mock_pisa, temp_files):
 
     mock_pisa.return_value = MagicMock(err=True)
 
-    with patch("src.services.pdf.tempfile.NamedTemporaryFile", side_effect=fake_tempfile_factory(tmp_img_name, tmp_pdf_name)):
+    with patch("tempfile.NamedTemporaryFile", side_effect=fake_tempfile_factory(tmp_img_name, tmp_pdf_name)):
         df = pd.DataFrame({"valores": [1, 2, 3]})
 
         with pytest.raises(Exception, match="PDF não foi gerado."):
             pdf.gerar_pdf("COD", df, "Texto")
 
 
-@patch("src.services.pdf.plt.subplots")
+@patch("matplotlib.pyplot.subplots")
 def test_gerar_pdf_handles_dataframe_plotting_error(mock_subplots, temp_files):
     import src.services.pdf as pdf
 
@@ -101,17 +101,17 @@ def test_gerar_pdf_handles_dataframe_plotting_error(mock_subplots, temp_files):
     # Simular erro em ax.plot, pois é ele que gera gráfico
     mock_ax.plot.side_effect = Exception("Erro no plot")
 
-    with patch("src.services.pdf.tempfile.NamedTemporaryFile", side_effect=fake_tempfile_factory(tmp_img_name, tmp_pdf_name)):
+    with patch("tempfile.NamedTemporaryFile", side_effect=fake_tempfile_factory(tmp_img_name, tmp_pdf_name)):
         df = pd.DataFrame({"valores": [1, 2, 3]})
 
         with pytest.raises(Exception, match="Erro no plot"):
             pdf.gerar_pdf("COD", df, "texto")
 
 
-@patch("src.services.pdf.pd.DataFrame.plot")
-@patch("src.services.pdf.plt.subplots")
-@patch("src.services.pdf.pisa.CreatePDF")
-@patch("src.services.pdf.markdown.markdown")
+@patch("pandas.DataFrame.plot")
+@patch("matplotlib.pyplot.subplots")
+@patch("xhtml2pdf.pisa.CreatePDF")
+@patch("markdown.markdown")
 def test_gerar_pdf_handles_markdown_conversion_error(mock_md, mock_pisa, mock_subplots, mock_plot, temp_files):
     import src.services.pdf as pdf
 
@@ -126,7 +126,7 @@ def test_gerar_pdf_handles_markdown_conversion_error(mock_md, mock_pisa, mock_su
     # Simular exceção na conversão markdown -> html
     mock_md.side_effect = Exception("Erro markdown")
 
-    with patch("src.services.pdf.tempfile.NamedTemporaryFile", side_effect=fake_tempfile_factory(tmp_img_name, tmp_pdf_name)):
+    with patch("tempfile.NamedTemporaryFile", side_effect=fake_tempfile_factory(tmp_img_name, tmp_pdf_name)):
         df = pd.DataFrame({"valores": [1, 2, 3]})
 
         with pytest.raises(Exception, match="Erro markdown"):

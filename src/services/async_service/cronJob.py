@@ -101,7 +101,10 @@ def verificar_atualizacao_series():
         for serie in series.data:
 
             # Armazena o dataframe de atualizações da série de forma descendente
-            dataframe_serie = ipea.timeseries(serie["codigo_serie"]).iloc[::-1]
+            try:
+                dataframe_serie = ipea.timeseries(serie["codigo_serie"]).iloc[::-1]
+            except:
+                continue
 
             # Armazena a última coluna do dataframe que diz respeito aos valores
             valores = dataframe_serie.iloc[:, -1]

@@ -4,7 +4,7 @@ from types import SimpleNamespace
 import sys
 import types
 
-import src.main as main  # ajuste o import se precisar
+import src.main as main
 
 
 def test_get_base64_image(tmp_path):

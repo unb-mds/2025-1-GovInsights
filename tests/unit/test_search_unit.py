@@ -189,14 +189,14 @@ def test_get_available_sources(service):
     sources_df = service.get_available_sources('Monthly')
     assert isinstance(sources_df, pd.DataFrame)
     assert 'SOURCE ACRONYM' in sources_df.columns
-    # Deve conter só os fontes únicos presentes na frequência mensal
+    # Fontes únicos presentes na frequência mensal
     unique_sources = mock_metadata_df[mock_metadata_df['FREQUENCY']=='Monthly']['SOURCE ACRONYM'].unique()
     assert set(sources_df['SOURCE ACRONYM']) == set(unique_sources)
 
 def test_get_available_themes(service):
     themes = service.get_available_themes('Monthly')
     assert isinstance(themes, list)
-    # Deve conter os temas presentes na frequência 'Monthly'
+    # Temas presentes na frequência 'Monthly'
     theme_codes = [t['THEME CODE'] for t in themes]
     expected_codes = mock_metadata_df[mock_metadata_df['FREQUENCY'] == 'Monthly']['THEME CODE'].unique()
     for code in theme_codes:

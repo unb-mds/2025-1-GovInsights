@@ -151,21 +151,19 @@ with st.sidebar:
 # --- 9. Definição da Página Principal (main_page) ---
 def main_page():
     # cabeçalho
-    col1, col2 = st.columns([1, 14])
-    with col1:
-        st.image(str(img_path), width=80)
-    with col2:
-        st.markdown("""
-        <div style="display: flex; align-items: left; height: 100%; justify-content: flex-start;">
-            <h3 style="margin-left: 10px;">
-                Gov Insights <br>
-                <p>Relatórios inteligentes IPEA</p>
-            </h3>
+    st.markdown("""
+    <div style="display: flex; align-items: center; height: 100%; justify-content: flex-start; gap: 12px; margin: 0 0 30px 0">
+        <img src="app/static/img/govinsights_logo.png" width=52px height=52px>
+        <div style="display: flex; flex-direction: column; justify-content: center;">
+            <h3 style="margin: 0; padding: 0">Gov Insights</h3>
+            <h5 style="color: #b0b0b0; margin: -4px 0 0 0; padding: 0">Relatórios Inteligentes</h5>
         </div>
-        """, unsafe_allow_html=True)
+        
+    </div>
+    """, unsafe_allow_html=True)
 
-    col3, col4 = st.columns([4, 2])
-    with col3:
+    col1, col4 = st.columns([4, 2], gap="medium")
+    with col1:
         local_serie_selecionada = None
         if serie_selecionada:
             local_serie_selecionada = st.session_state.get('serie_estatistica')['CODE']
@@ -176,11 +174,12 @@ def main_page():
 
             info_serie = serie.descricao
             criar_pills_periodo_analise(st.session_state['frequencia'])
-
+            
             periodo_atual = st.session_state.get('periodo_analise')
             if periodo_atual and periodo_atual in serie.percentuais and serie.percentuais[periodo_atual] is not None:
                 color_indicator = "#2BB17A" if serie.percentuais[periodo_atual] >= 0 else "#f0423c"
-                text_indicator = ("↑ " if serie.percentuais[periodo_atual] >= 0 else "↓ ") + str(serie.percentuais[periodo_atual]) + "%"
+                current_value = info_serie.iloc[9,0] + " " + str(round(serie.dados_periodos[periodo_atual].iloc[-1, 5], 2))
+                text_indicator = current_value + " " + ("↑ " if serie.percentuais[periodo_atual] >= 0 else "↓ ") + str(serie.percentuais[periodo_atual]) + "%"
             else:
                 color_indicator = "#CCCCCC"
                 text_indicator = "N/A"
@@ -208,6 +207,8 @@ def main_page():
                 )
             else:
                 st.warning("Gráfico não disponível para o período selecionado ou dados insuficientes.")
+            st.expander("Descrição da série estatística", expanded=True, icon=":material/description:").html(
+                serie.descricao.iloc[6,0] if not info_serie.empty else 'Descrição não disponível')
         else:
             st.markdown("""
                 <div class="painel" style="border: 1px solid #2BB17A; background-color: #101120; padding: 16px; border-radius: 8px;">
@@ -228,7 +229,7 @@ def main_page():
                         st.session_state['serie_obj'] = obter_obj_serie(local_serie_selecionada, st.session_state['frequencia'])
                         st.session_state['last_serie_selecionada'] = local_serie_selecionada
                     serie = st.session_state['serie_obj']
-
+                    
                     periodo_analise_ia = st.session_state.get('periodo_analise')
                     dfSerie = serie.dados_periodos.get(periodo_analise_ia)
 
@@ -237,7 +238,10 @@ def main_page():
                     else:
                         st.subheader("Análise inteligente")
                         with st.spinner("Gerando análise..."):
-                            response = gerar_relatorio(local_serie_selecionada, dfSerie)
+                            @st.cache_data(ttl="2h", show_spinner=False)
+                            def cached_gerar_relatorio(cod_serie, df):
+                                return gerar_relatorio(cod_serie, df)
+                            response = cached_gerar_relatorio(local_serie_selecionada, dfSerie)
 
                         if response:
                             with open(gerar_pdf(codSerie=local_serie_selecionada, dfSerie=dfSerie, iaText=response), "rb") as file:
