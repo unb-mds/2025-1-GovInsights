@@ -4,6 +4,38 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 from src.data.connect import supabase
+
+def deletar_serie(codigo_serie: str, email_usuario: str):
+    """
+    Realiza a deleção dos dados parametrizados na tabela "series" do banco de dados no Supabase.
+
+    :param codigo_serie: str - Código da série.
+    :param email_usuario: str - Email do usuário.
+    :return: dict - Caso a deleção seja bem sucedida, é retornado uma lista contendo um dicionario com os dados deletados.
+    :raises ValueError: Se algum dos parâmetros obrigatórios for string vazia.
+    :raises ValueError: Caso tenha sido realizada a tentativa de deleção e não tenha sido encontrado nenhum dados no Supabase.
+    :raises Exception: Para erros genéricos que podem ocorrer na inserção no Supabase.
+    """
+    if codigo_serie == "" or email_usuario == "":
+        raise ValueError("Dados insuficientes.")
+    try:
+        codigo_serie = codigo_serie.upper()
+        # Tentativa de deleção
+        existe = (
+            supabase.table("series")
+            .delete()
+            .eq("codigo_serie", codigo_serie)
+            .eq("email_usuario", email_usuario)
+            .execute()
+        )
+        if not existe.data:
+            raise ValueError("Dados fornecidos não existem no banco de dados.")
+        else:
+            return existe.data
+    except Exception as error:
+        raise error
+
+
 # Quando for inserir a serie no BD o campo de ultima atualizacao diz respeito a última atualização da série no IPEA
 def inserir_nova_serie(codigo_serie: str, email_usuario: str, margem: str, ultima_atualizacao: str):
     """
