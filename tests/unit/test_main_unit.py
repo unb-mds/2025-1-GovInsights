@@ -1,10 +1,52 @@
 import base64
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, mock_open
 from types import SimpleNamespace
 import sys
 import types
 
-import src.main as main
+# Mock do streamlit ANTES de qualquer import
+class MockSessionState:
+    def __init__(self):
+        self.page = "landing"
+        
+    def __contains__(self, key):
+        return hasattr(self, key)
+    
+    def __getitem__(self, key):
+        return getattr(self, key)
+    
+    def __setitem__(self, key, value):
+        setattr(self, key, value)
+
+class MockStreamlit:
+    def __init__(self):
+        self.session_state = MockSessionState()
+        
+    def set_page_config(self, *args, **kwargs):
+        pass
+        
+    def markdown(self, *args, **kwargs):
+        pass
+        
+    def warning(self, *args, **kwargs):
+        pass
+        
+    def image(self, *args, **kwargs):
+        pass
+        
+    def container(self, *args, **kwargs):
+        return MagicMock()
+        
+    def columns(self, *args, **kwargs):
+        return [MagicMock(), MagicMock()]
+
+# Substituir streamlit no sys.modules
+sys.modules['streamlit'] = MockStreamlit()
+
+# Mock dos arquivos de imagem
+with patch('pathlib.Path.exists', return_value=True), \
+     patch('builtins.open', mock_open(read_data=b'fake_image_data')):
+    import src.main as main
 
 
 def test_get_base64_of_bin_file(tmp_path):
@@ -12,8 +54,10 @@ def test_get_base64_of_bin_file(tmp_path):
     content = b"conteudoimagem"
     file_path.write_bytes(content)
 
-    encoded = main.get_base64_of_bin_file(str(file_path))
-    assert encoded == base64.b64encode(content).decode()
+    # Teste direto da função real (sem mock)
+    with patch('builtins.open', mock_open(read_data=content)):
+        encoded = main.get_base64_of_bin_file(str(file_path))
+        assert encoded == base64.b64encode(content).decode()
 
 
 @patch("src.main.st")
