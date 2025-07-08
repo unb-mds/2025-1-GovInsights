@@ -1,9 +1,11 @@
 import pandas as pd
 import re
+import os
 import ipeadatapy as ipea
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.image import MIMEImage
 from datetime import datetime
 
 from src.data.connect import supabase
@@ -33,7 +35,6 @@ def enviar_email(codigo_serie: str, email_usuario: str, margem: float):
     :return: Retorna um valor booleano referente ao sucesso de envio do email.
 
     """
-    texto = f"Houve um {'aumento' if margem > 0 else 'decréscimo'} de {margem:.2f}% na série {codigo_serie} de acordo com a nova atualizacação."
 
     # Configuração SMTP da Brevo
     smtp_server = "smtp-relay.brevo.com"
@@ -41,15 +42,139 @@ def enviar_email(codigo_serie: str, email_usuario: str, margem: float):
     smtp_login = "905867001@smtp-brevo.com"  # Login SMTP da Brevo
     smtp_password = "h92HcFkdMgUwVySJ"  # Sua SMTP Key
 
-    # Criar a mensagem
-    mensagem = MIMEMultipart()
-    mensagem['Subject'] = f"Alerta da Série {codigo_serie}"
+    # HTML com identidade visual GOV INSIGHTS
+    if margem >= 0:
+        cor_variacao = "#27AE60"
+    else:
+        cor_variacao = "#E53E3E"
+    html_content = f"""
+    <html>
+    <head>
+        <style>
+            body {{
+                font-family: 'Segoe UI', Arial, sans-serif;
+                background-color: #ff0000;
+                color: #333;
+                margin: 0;
+                padding: 40px 0;
+            }}
+            .email-container {{
+                max-width: 480px;
+                margin: 0 auto;
+                background-color: #f3ffff;
+                border-radius: 12px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+                overflow: hidden;
+            }}
+            .logo-container {{
+                background-color: #f0f7ff;
+                padding: 15px 30px;
+                display: flex;
+                align-items: center;
+            }}
+            .logo {{
+                width: 80px;  
+                height: auto;
+            }}
+            .content {{
+                padding: 30px;
+                text-align: left;
+            }}
+            .title {{
+                font-size: 20px;
+                color: #135730;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }}
+            .alert {{
+                background-color: #f0f7ff;
+                border-left: 5px solid #27AE60;
+                padding: 15px;
+                border-radius: 6px;
+                margin-bottom: 20px;
+            }}
+            .variacao {{
+                color: {cor_variacao};
+                font-weight: bold;
+                font-size: 18px;
+            }}
+            .button {{
+                display: block;
+                width: fit-content;
+                margin: 25px auto 0 auto;
+                background-color: #27AE60;
+                color: white !important;
+                padding: 12px 24px;
+                border-radius: 8px;
+                text-align: center;
+                font-weight: bold;
+                text-decoration: none;
+            }}
+            .footer {{
+                font-size: 12px;
+                color: #aaa;
+                text-align: center;
+                padding: 20px;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="email-container">
+            <div class="logo-container">
+                <img src="cid:logo_gov_insights" alt="GOV INSIGHTS" class="logo">
+            </div>
+            <div class="content">
+                <div class="title">Alerta de Variação Econômica</div>
+                <div class="alert">
+                    <p>Série monitorada: <strong>{codigo_serie}</strong></p>
+                    <p>Alteração detectada: <span class="variacao">{'+' if margem > 0 else ''}{margem:.2f}%</span></p>
+                </div>
+                <p>Este alerta foi gerado automaticamente pelo GOV INSIGHTS com base no monitoramento contínuo.</p>
+                <ul>
+                    <li>Consulte detalhes no painel de análise</li>
+                    <li>Compare com outras séries</li>
+                    <li>Realize exportação de dados</li>
+                    <li><strong>Ação recomendada:</strong> em até 48h</li>
+                </ul>
+                <a href="https://painel.govinsights.com.br/analise?serie={codigo_serie}" class="button">Ver análise completa</a>
+            </div>
+            <div class="footer">
+                GOV INSIGHTS • SQUAD 10<br>
+                Este é um e-mail automático, não responda.<br>
+                <a href="https://govinsights.com.br/unsubscribe?email={email_usuario}" style="color: #888;">Cancelar inscrição</a>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+
+    # Criar a mensagem multipart/related
+    mensagem = MIMEMultipart('related')
+    mensagem['Subject'] = f"Alerta da Série #{codigo_serie}"
     mensagem['From'] = 'govinsightstests@gmail.com'
     mensagem['To'] = email_usuario
 
-    # Corpo da mensagem
-    corpo = MIMEText(texto, 'html')
-    mensagem.attach(corpo)
+    # Criar o container multipart/alternative (texto + html)
+    msg_alternative = MIMEMultipart('alternative')
+    mensagem.attach(msg_alternative)
+
+    # Texto plano para clientes que não suportam html (opcional)
+    texto_plano = "Seu cliente de email não suporta HTML."
+    msg_text = MIMEText(texto_plano, 'plain')
+    msg_alternative.attach(msg_text)
+
+    # Corpo html
+    msg_html = MIMEText(html_content, 'html')
+    msg_alternative.attach(msg_html)
+
+    # Anexar imagem da logo embutida
+    logo_path = 'src/services/async_service/assets/icon.png'
+    if os.path.exists(logo_path):
+        with open(logo_path, 'rb') as img:
+            logo = MIMEImage(img.read())
+            logo.add_header('Content-ID', '<logo_gov_insights>')
+            mensagem.attach(logo)
+
 
     # Enviar o e-mail
     try:
