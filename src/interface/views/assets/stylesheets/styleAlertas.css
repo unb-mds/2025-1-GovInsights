@@ -515,3 +515,18 @@ main .block-container {
     margin-left: auto !important;
     margin-right: auto !important;
 }
+
+
+#text_del {
+    text-align: justify;
+}
+
+#text_lam {
+    color: #fff;
+    font-size: small;
+}
+
+#exp {
+    color: #bbb;
+    font-size: smaller;
+}

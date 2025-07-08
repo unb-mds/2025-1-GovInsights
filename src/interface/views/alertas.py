@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 
 
 from services.search import SearchService
-from data.operacoes_bd import inserir_nova_serie
+from data.operacoes_bd import inserir_nova_serie, deletar_serie
 
 if 'current_page' not in st.session_state:
     st.session_state.current_page = "Dashboard"
@@ -47,6 +47,7 @@ def change_page(page_name):
 #             </div>
 #             """
 #     st.markdown(detalhes_alerta, unsafe_allow_html=True)
+
 
 def alertas_page():
 #    st.markdown("""                SIDEBAR FECHADA
@@ -157,3 +158,22 @@ def alertas_page():
                 except Exception as error:
                     st.warning("Erro ao comunicar com BD")
                     
+
+def del_alertas_page():
+    st.title("Cancelar Inscrição de Alertas")
+    email = st.text_input("Endereço de email:")
+    serie = st.text_input("Código da Série:")
+
+    st.markdown("""
+        <div id="text_del">
+            <p id="text_lam">Lamentamos que você esteja se desvinculando do nosso sistema. Esperamos ter sido úteis durante o período em que nos acompanhou.</p>
+            <p id="exp">Ao continuar, você deixará de receber alertas relacionados a essa configuração. Se desejar, poderá ativá-los novamente a qualquer momento nas configurações.</p>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("Desativar Alerta"):
+        try:
+            deletar_serie(email, serie)
+            st.success("Alerta deletado com sucesso!")
+        except Exception as error:
+            st.warning("Erro ao deletar serie no BD")
