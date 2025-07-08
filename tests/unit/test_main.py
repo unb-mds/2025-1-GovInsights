@@ -2,7 +2,52 @@ import pytest
 import base64
 from pathlib import Path
 from unittest.mock import patch, mock_open, MagicMock
-from src.main import get_img_as_base64, get_base64_of_bin_file
+import sys
+import os
+
+# Classe personalizada para simular session_state do Streamlit
+class MockSessionState:
+    def __init__(self):
+        self._data = {'page': 'landing'}
+    
+    def __contains__(self, key):
+        return key in self._data
+    
+    def __getitem__(self, key):
+        return self._data[key]
+    
+    def __setitem__(self, key, value):
+        self._data[key] = value
+    
+    def get(self, key, default=None):
+        return self._data.get(key, default)
+    
+    @property
+    def page(self):
+        return self._data.get('page', 'landing')
+    
+    @page.setter
+    def page(self, value):
+        self._data['page'] = value
+
+# Mock streamlit para evitar warnings e problemas de contexto
+streamlit_mock = MagicMock()
+streamlit_mock.session_state = MockSessionState()
+streamlit_mock.set_page_config = MagicMock()
+streamlit_mock.markdown = MagicMock()
+streamlit_mock.warning = MagicMock()
+streamlit_mock.container = MagicMock()
+streamlit_mock.columns = MagicMock(return_value=[MagicMock(), MagicMock()])
+streamlit_mock.image = MagicMock()
+
+# Substitui o módulo streamlit antes de qualquer importação
+sys.modules['streamlit'] = streamlit_mock
+
+# Mock para evitar a execução automática do landing_page()
+with patch('builtins.open', mock_open(read_data=b'fake_image_data')):
+    with patch('pathlib.Path.exists', return_value=True):
+        # Agora pode importar com segurança
+        from src.main import get_img_as_base64, get_base64_of_bin_file
 
 
 class TestMainFunctions:
