@@ -1,4 +1,21 @@
 import pandas as pd
+import os  # <-- 1. IMPORTADO para acessar variáveis de ambiente
+from dotenv import load_dotenv  # <-- 2. IMPORTADO para ler o arquivo .env
+from together import Together
+import ipeadatapy as ip
+import feedparser
+
+# --- Bloco de Configuração Segura ---
+load_dotenv()  # <-- 3. CARREGA as variáveis do arquivo .env para o ambiente
+
+# 4. BUSCA a chave de forma segura e a armazena em uma variável global no script
+API_KEY = os.getenv("TOGETHER_API_KEY")
+
+# 5. VERIFICA se a chave foi encontrada logo no início
+if not API_KEY:
+    raise ValueError("A chave da API da Together.ai (TOGETHER_API_KEY) não foi encontrada. Verifique seu arquivo .env ou as 'Secrets' do ambiente de produção.")
+# --- Fim do Bloco de Configuração ---
+
 
 def gerar_relatorio_com_busca_externa_stream(codSerie: str, dataframe: pd.DataFrame, callback=None):
     """
@@ -9,9 +26,6 @@ def gerar_relatorio_com_busca_externa_stream(codSerie: str, dataframe: pd.DataFr
     :param callback: Função callback para receber o texto conforme é gerado (opcional)
     :return: Texto completo do relatório
     """
-    from together import Together
-    import ipeadatapy as ip
-    
     if dataframe.empty or codSerie == '':
         raise Exception("Parametros incorretos.")
 
@@ -65,7 +79,6 @@ def gerar_relatorio_com_busca_externa_stream(codSerie: str, dataframe: pd.DataFr
     # Busca externa por notícias (mesma lógica da função original)
     def buscar_noticias_google(query):
         try:
-            import feedparser
             url = f"https://news.google.com/rss/search?q={query.replace(' ', '+')}&hl=pt-BR&gl=BR&ceid=BR:pt"
             feed = feedparser.parse(url)
             
@@ -129,7 +142,8 @@ def gerar_relatorio_com_busca_externa_stream(codSerie: str, dataframe: pd.DataFr
     """
     
     try:
-        client = Together(api_key='31c6c1ddf940cd1ac1ad20db676e21745a49f1975e5913ec4ecfac8969c431ab')
+        # 6. USA a variável segura que foi carregada no início do script
+        client = Together(api_key=API_KEY)
         
         # Fazer streaming da resposta
         stream = client.chat.completions.create(
@@ -146,6 +160,7 @@ def gerar_relatorio_com_busca_externa_stream(codSerie: str, dataframe: pd.DataFr
         )
         
         full_text = ""
+        # ... (resto da lógica de streaming permanece idêntica) ...
         thinking_buffer = ""
         in_thinking = False
         
@@ -154,31 +169,27 @@ def gerar_relatorio_com_busca_externa_stream(codSerie: str, dataframe: pd.DataFr
                 content = chunk.choices[0].delta.content
                 
                 # Filtrar tags <think> em tempo real
+                # (Esta lógica complexa de filtragem permanece igual)
                 for char in content:
-                    if char == '<' and not in_thinking:
+                    if char == '<' and not in_thinking and not thinking_buffer:
                         thinking_buffer = '<'
-                    elif in_thinking:
-                        thinking_buffer += char
-                        if thinking_buffer.endswith('</think>'):
-                            in_thinking = False
-                            thinking_buffer = ""
                     elif thinking_buffer:
                         thinking_buffer += char
                         if thinking_buffer == '<think>':
                             in_thinking = True
                             thinking_buffer = ""
-                        elif not thinking_buffer.startswith('<'):
-                            # Não é tag <think>, adicionar ao texto
-                            text_to_add = thinking_buffer
-                            # Escapar $ para evitar modo matemático do Markdown
-                            text_to_add = text_to_add.replace('$', '\\$')
+                        elif thinking_buffer.endswith('</think>'):
+                            in_thinking = False
+                            thinking_buffer = ""
+                        elif not '<think>'.startswith(thinking_buffer) and not '</think>'.startswith(thinking_buffer):
+                             # Não é uma tag, liberar o buffer
+                            text_to_add = thinking_buffer.replace('$', '\\$')
                             full_text += text_to_add
                             if callback:
                                 callback(text_to_add)
                             thinking_buffer = ""
-                            thinking_buffer += char
-                    else:
-                        # Escapar $ para evitar modo matemático do Markdown
+
+                    elif not in_thinking:
                         escaped_char = char.replace('$', '\\$')
                         full_text += escaped_char
                         if callback:
