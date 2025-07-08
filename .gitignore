@@ -1,35 +1,29 @@
-bug/update-gitignore
-# Byte-compiled / optimized / DLL files
+# Arquivos de ambiente - O MAIS IMPORTANTE!
+# Esconde o arquivo .env que contém as chaves secretas.
+.env
+
+# Ambientes virtuais
+venv/
+.venv/
+env/
+
+# Arquivos compilados e de cache do Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# Virtual environment
-venv/
-.venv/
-env/
-.env/
-
-# Log files
+# Arquivos de log e de cobertura de testes
 *.log
-
-# Editor files
-*.swp
-*.swo
-*.idea/
-*.vscode/
-*.sublime-project
-*.sublime-workspace
-
-# macOS files
-.DS_Store
-
-#IntelliJ IDEA
-.idea/
-=======
-__pycache__/
-
-# Coverage file
 .coverage
 
+# Arquivos de configuração de editores de código
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+
+# Arquivos de sistema operacional (macOS)
+.DS_Store
