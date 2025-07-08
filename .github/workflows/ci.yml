@@ -6,6 +6,7 @@ on:
       - develop
       - feature/testes
       - feature/testes-integracao
+      - feature/testes-finais
 permissions:
   contents: write
 jobs:
