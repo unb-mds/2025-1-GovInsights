@@ -9,7 +9,7 @@ import pandas as pd
 from datetime import datetime
 import json
 
-from src.services.ia import gerar_relatorio
+from src.services.ia import gerar_relatorio_com_busca_externa_stream
 from tests.fixtures.mock_data import get_mock_dataframe, get_mock_ia_response
 from tests.fixtures.test_config import TEST_CONFIG
 
@@ -21,19 +21,23 @@ class TestIAAPIIntegration:
         """Testa chamada real para Together.ai (se configurado)."""
         # Para testes de integração, vamos usar mock ao invés de API real
         with patch('together.Together') as mock_together:
+            # Criar mock client
             mock_client = MagicMock()
-            mock_response = MagicMock()
-            mock_choice = MagicMock()
-            mock_choice.message.content = get_mock_ia_response('default')
-            mock_response.choices = [mock_choice]
-            mock_client.chat.completions.create.return_value = mock_response
+            
+            # Criar mock chunk para streaming
+            mock_chunk = MagicMock()
+            mock_chunk.choices = [MagicMock()]
+            mock_chunk.choices[0].delta.content = get_mock_ia_response('default')
+            
+            # Configurar retorno como lista de chunks (streaming)
+            mock_client.chat.completions.create.return_value = [mock_chunk]
             mock_together.return_value = mock_client
             
             # Dados de teste simples
             dados_teste = get_mock_dataframe(size=50)
             
             # Chamada mockada para API
-            relatorio = gerar_relatorio(
+            relatorio = gerar_relatorio_com_busca_externa_stream(
                 codSerie="TEST_SERIES",
                 dataframe=dados_teste
             )
@@ -51,13 +55,12 @@ class TestIAAPIIntegration:
     def test_together_ai_with_different_data_types(self):
         """Testa API com diferentes tipos de dados econômicos."""
         with patch('together.Together') as mock_together:
-            # Setup mock para API
+            # Setup mock para API com streaming
             mock_client = MagicMock()
-            mock_response = MagicMock()
-            mock_choice = MagicMock()
-            mock_choice.message.content = get_mock_ia_response('comprehensive')
-            mock_response.choices = [mock_choice]
-            mock_client.chat.completions.create.return_value = mock_response
+            mock_chunk = MagicMock()
+            mock_chunk.choices = [MagicMock()]
+            mock_chunk.choices[0].delta.content = get_mock_ia_response('comprehensive')
+            mock_client.chat.completions.create.return_value = [mock_chunk]
             mock_together.return_value = mock_client
             
             # Teste com dados de PIB
@@ -67,7 +70,7 @@ class TestIAAPIIntegration:
                 'unidade': ['Milhões R$'] * 24
             })
             
-            relatorio_pib = gerar_relatorio(codSerie="TEST_SERIES", dataframe=dados_pib)
+            relatorio_pib = gerar_relatorio_com_busca_externa_stream(codSerie="TEST_SERIES", dataframe=dados_pib)
             
             assert isinstance(relatorio_pib, str)
             assert len(relatorio_pib) > 0
@@ -79,7 +82,7 @@ class TestIAAPIIntegration:
                 'unidade': ['% a.a.'] * 12
             })
             
-            relatorio_juros = gerar_relatorio(codSerie="TEST_SERIES", dataframe=dados_juros)
+            relatorio_juros = gerar_relatorio_com_busca_externa_stream(codSerie="TEST_SERIES", dataframe=dados_juros)
             
             assert isinstance(relatorio_juros, str)
             assert len(relatorio_juros) > 0
@@ -93,23 +96,22 @@ class TestIAAPIIntegration:
             dados_teste = get_mock_dataframe(size=10)
             
             with pytest.raises(Exception, match="Conexão com IA falhou"):
-                gerar_relatorio(codSerie="TEST_SERIES", dataframe=dados_teste)
+                gerar_relatorio_com_busca_externa_stream(codSerie="TEST_SERIES", dataframe=dados_teste)
     
     def test_ia_service_with_large_context(self):
         """Testa serviço de IA com contexto extenso."""
         with patch('together.Together') as mock_together:
             mock_client = MagicMock()
-            mock_response = MagicMock()
-            mock_choice = MagicMock()
-            mock_choice.message.content = get_mock_ia_response('detailed')
-            mock_response.choices = [mock_choice]
-            mock_client.chat.completions.create.return_value = mock_response
+            mock_chunk = MagicMock()
+            mock_chunk.choices = [MagicMock()]
+            mock_chunk.choices[0].delta.content = get_mock_ia_response('detailed')
+            mock_client.chat.completions.create.return_value = [mock_chunk]
             mock_together.return_value = mock_client
             
             # Dados extensos
             dados_extensos = get_mock_dataframe(size=500)
             
-            relatorio = gerar_relatorio(codSerie="TEST_SERIES", dataframe=dados_extensos)
+            relatorio = gerar_relatorio_com_busca_externa_stream(codSerie="TEST_SERIES", dataframe=dados_extensos)
             
             # Verificar se API foi chamada corretamente
             assert mock_together.called
@@ -124,17 +126,16 @@ class TestIAAPIIntegration:
         with patch('together.Together') as mock_together:
             # Simular sucesso direto (já que não há retry implementado na função atual)
             mock_client = MagicMock()
-            mock_response = MagicMock()
-            mock_choice = MagicMock()
-            mock_choice.message.content = get_mock_ia_response('retry_success')
-            mock_response.choices = [mock_choice]
-            mock_client.chat.completions.create.return_value = mock_response
+            mock_chunk = MagicMock()
+            mock_chunk.choices = [MagicMock()]
+            mock_chunk.choices[0].delta.content = get_mock_ia_response('retry_success')
+            mock_client.chat.completions.create.return_value = [mock_chunk]
             mock_together.return_value = mock_client
             
             dados_teste = get_mock_dataframe(size=20)
             
             # Deve ter sucesso
-            relatorio = gerar_relatorio(codSerie="TEST_SERIES", dataframe=dados_teste)
+            relatorio = gerar_relatorio_com_busca_externa_stream(codSerie="TEST_SERIES", dataframe=dados_teste)
             
             assert isinstance(relatorio, str)
             assert len(relatorio) > 0
@@ -144,17 +145,16 @@ class TestIAAPIIntegration:
         """Testa validação de respostas da API de IA."""
         with patch('together.Together') as mock_together:
             mock_client = MagicMock()
-            mock_response = MagicMock()
-            mock_choice = MagicMock()
-            mock_choice.message.content = 'Resposta válida da IA sobre análise econômica'
-            mock_response.choices = [mock_choice]
-            mock_client.chat.completions.create.return_value = mock_response
+            mock_chunk = MagicMock()
+            mock_chunk.choices = [MagicMock()]
+            mock_chunk.choices[0].delta.content = 'Resposta válida da IA sobre análise econômica'
+            mock_client.chat.completions.create.return_value = [mock_chunk]
             mock_together.return_value = mock_client
             
             dados_teste = get_mock_dataframe(size=10)
             
             # Deve tratar resposta válida
-            relatorio = gerar_relatorio(codSerie="TEST_SERIES", dataframe=dados_teste)
+            relatorio = gerar_relatorio_com_busca_externa_stream(codSerie="TEST_SERIES", dataframe=dados_teste)
             
             # Verificar se retorna string válida
             assert isinstance(relatorio, str)
@@ -164,17 +164,16 @@ class TestIAAPIIntegration:
         """Testa serviço com diferentes modelos de IA."""
         with patch('together.Together') as mock_together:
             mock_client = MagicMock()
-            mock_response = MagicMock()
-            mock_choice = MagicMock()
-            mock_choice.message.content = get_mock_ia_response('model_test')
-            mock_response.choices = [mock_choice]
-            mock_client.chat.completions.create.return_value = mock_response
+            mock_chunk = MagicMock()
+            mock_chunk.choices = [MagicMock()]
+            mock_chunk.choices[0].delta.content = get_mock_ia_response('model_test')
+            mock_client.chat.completions.create.return_value = [mock_chunk]
             mock_together.return_value = mock_client
             
             dados_teste = get_mock_dataframe(size=15)
             
             # Testar com modelo específico
-            relatorio = gerar_relatorio(codSerie="TEST_SERIES", dataframe=dados_teste)
+            relatorio = gerar_relatorio_com_busca_externa_stream(codSerie="TEST_SERIES", dataframe=dados_teste)
             
             # Verificar se modelo foi usado corretamente
             mock_client.chat.completions.create.assert_called_once()
@@ -188,17 +187,16 @@ class TestIAAPIIntegration:
         """Testa otimização de contexto para economizar tokens."""
         with patch('together.Together') as mock_together:
             mock_client = MagicMock()
-            mock_response = MagicMock()
-            mock_choice = MagicMock()
-            mock_choice.message.content = get_mock_ia_response('optimized')
-            mock_response.choices = [mock_choice]
-            mock_client.chat.completions.create.return_value = mock_response
+            mock_chunk = MagicMock()
+            mock_chunk.choices = [MagicMock()]
+            mock_chunk.choices[0].delta.content = get_mock_ia_response('optimized')
+            mock_client.chat.completions.create.return_value = [mock_chunk]
             mock_together.return_value = mock_client
             
             # Dataset muito grande para testar limitação de contexto
             dados_grandes = get_mock_dataframe(size=10000)
             
-            relatorio = gerar_relatorio(codSerie="TEST_SERIES", dataframe=dados_grandes)
+            relatorio = gerar_relatorio_com_busca_externa_stream(codSerie="TEST_SERIES", dataframe=dados_grandes)
             
             # Verificar se API foi chamada corretamente
             mock_client.chat.completions.create.assert_called_once()
@@ -223,16 +221,15 @@ class TestIAAPIIntegration:
         
         with patch('together.Together') as mock_together:
             mock_client = MagicMock()
-            mock_response = MagicMock()
-            mock_choice = MagicMock()
-            mock_choice.message.content = get_mock_ia_response('concurrent')
-            mock_response.choices = [mock_choice]
-            mock_client.chat.completions.create.return_value = mock_response
+            mock_chunk = MagicMock()
+            mock_chunk.choices = [MagicMock()]
+            mock_chunk.choices[0].delta.content = get_mock_ia_response('concurrent')
+            mock_client.chat.completions.create.return_value = [mock_chunk]
             mock_together.return_value = mock_client
             
             def gerar_relatorio_async(i):
                 dados = get_mock_dataframe(size=20)
-                return gerar_relatorio(codSerie="TEST_SERIES", dataframe=dados)
+                return gerar_relatorio_com_busca_externa_stream(codSerie="TEST_SERIES", dataframe=dados)
             
             # Executar múltiplas requisições em paralelo
             start_time = time.time()
