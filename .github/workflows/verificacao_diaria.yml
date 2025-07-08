@@ -1,0 +1,64 @@
+# Nome do workflow que aparecerá na aba "Actions" do seu repositório no GitHub.
+name: Verificação e Alerta de Séries Econômicas
+
+# Gatilhos (Triggers): Define quando o workflow deve ser executado.
+on:
+  schedule:
+    # Executa em um horário agendado no formato cron.
+    # Esta configuração executa todos os dias às 8:00 da manhã (horário de Brasília).
+    # O horário no GitHub é sempre em UTC. 8h BRT (UTC-3) = 11h UTC.
+    - cron: '0 11 * * *'
+  
+  # Habilita a execução manual do workflow a partir da aba "Actions".
+  # É extremamente útil para fazer testes sem ter que esperar o horário agendado.
+  workflow_dispatch:
+
+# Jobs: Define os trabalhos a serem executados.
+jobs:
+  # Nome do job (pode ser qualquer nome).
+  verificar_e_alertar:
+    # A máquina virtual onde o job será executado. 'ubuntu-latest' é a mais comum.
+    runs-on: ubuntu-latest
+
+    # Passos (Steps): A sequência de ações que o job vai realizar.
+    steps:
+      # Passo 1: Clona o código do seu repositório para a máquina virtual.
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # Passo 2: Configura o ambiente Python na versão especificada.
+      - name: Configurar ambiente Python
+        uses: actions/setup-python@v5
+        with:
+          # Garanta que esta versão seja a mesma que você usa para desenvolver.
+          python-version: '3.10'
+
+      # Passo 3: Instala as bibliotecas necessárias listadas no seu requirements.txt.
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Passo 4: Executa o seu script Python.
+      - name: Executar script principal de verificação
+        # O bloco 'env' é a ponte entre os GitHub Secrets e o seu código.
+        # Ele cria variáveis de ambiente na máquina virtual usando os valores
+        # dos secrets que você configurou no repositório.
+        env:
+          # Segredos da Together.ai
+          TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
+          
+          # Segredos do Supabase
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          
+          # Segredos do serviço de e-mail (Brevo)
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_LOGIN: ${{ secrets.SMTP_LOGIN }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
+        
+        # O comando que inicia seu script.
+        # IMPORTANTE: Substitua 'caminho/para/seu_script.py' pelo caminho real do arquivo.
+        run: python src/services/async_service/cronjob.py
