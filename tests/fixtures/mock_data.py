@@ -68,42 +68,7 @@ def generate_mock_timeseries_data(code: str = 'DEFAULT', start_date: str = '2020
     })
 
 # Mock de resposta da API de IA para testes
-MOCK_IA_RESPONSE = """
-# Análise da Série Temporal Financeira
-
-## 1. Resumo da Série
-A série analisada apresenta dados financeiros do período de 2020 a 2025, com tendência geral de crescimento moderado.
-
-## 2. Tendência Observada
-- **Crescimento**: 15.2% no período analisado
-- **Volatilidade**: Baixa a moderada
-- **Sazonalidade**: Não identificada
-
-## 3. Principais Eventos
-- Impacto da pandemia em 2020-2021
-- Recuperação econômica em 2022-2023
-- Estabilização em 2024-2025
-
-## 4. Classificação de Anomalias
-- **Tipo**: Outliers pontuais
-- **Causa**: Eventos macroeconômicos
-- **Frequência**: 2-3 ocorrências por ano
-
-## 5. Implicações para Gestores
-- Manter política atual de investimentos
-- Monitorar indicadores de volatilidade
-- Preparar-se para cenários de baixa
-
-## 6. Sugestões de Ação
-- Diversificação de portfólio
-- Hedge contra volatilidade cambial
-- Monitoramento contínuo de indicadores
-
-## 7. Empresas do Setor
-- Petrobras (PETR4)
-- Vale (VALE3)
-- Itaú Unibanco (ITUB4)
-"""
+MOCK_IA_RESPONSE = "Análise econômica: Os dados mostram tendência crescente com volatilidade moderada."
 
 # Mock de configurações do Supabase para testes
 MOCK_SUPABASE_CONFIG = {

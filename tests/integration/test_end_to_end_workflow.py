@@ -11,7 +11,7 @@ import pandas as pd
 
 from src.services.search import SearchService
 from src.services.graph import timeSeries
-from src.services.ia import gerar_relatorio
+from src.services.ia import gerar_relatorio_com_busca_externa_stream
 from src.services.pdf import gerar_pdf
 from tests.fixtures.mock_data import (
     get_mock_ipea_response,
@@ -35,7 +35,7 @@ class TestEndToEndWorkflow:
         """Testa workflow completo para análise de inflação."""
         # Mock das APIs externas
         with patch('requests.get') as mock_get, \
-             patch('src.services.ia.gerar_relatorio') as mock_ia, \
+             patch('src.services.ia.gerar_relatorio_com_busca_externa_stream') as mock_ia, \
              patch.object(self.search_service, 'search') as mock_search, \
              patch.object(self.search_service, 'obter_dados_indicador', create=True) as mock_dados:
             
@@ -89,14 +89,10 @@ class TestEndToEndWorkflow:
             graficos.append(('barras', grafico_barras))
             
             # 4. Gerar relatório IA
-            from src.services.ia import gerar_relatorio
-            relatorio = gerar_relatorio(
-                dados=dados,
-                contexto={
-                    'indicador': indicador['nome'],
-                    'tema': "Preços e inflação",
-                    'periodo': "2020-2024"
-                }
+            from src.services.ia import gerar_relatorio_com_busca_externa_stream
+            relatorio = gerar_relatorio_com_busca_externa_stream(
+                codSerie=indicador['codigo'],
+                dataframe=dados
             )
             
             # Verificar se relatório foi gerado (pode ser string ou dict)
