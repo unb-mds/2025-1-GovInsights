@@ -1,0 +1,2946 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+        <link rel="next" href="Arquitetura/">
+      
+      
+      <link rel="icon" href="assets/LOGO.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
+    
+    
+      
+        <title>Documentação - GovInsights</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#projeto" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="Documentação - GovInsights" class="md-header__button md-logo" aria-label="Documentação - GovInsights" data-md-component="logo">
+      
+  <img src="assets/LOGO.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Documentação - GovInsights
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Home
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://unb-mds.github.io/2025-1-GovInsights/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GovInsights
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="Documentação - GovInsights" class="md-nav__button md-logo" aria-label="Documentação - GovInsights" data-md-component="logo">
+      
+  <img src="assets/LOGO.svg" alt="logo">
+
+    </a>
+    Documentação - GovInsights
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://unb-mds.github.io/2025-1-GovInsights/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GovInsights
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Projeto
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#collaborators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Collaborators
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#como-comecar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como começar
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Como começar">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#instalando-python-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Instalando Python 3
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Instalando Python 3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#no-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      No Windows
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      No Linux
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clonando-repositorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clonando repositório
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criando-e-ativando-um-ambiente-virtual-do-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      Criando e ativando um ambiente virtual do Python
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instalando-pre-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Instalando pré-requisitos
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Arquitetura
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Arquitetura
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Arquitetura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📊 GovInsights - Projeto de Geração Automática de Relatórios de Series Financeiras do IPEA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Arquitetura/deploy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deploy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Atas
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Atas
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Atas/Sprint0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📄 Resumo da Ata – Sprint 0 (Kick Off)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Atas/Sprint01/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📄 Resumo da Ata – Sprint 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Atas/Sprint02/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📄 Resumo da Ata – Sprint 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Atas/Sprint03/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint03
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Atas/Sprint04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📄 Ata da Reunião – Sprint 4
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Atas/Sprint05/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📄 Ata da Reunião – Sprint 5
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Atas/Sprint06/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📄 Ata da Reunião – Sprint 6
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Atas/Sprint07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📄 Ata da Reunião – Sprint 7
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Atas/Sprint08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📄 Ata da Reunião – Sprint 8
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Atas/Sprint09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📄 Ata da Reunião – Sprint 9
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Atas/Sprint10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📄 Ata da Reunião – Sprint 10
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Atas/Sprint11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📄 Ata da Reunião – Sprint 11
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Estudos
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Estudos
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Estudos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Index
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Arquitetura de Software
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Arquitetura de Software
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Estudos/Arquitetura%20de%20Software/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Index
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Estudos/Arquitetura%20de%20Software/Introdu%C3%A7%C3%A3o_Arquitetura_de_Software/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    INTRODUÇÃO A ARQUITETURA DE SOFTWARE
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Backend
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Backend
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Estudos/Backend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Resumo sobre Back-end
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Estudos/Backend/Primeiros_passos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instalando Python3 e pip
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    DevOps
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            DevOps
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Estudos/DevOps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Introdução à Cultura DevOps
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Documentacao
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Documentacao
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Estudos/Documentacao/Documentacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Investigação sobre Métodos de Documentação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Frontend
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Frontend
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Estudos/Frontend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pesquisa sobre Front-End com Foco em UX/UI e Prototipagem no Figma
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Git
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            Git
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Estudos/Git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Index
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Estudos/Git/Git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Git
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Python
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            Python
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Estudos/Python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Index
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_9" id="__nav_4_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    REQUISITOS
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            REQUISITOS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Estudos/REQUISITOS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Index
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Estudos/REQUISITOS/requisitos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Requisitos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_10" id="__nav_4_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    React
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_10">
+            <span class="md-nav__icon md-icon"></span>
+            React
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Estudos/React/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📘 Guia básico de React
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_11" id="__nav_4_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    SCRUM
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_11">
+            <span class="md-nav__icon md-icon"></span>
+            SCRUM
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Estudos/SCRUM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Index
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Estudos/SCRUM/scrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Scrum
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_12" id="__nav_4_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Testes
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_12">
+            <span class="md-nav__icon md-icon"></span>
+            Testes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Estudos/Testes/Estudo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estudo: Estratégia e Desenvolvimento de Testes Automatizados para GovInsights
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Levantamento de Requisitos
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Levantamento de Requisitos
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Levantamento%20de%20Requisitos/01_visao_produto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Visão do Produto
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Levantamento%20de%20Requisitos/02_backlog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Backlog do Produto
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Levantamento%20de%20Requisitos/03_jornada_usuario/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🗺️ Jornada do Usuário
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Levantamento%20de%20Requisitos/04_requisitos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Requisitos do Sistema Gov Insights - Relatórios do IPEA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Levantamento%20de%20Requisitos/05_documentacao_tecnica/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🛠️ Documentação Técnica
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Levantamento%20de%20Requisitos/06_estrategia_releases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🚀 Estratégia de Releases (Sujeito a Modificação)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Planejamento
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Planejamento
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Planejamento/Backlog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Backlog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Planejamento/cronograma/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cronograma do Projeto - Relatórios do IPEA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Planejamento/scrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📋 Organização SCRUM – Projeto Relatórios Inteligentes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Revisões Sprints
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            Revisões Sprints
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Planejamento/Revis%C3%B5es%20Sprints/revisao-sprint0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🌀 Sprint Review &amp; Planejamento – Sprint 0
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Planejamento/Revis%C3%B5es%20Sprints/revisao-sprint1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🌀 Sprint Review &amp; Planejamento – Sprint 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Planejamento/Revis%C3%B5es%20Sprints/revisao-sprint10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🌀 Sprint Review &amp; Planejamento – Sprint 10
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Planejamento/Revis%C3%B5es%20Sprints/revisao-sprint11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🌀 Sprint Review – Sprint 11
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Planejamento/Revis%C3%B5es%20Sprints/revisao-sprint2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🌀 Sprint Review &amp; Planejamento – Sprint 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Planejamento/Revis%C3%B5es%20Sprints/revisao-sprint3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🌀 Sprint Review &amp; Planejamento – Sprint 3
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Planejamento/Revis%C3%B5es%20Sprints/revisao-sprint4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🌀 Sprint Review &amp; Planejamento – Sprint 4
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Planejamento/Revis%C3%B5es%20Sprints/revisao-sprint5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🌀 Sprint Review &amp; Planejamento – Sprint 5
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Planejamento/Revis%C3%B5es%20Sprints/revisao-sprint6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🌀 Sprint Review &amp; Planejamento – Sprint 6
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Planejamento/Revis%C3%B5es%20Sprints/revisao-sprint7/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🌀 Sprint Review &amp; Planejamento – Sprint 7
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Planejamento/Revis%C3%B5es%20Sprints/revisao-sprint8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🌀 Sprint Review – Sprint 8
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Planejamento/Revis%C3%B5es%20Sprints/revisao-sprint9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🌀 Sprint Review – Sprint 9
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Protótipo
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Protótipo
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prot%C3%B3tipo/esboco-interface-exportacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tela de Exportação de Relatórios
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Prot%C3%B3tipo/esbo%C3%A7o-interface-inicial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🧠 Relatórios Inteligentes IPEA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#projeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      📚 Projeto
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#collaborators" class="md-nav__link">
+    <span class="md-ellipsis">
+      Collaborators
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#como-comecar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como começar
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Como começar">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#instalando-python-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Instalando Python 3
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Instalando Python 3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#no-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      No Windows
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#no-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      No Linux
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clonando-repositorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clonando repositório
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#criando-e-ativando-um-ambiente-virtual-do-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      Criando e ativando um ambiente virtual do Python
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instalando-pre-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Instalando pré-requisitos
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 align="center" style="font-weight: bold;">📊 GovInsights - Análise de Dados Públicos  </h1>
+
+<p align="center">
+  <a href="https://unb-mds.github.io/2025-1-GovInsights/">Git Pages</a> </br>
+  <a href="https://govinsights-landing-page.streamlit.app/">Acesse o Sistema</a>
+</p>
+
+<h2 id="projeto">📚 Projeto</h2>
+<p>Desenvolvido para a disciplina <strong>Métodos de Desenvolvimento de Software - 2025/1</strong>.</p>
+<hr />
+<p>O <strong>GovInsights</strong> é uma plataforma de análise e visualização de dados financeiros públicos, focada inicialmente nos dados do <strong>IPEA</strong>.<br />
+O projeto busca democratizar o acesso às informações públicas através de relatórios inteligentes e dashboards interativos, utilizando <strong>processamento de linguagem natural</strong> e <strong>visualizações dinâmicas</strong>S para facilitar a tomada de decisão e promover a transparência governamental.</p>
+<hr />
+<h2 id="objectives">📌 Objetivos</h2>
+
+<ul>
+<li>Automatizar a coleta e análise de dados financeiros públicos.</li>
+<li>Facilitar o acesso à informação através de visualizações e relatórios interativos.</li>
+<li>Identificação de tópicos em notícias relacionadas.</li>
+<li>Estimular a transparência, a cidadania ativa e o uso de dados públicos.</li>
+<li>Promover boas práticas de desenvolvimento ágil e colaborativo utilizando GitHub e metodologias ágeis.</li>
+</ul>
+<hr />
+<h2 id="tech">⚙️ Tecnologias Utilizadas</h2>
+
+<ul>
+<li><strong>Backend</strong>: <strong>Python 3.x</strong></li>
+<li><strong>Frontend</strong>: <strong>Streamlit</strong></li>
+<li><strong>Modelo de LLM</strong>: <strong>DeepSeek-R1-Distill-Llama-70B-free via API do Together AI</strong></li>
+<li><strong>Bibliotecas</strong>: <strong>pandas 2.2.3</strong>, <strong>plotly 6.0.1</strong>, <strong>requests 2.32.3</strong></li>
+<li><strong>Deploy</strong>: <strong>Streamlit Deploy</strong>, <strong>Git Pages</strong></li>
+</ul>
+<hr />
+<h2 id="collaborators">Collaborators</h2>
+<p>O projeto é desenvolvido pelos seguintes integrantes:</p>
+<table>
+<thead>
+<tr>
+<th>Papel</th>
+<th>Responsáveis</th>
+<th>Atividades Principais</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stakeholders</td>
+<td>Eric, Brenda e Maria Eduarda</td>
+<td>Validação dos requisitos e avaliação dos resultados</td>
+</tr>
+<tr>
+<td>Product Owner</td>
+<td>Brenda</td>
+<td>Priorização de funcionalidades, gestão do backlog</td>
+</tr>
+<tr>
+<td>FrontEnd</td>
+<td>Eduarda e Mayra</td>
+<td>Desenvolvimento da identidade visual, telas (Login, Exportação, Landing Page), integração Streamlit + HTML/CSS</td>
+</tr>
+<tr>
+<td>BackEnd</td>
+<td>Marjorie, Guilherme e Gabriel</td>
+<td>Integração da API IPEA, coleta de dados, implementação dos métodos GET e POST</td>
+</tr>
+<tr>
+<td>Gestão de Projetos</td>
+<td>Eric, Brenda e Maria Eduarda</td>
+<td>Cronograma, controle de sprints, revisão de branches e suporte de gestão ágil</td>
+</tr>
+<tr>
+<td>Usuário Final</td>
+<td>Público geral e servidores públicos</td>
+<td>Consumo dos relatórios gerados e análise dos indicadores</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/EricAraujoBsB">
+        <img src="assets/Colabs/Eric Gomes.jpeg" width=128px; height= 128px; style="width=128; height=128; object-fit: cover"; alt="Eric Gomes"/><br>
+        <p><b>Eric Gomes de Araujo</b></p>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Lithuania0">
+        <img src="assets/Colabs/Mayra Lithuania.jpeg" width=128px; height= 128px; style="width=128; height=128; object-fit: cover"; alt="Mayra Lithuania"/><br>
+        <p><b>Mayra Lithuania</b></p>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Brwnds">
+        <img src="assets/Colabs/Brenda.jpeg" width=128px; height=128px; style="width=128; height=128; object-fit: cover"; alt="Brenda Beatriz"/><br>
+        <p><b>Brenda Beatriz</b></p>
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/GFlyan">
+        <img src="assets/Colabs/Guilherme Flyan.jpeg" width=128px; height=128px; style="width=128; height=128; object-fit: cover"; alt="Guilherme Flyan"/><br>
+        <p><b>Guilherme Flyan</b></p>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/eduardar0">
+        <img src="assets/Colabs/Eduarda Rodrigues.jpeg" width=128px; height=128px; style="width=128; height=128; object-fit: cover";;" alt="Eduarda Rodrigues"/><br>
+        <p><b>Eduarda Rodrigues</b></p>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/mariadenis">
+        <img src="assets/Colabs/Maria Eduarda.jpeg" width=128px; height=128px; style="width=128; height=128; object-fit: cover";;" alt="Maria Eduarda"/><br>
+        <p><b>Maria Eduarda</b></p>
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/gabegmbr">
+        <img src="assets/Colabs/Gabriel Maciel.jpeg" width=128px; height=128px; style="width=128; height=128; object-fit: cover"; alt="Gabriel Maciel"/><br>
+        <p><b>Gabriel Maciel</b></p>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Marjoriemitzi">
+        <img src="assets/Colabs/Marjorie.jpeg" width=128px; height=128px; style="width=128; height=128; object-fit: cover"; alt="Marjorie Mitzi"/><br>
+        <p><b>Marjorie Mitzi</b></p>
+      </a>
+    </td>
+  </tr>
+</table>
+
+<ul>
+<li>Eric Gomes de Araujo – Desenvolvedor / Planejamento</li>
+<li>Mayra Lithuania – Frontend / Design</li>
+<li>Brenda Beatriz – Gestão de Projetos / Documentação</li>
+<li>Guilherme Flyan – Backend</li>
+<li>Eduarda Rodrigues – Frontend / Identidade Visual</li>
+<li>Maria Eduarda – Gestão de Projetos</li>
+<li>Gabriel Maciel – Backend</li>
+<li>Marjorie Mitzi – Backend / Análise de Dados</li>
+</ul>
+<hr />
+<h2 id="contrib">🤝 Como Contribuir</h2>
+
+<p>Quer contribuir? Siga os passos:</p>
+<ol>
+<li>Leia a documentação disponível.</li>
+<li>Crie uma issue para reportar problemas ou sugerir melhorias.</li>
+<li>Faça um fork e crie uma branch específica:</li>
+</ol>
+<pre><code class="language-bash">git checkout -b feature/nome-da-sua-feature
+</code></pre>
+<ol>
+<li>Realize o desenvolvimento seguindo o padrão do projeto.</li>
+<li>Envie seu Pull Request para revisão.</li>
+</ol>
+<p><strong>Regras:</strong>
+- Siga o padrão de commits.
+- Atualize a documentação sempre que necessário.
+- Seja colaborativo e respeitoso.</p>
+<hr />
+<h1 id="como-comecar">Como começar</h1>
+<h2 id="instalando-python-3">Instalando Python 3</h2>
+<h3 id="no-windows">No Windows</h3>
+<ul>
+<li>Baixe e instale o <a href="[Download Python | Python.org](https://www.python.org/getit/)">Python 3</a>.</li>
+</ul>
+<h3 id="no-linux">No Linux</h3>
+<ul>
+<li>No Linux, é necessário instalar os pacotes de desenvolvimento do Python. Utilize o seguinte comando:</li>
+</ul>
+<pre><code>sudo apt install python3-dev python3-pip python3-venv
+</code></pre>
+<h2 id="clonando-repositorio">Clonando repositório</h2>
+<ul>
+<li>Clone o repositório utilizando o comando:</li>
+</ul>
+<pre><code>git clone https://github.com/unb-mds/2025-1-GovInsights.git
+</code></pre>
+<h2 id="criando-e-ativando-um-ambiente-virtual-do-python">Criando e ativando um ambiente virtual do Python</h2>
+<ul>
+<li>Vá a pasta do repositório</li>
+</ul>
+<pre><code>cd 2025-1-GovInsights
+</code></pre>
+<ul>
+<li>Crie um ambiente virtual do Python</li>
+</ul>
+<pre><code>python -m venv venv
+</code></pre>
+<ul>
+<li>Ative o ambiente virtual</li>
+</ul>
+<pre><code># No Windows
+venv\Scripts\activate.bat
+# No Linux
+source ./venv/bin/activate
+</code></pre>
+<h2 id="instalando-pre-requisitos">Instalando pré-requisitos</h2>
+<ul>
+<li>Atualize a versão do pip</li>
+</ul>
+<pre><code># No Windows
+python -m pip install -U pip
+# No Linux
+python3 -m pip install --upgrade pip
+</code></pre>
+<ul>
+<li>Instale as dependências do projeto com o comando:</li>
+</ul>
+<pre><code> pip install -r requirements.txt 
+</code></pre>
+<ul>
+<li>Execute o sistema a partir da pasta src</li>
+</ul>
+<pre><code>streamlit run .\src\main.py
+</code></pre>
+<hr />
+<h2 id="data">📈 Dados Utilizados</h2>
+
+<p>Os dados utilizados no projeto <strong>GovInsights</strong> serão extraídos de fontes públicas confiáveis, como o portal oficial do <strong>IPEA</strong> e outras fontes governamentais de transparência.</p>
+<hr />
+<h2 id="access">🌐 Acesso ao Projeto</h2>
+
+<ul>
+<li>A documentação será hospedada no GitHub Pages. (Em construção)</li>
+<li>O site de visualização será hospedado futuramente na ferramenta de deploy do Streamlit.</li>
+</ul>
+<hr />
+<h2 id="tools">🔨 Ferramentas e Recursos</h2>
+
+<ul>
+<li>🎨 Protótipos no <a href="https://www.figma.com/team_invite/redeem/JtjJg0xfYUI6RE1FBSzOlM">Figma</a></li>
+<li>🧠 Planejamento no <a href="https://www.notion.so/invite/6e431a0cfdbcdfadde473e1e02023c52e89070ee">Notion</a></li>
+<li>📋 Backlog de Desenvolvimento <a href="https://github.com/unb-mds/2025-1-Squad10/projects?query=is%3Aopen">GitHub Projects</a></li>
+<li>🏧 Arquitetura Técnica (em documentação)</li>
+</ul>
+<hr />
+<h2 id="contact">📞 Contato</h2>
+
+<p>Dúvidas ou sugestões?<br />
+Entre em contato pelo e-mail: 📩 <strong>govinsights.project@gmail.com</strong></p>
+<hr />
+<h2 id="history">📜 Histórico de Versões</h2>
+
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Versão</th>
+<th style="text-align: center;">Data</th>
+<th style="text-align: left;">Descrição</th>
+<th style="text-align: center;">Autor</th>
+<th style="text-align: center;">Revisor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">0.1.0</td>
+<td style="text-align: center;">20/04/2025</td>
+<td style="text-align: left;">Estrutura inicial do README</td>
+<td style="text-align: center;">Eric Gomes</td>
+<td style="text-align: center;">Eric Gomes</td>
+</tr>
+<tr>
+<td style="text-align: center;">0.1.1</td>
+<td style="text-align: center;">27/04/2025</td>
+<td style="text-align: left;">Adição de seções e padronização</td>
+<td style="text-align: center;">Brenda</td>
+<td style="text-align: center;">Brenda</td>
+</tr>
+<tr>
+<td style="text-align: center;">0.1.2</td>
+<td style="text-align: center;">08/05/2025</td>
+<td style="text-align: left;">Adição de "Como contribuir"</td>
+<td style="text-align: center;">Eric</td>
+<td style="text-align: center;">Maria Eduarda</td>
+</tr>
+</tbody>
+</table>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.56ea9cef.min.js"></script>
+      
+    
+  </body>
+</html>
