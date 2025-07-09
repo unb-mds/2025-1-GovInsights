@@ -15,7 +15,7 @@ def get_base64_of_bin_file(bin_file_path):
 
 
 # Caminhos
-current_dir = Path(__file__).parent
+current_dir = Path(__file__)..resolve().parent
 logo_path = current_dir / "interface" / "views" / "assets" / "img" / "Icon.png"
 ilustra_path = current_dir / "interface" / "views" / "assets" / "img" / "home_ilustracao.png"
 main_style_path = current_dir / "interface" / "views" / "assets" /"stylesheets" / "mainStyle.css"
